@@ -1,0 +1,13 @@
+/* ----------  Tailwind layers  ---------- */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* 2 – optional little helper: smooth colour transitions */
+* {
+  transition-property: color, background-color, border-color;
+  transition-duration: 200ms;
+  transition-timing-function: ease‑in‑out;
+}
+
+/* 3 – (keep the rest of the file empty for now) */
