@@ -5,7 +5,7 @@ export default function MyHead() {
     <Head>
       <title>Your Name - Personal Website</title>
       <meta name="description" content="Personal website showcasing professional experience and certifications." />
-      <meta property="og:title" content="Your Name - Personal Website" />
+      <meta property="og:title" content="Vaishak Menon" />
       <meta property="og:description" content="Personal website showcasing professional experience and certifications." />
       <meta property="og:type" content="website" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
