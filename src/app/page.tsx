@@ -2,83 +2,76 @@
 // import Image from 'next/image';
 
 export default function Home() {
-  // Replace these with your actual certifications
-  const certifications = [
-    { name: 'Certified Kubernetes Administrator', file: '/certs/aws.pdf' },
-  ];
+    const certifications = [
+        { name: 'Certified Kubernetes Administrator', file: '/certs/CKA_Cert.pdf' },
+    ];
 
-  return (
-    <div className="space-y-12">
-      {/* About Me Section */}
-      <section className="card p-6 md:p-8">
-        <h2 className="text-2xl font-bold mb-4 dark:text-dark-text">About Me</h2>
-        <div className="flex flex-col md:flex-row gap-6 items-center">
-          <div className="w-40 h-40 relative rounded-full overflow-hidden">
-            {/* Replace with your profile picture */}
-            <div className="bg-gray-200 dark:bg-gray-700 w-full h-full flex items-center justify-center">
-              <span className="text-gray-500 dark:text-gray-400">
-                Profile Photo
-              </span>
-            </div>
-          </div>
-          <div className="flex-1">
-            <p className="text-lg leading-relaxed mb-4 dark:text-dark-text">
-              Hello! I&aposm a passionate [Your Profession] with experience in [Your
-              Field/Industry]. I specialize in [Your Specialization/Skills] and
-              have worked with [Technologies/Tools you&aposre familiar with]. I&aposm
-              currently [Your Current Role/Status]
-            </p>
-            <p className="text-lg dark:text-dark-text">
-              Feel free to reach out to me at{' '}
-              <a
-                href="mailto:vaishakkmenon@gmail.com"
-                className="font-medium"
-              >
-                vaishakkmenon@gmail.com
-              </a>
-            </p>
-          </div>
+    return (
+        <div className="space-y-12">
+            {/* About Me Section */}
+            <section className="card p-6 md:p-8">
+                <h2 className="text-2xl font-bold mb-4 dark:text-dark-text">About Me</h2>
+                <div className="flex flex-col md:flex-row gap-6 items-center">
+                    <div className="w-40 h-40 relative rounded-full overflow-hidden">
+                        {/* Replace with your profile picture */}
+                        <div className="bg-gray-200 dark:bg-gray-700 w-full h-full flex items-center justify-center">
+                            <span className="text-gray-500 dark:text-gray-400">
+                                Profile Photo
+                            </span>
+                        </div>
+                    </div>
+                    <div className="flex-1">
+                        <p className="text-lg leading-relaxed mb-4 dark:text-dark-text">
+                            Hi! I'm a recent computer science graduate with Python development and
+                            machine/deep learning project experience. A Certified Kubernetes Administrator
+                            with basic GCP exposure, comfortable with Git and Docker on Linux, I'm
+                            seeking an entry level software engineering or DevOps role where I can grow
+                            and ship reliable code.
+                        </p>
+                        <p className="text-lg dark:text-dark-text">
+                            Feel free to reach out to me at{' '}
+                            <a
+                                href="mailto:vaishakkmenon@gmail.com"
+                                className="font-medium"
+                            >
+                                vaishakkmenon@gmail.com
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </section>
         </div>
-      </section>
-
-      {/* Resume Download Section */}
-      <section className="card p-6 md:p-8 text-center">
-        <h2 className="text-2xl font-bold mb-4 dark:text-dark-text">
-          My Resume
-        </h2>
-        <p className="mb-6 dark:text-dark-text">
-          Download my resume to learn more about my professional experience and
-          skills.
-        </p>
-        <a
-          href="/Resume.pdf"
-          download
-          className="inline-block bg-primary hover:bg-secondary text-white font-bold py-3 px-6 rounded-lg transition-colors"
-        >
-          Download Resume (PDF)
-        </a>
-      </section>
-
-      {/* Certifications Section */}
-      <section className="card p-6 md:p-8">
-        <h2 className="text-2xl font-bold mb-4 dark:text-dark-text">
-          Certifications
-        </h2>
-        <ul className="list-disc pl-5 space-y-2 dark:text-dark-text">
-          {certifications.map((cert, index) => (
-            <li key={index}>
-              <a
-                href={cert.file}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium hover:underline"
-              >
-                {cert.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </div>
-  );
+    );
 }
+
+//             {/* Resume Download Section */}
+//             <section className="card p-6 md:p-8 text-center">
+//                 <h2 className="text-2xl font-bold mb-4 dark:text-dark-text">My Résumé</h2>
+//                 <p className="mb-6 dark:text-dark-text">Download my résumé to learn more about my professional experience and skills.</p>
+//                 <a
+//                     href="/Resume.pdf"
+//                     download
+//                     className="inline-block bg-primary hover:bg-secondary text-white font-bold py-3 px-6 rounded-lg transition-colors"
+//                 >
+//                     Download Résumé (PDF)
+//                 </a>
+//             </section>
+
+//             {/* Certifications Section */}
+//             <section className="card p-6 md:p-8">
+//                 <h2 className="text-2xl font-bold mb-4 dark:text-dark-text">Certifications</h2>
+//                 <ul className="list-disc pl-5 space-y-2 dark:text-dark-text">
+//                     {certifications.map((cert, index) => (
+//                         <li key={index}>
+//                             <a
+//                                 href={cert.file}
+//                                 target="_blank"
+//                                 rel="noopener noreferrer"
+//                                 className="font-medium hover:underline"
+//                             >
+//                                 {cert.name}
+//                             </a>
+//                         </li>
+//                     ))}
+//                 </ul>
+//             </section>
