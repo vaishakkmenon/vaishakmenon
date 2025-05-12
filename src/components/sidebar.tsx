@@ -1,22 +1,39 @@
+// components/sidebar.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import { Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
-import { useTheme } from './themeContext';
 
 export function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
-    const { theme } = useTheme();
     const [isHovered, setIsHovered] = useState(false);
 
-    // Determine stroke color based on theme AND hover state
+    // avoid SSR/theme flash
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const { theme, systemTheme } = useTheme();
+    const current = theme === "system" ? systemTheme : theme;
+
+    // now base everything on `current`
     const getStrokeColor = () => {
+        if (!mounted) return "#000000"; // Default before hydration
+
         if (isHovered) {
-            return theme === 'dark' ? '#000000' : '#ffffff'; // Hover colors (inverted)
-        } else {
-            return theme === 'dark' ? '#ffffff' : '#000000'; // Default colors
+            return current === "dark" ? "#ffffff" : "#000000"; // Fixed inverted colors here
         }
+        return current === "dark" ? "#ffffff" : "#000000";
     };
+
+    if (!mounted) {
+        // Return a placeholder with same dimensions to avoid layout shift
+        return (
+            <div className="w-6 h-6 p-2"></div>
+        );
+    }
 
     return (
         <>
@@ -27,11 +44,12 @@ export function Sidebar() {
                 onMouseLeave={() => setIsHovered(false)}
                 aria-controls="drawer-navigation"
                 aria-label="Open menu"
-                className={`
-                    p-2 rounded-md
-                    ${isHovered
-                        ? (theme === 'dark' ? 'bg-gray-300 text-black' : 'bg-gray-700 text-white')
-                        : ''
+                className={`p-2 rounded-md transition-colors
+                ${isHovered
+                        ? current === "dark"
+                            ? "bg-gray-700 text-white"
+                            : "bg-gray-200 text-black"
+                        : ""
                     }
                 `}
             >
@@ -59,16 +77,32 @@ export function Sidebar() {
                 backdrop={true}
                 edge={false}
                 id="drawer-navigation"
+                className="!bg-black !text-white"
             >
                 <div className="h-full w-64 bg-black text-white flex flex-col">
                     <DrawerHeader
                         title="Menu"
-                        className="border-b border-current text-white"
+                        className="border-b border-gray-700 text-white"
                     />
                     <DrawerItems className="pt-4">
-                        <a href="/" className="flex items-center gap-2 p-2 hover:bg-gray-100 hover:text-black">Home</a>
-                        <a href="/about" className="flex items-center gap-2 p-2 hover:bg-gray-100 hover:text-black">About</a>
-                        <a href="/contact" className="flex items-center gap-2 p-2 hover:bg-gray-100 hover:text-black">Contact</a>
+                        <a
+                            href="/"
+                            className="flex items-center gap-2 p-2 text-white hover:bg-gray-800"
+                        >
+                            Home
+                        </a>
+                        <a
+                            href="/about"
+                            className="flex items-center gap-2 p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                            About
+                        </a>
+                        <a
+                            href="/contact"
+                            className="flex items-center gap-2 p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                            Contact
+                        </a>
                     </DrawerItems>
                 </div>
             </Drawer>
