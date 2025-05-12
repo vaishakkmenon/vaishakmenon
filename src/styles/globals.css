@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@import "flowbite";
+@plugin "flowbite-react/plugin/tailwindcss";
+@source "../../.flowbite-react/class-list.json";
 
 /* Global transitions */
 * {
@@ -7,8 +10,27 @@
   transition-timing-function: ease-in-out;
 }
 
-@layer components {
-  .card {
-    @apply bg-white rounded-lg shadow;
-  }
+body {
+  @apply bg-white text-black;
+}
+
+/* Dark mode overrides when <html class="dark"> */
+html.dark body {
+  @apply bg-gray-900 text-gray-100;
+}
+
+/* Input fields */
+.inputField {
+  @apply bg-gray-100 text-black border-gray-300;
+}
+html.dark .inputField {
+  @apply bg-gray-800 text-gray-200 border-gray-600;
+}
+
+/* Buttons */
+.button {
+  @apply bg-blue-500 text-black;
+}
+html.dark .button {
+  @apply bg-blue-400 text-gray-900;
 }

@@ -3,7 +3,7 @@ import Head from 'next/head';
 export default function MyHead() {
   return (
     <Head>
-      <title>Your Name - Personal Website</title>
+      <title>Vaishak Menon</title>
       <meta name="description" content="Personal website showcasing professional experience and certifications." />
       <meta property="og:title" content="Vaishak Menon" />
       <meta property="og:description" content="Personal website showcasing professional experience and certifications." />
