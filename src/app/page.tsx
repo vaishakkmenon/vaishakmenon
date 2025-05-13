@@ -1,4 +1,7 @@
+"use client";
+
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 export default function Home() {
     const TOTAL_SLOTS = 3;
@@ -13,125 +16,189 @@ export default function Home() {
     const slots = [
         ...certifications,
         ...Array(Math.max(0, TOTAL_SLOTS - certifications.length)).fill(null),
-    ] as Array<{
-        name: string;
-        file: string;
-        image: string;
-    } | null>;
+    ] as Array<{ name: string; file: string; image: string } | null>;
+
+    // Animation variants for sections
+    const sectionVariants = {
+        hidden: { opacity: 0, y: 40 },
+        visible: { opacity: 1, y: 0 },
+    };
 
     return (
-        <section className="space-y-10">
-            {/* ---------- About Me ---------- */}
-            <div className="card p-8 border-0">
-                <h2 className="text-2xl font-bold mb-4 flex justify-center">About Me</h2>
-                <div className="grid md:grid-cols-1 gap-8">
-                    <div>
-                        <p className="text-lg leading-relaxed mb-4">
-                            Hi! I'm a recent computer science graduate with Python development and
-                            machine/deep learning project experience. A Certified Kubernetes Administrator
-                            with basic GCP exposure, comfortable with Git and Docker on Linux, I'm
-                            seeking an entry level software engineering or DevOps role where I can grow
-                            and ship reliable code.
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <div
+            id="scroll-container"
+            className="snap-container fixed inset-0 w-screen overflow-y-scroll"
+            style={{ overscrollBehavior: 'contain' }}
+        >
+            {/* Hero Section */}
+            <section className="h-screen flex flex-col justify-center items-center bg-hero font-headline">
+                <h1 className="text-6xl md:text-8xl font-extrabold mb-4">
+                    Vaishak Menon
+                </h1>
+                <p className="text-xl md:text-2xl mb-8">
+                    Software Engineer • ML/DL Enthusiast
+                </p>
+                <nav className="space-x-6">
+                    <a href="#about" className="hover:underline">
+                        About
+                    </a>
+                    <a href="#education" className="hover:underline">
+                        Education
+                    </a>
+                    <a href="#certs" className="hover:underline">
+                        Certs
+                    </a>
+                </nav>
+            </section>
 
-            {/* ---------- Education ---------- */}
-            <div className="card p-8 border-0">
-                <h2 className="text-2xl font-bold mb-4 flex justify-center">Education</h2>
-                <div className="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <p className="text-lg leading-relaxed mb-4 flex justify-center">
-                            School: University of Alabama at Birmingham
-                        </p>
-                        <div className="flex justify-center">
-                            <ol className="list-decimal list-inside flex flex-col items-center space-y-2">
+            <div id="hero-end" className="absolute top-[100vh] w-full h-0" />
+
+            {/* About Me Section */}
+            <motion.section
+                id="about"
+                className="h-screen flex flex-col justify-center items-center"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.4 }}
+                variants={sectionVariants}
+                transition={{ duration: 0.8 }}
+            >
+                <section className="card p-8 border-0 max-w-3xl">
+                    <h2 className="text-2xl font-bold mb-4 flex justify-center">
+                        About Me
+                    </h2>
+                    <hr className="border-t border-gray-300 dark:border-gray-600 my-4" />
+                    <p className="text-lg leading-relaxed">
+                        Hi! I'm a recent computer science graduate with Python development
+                        and machine/deep learning project experience. A Certified Kubernetes
+                        Administrator with basic GCP exposure, comfortable with Git and Docker
+                        on Linux, I'm seeking an entry level software engineering or DevOps role
+                        where I can grow and ship reliable code.
+                    </p>
+                </section>
+            </motion.section>
+
+            {/* Education Section */}
+            <motion.section
+                id="education"
+                className="h-screen flex flex-col justify-center items-center"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.4 }}
+                variants={sectionVariants}
+                transition={{ duration: 0.8, delay: 0.2 }}
+            >
+                <section className="card p-8 border-0 max-w-4xl">
+                    <h2 className="text-2xl font-bold mb-4 text-center">
+                        Education
+                    </h2>
+                    <hr className="border-t border-gray-300 dark:border-gray-600 my-4" />
+                    <div className="grid md:grid-cols-2 gap-8">
+                        <div className="text-center">
+                            <p className="text-lg leading-relaxed mb-4">
+                                School: University of Alabama at Birmingham
+                            </p>
+                            <ol className="list-decimal list-inside space-y-2">
                                 <li>Masters of Science in Computer Science</li>
                                 <li>Bachelors of Science in Computer Science</li>
                             </ol>
                         </div>
+                        <div className="text-center">
+                            <p className="text-lg leading-relaxed mb-4">Courses Taken:</p>
+                            <ul className="grid grid-cols-2 grid-rows-3 gap-6 list-none place-items-center">
+                                <li>Machine Learning</li>
+                                <li>Deep Learning</li>
+                                <li>Computer Vision</li>
+                                <li>Foundations of Data Science</li>
+                                <li>Database Systems</li>
+                                <li>Advanced Algorithms and Data Structures</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div>
-                        <p className="text-lg leading-relaxed mb-4 flex justify-center">
-                            Placeholder
-                        </p>
-                    </div>
-                </div>
-            </div>
+                </section>
+            </motion.section>
 
-            {/* ---------- Certifications ---------- */}
-            <section className="card p-6 md:p-8 border-0">
-                <h2 className="text-2xl font-bold mb-6 dark:text-dark-text flex justify-center">Certifications</h2>
-
-                <div className="flex justify-center">
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-15">
+            {/* Certifications Section */}
+            <motion.section
+                id="certs"
+                className="h-screen flex flex-col justify-center items-center"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.4 }}
+                variants={sectionVariants}
+                transition={{ duration: 0.8, delay: 0.4 }}
+            >
+                <section className="card p-8 border-0 max-w-5xl">
+                    <h2 className="text-2xl font-bold mb-6 text-center dark:text-dark-text">
+                        Certifications
+                    </h2>
+                    <hr className="border-t border-gray-300 dark:border-gray-600 my-4" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                         {slots.map((cert, idx) =>
                             cert ? (
-                                <li
+                                <a
                                     key={idx}
-                                    className="bg-white dark:bg-dark-card rounded-lg shadow p-4 w-[200px] h-[200px]"
+                                    href={cert.file}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-white dark:bg-dark-card rounded-lg shadow p-6 w-56 h-56 flex flex-col items-center justify-center transition-transform hover:scale-105"
                                 >
-                                    {/* <li key={idx} className="bg-blue-300 dark:bg-dark-card rounded-lg shadow p-4 w-[200px] h-[200px]"> */}
-                                    <a
-                                        href={cert.file}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="block"
-                                    >
-                                        <figure className="flex flex-col items-center">
-                                            <Image
-                                                src={cert.image}
-                                                alt={cert.name}
-                                                width={120}
-                                                height={120}
-                                                className="object-contain mb-2"
-                                            />
-                                            <figcaption className="text-center font-medium text-gray-800 dark:text-dark-text">
-                                                {cert.name}
-                                            </figcaption>
-                                        </figure>
-                                    </a>
-                                </li>
-                                // </li>
+                                    <Image
+                                        src={cert.image}
+                                        alt={cert.name}
+                                        width={80}
+                                        height={80}
+                                        className="object-contain mb-4"
+                                    />
+                                    <span className="text-center font-medium text-gray-800 dark:text-dark-text">
+                                        {cert.name}
+                                    </span>
+                                </a>
                             ) : (
-                                <li
+                                <div
                                     key={idx}
-                                    className="bg-gray-100 dark:bg-gray-700 rounded-lg shadow p-4 w-[200px] h-[200px] flex flex-col items-center justify-center"
+                                    className="bg-gray-100 dark:bg-gray-700 rounded-lg shadow p-6 w-56 h-56 flex flex-col items-center justify-center"
                                 >
-                                    <div className="w-24 h-24 bg-gray-300 dark:bg-gray-600 rounded mb-2" />
+                                    <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded mb-2" />
                                     <span className="text-sm text-gray-500 dark:text-gray-400">
                                         Coming Soon
                                     </span>
-                                </li>
+                                </div>
                             )
                         )}
-                    </ul>
-                </div>
-            </section>
+                    </div>
+                </section>
+            </motion.section>
 
-            {/* ---------- Résumé Download ---------- */}
-            {/* ... */}
-        </section >
+            {/* Resume Section */}
+            <motion.section
+                id="resume"
+                className="h-screen flex flex-col justify-center items-center"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.4 }}
+                variants={sectionVariants}
+                transition={{ duration: 0.8, delay: 0.6 }}
+            >
+                <section className="card p-6 md:p-8 text-center max-w-md">
+                    <h2 className="text-2xl font-bold mb-4 dark:text-dark-text">
+                        My Resume
+                    </h2>
+                    <a
+                        href="/resume/Resume_Vaishak-Menon.pdf"
+                        download
+                        className="inline-block transition-transform hover:scale-105"
+                    >
+                        <Image
+                            src="/resume/resume_preview.png"
+                            alt="Resume Preview"
+                            width={300}
+                            height={400}
+                            className="rounded-lg shadow-lg"
+                        />
+                    </a>
+                </section>
+            </motion.section>
+        </div>
     );
 }
-
-//             {/* Resume Download Section */}
-//             <section className="card p-6 md:p-8 text-center">
-//                 <h2 className="text-2xl font-bold mb-4 dark:text-dark-text">My Résumé</h2>
-//                 <p className="mb-6 dark:text-dark-text">Download my résumé to learn more about my professional experience and skills.</p>
-//                 <a
-//                     href="/Resume.pdf"
-//                     download
-//                     className="inline-block bg-primary hover:bg-secondary text-white font-bold py-3 px-6 rounded-lg transition-colors"
-//                 >
-//                     Download Résumé (PDF)
-//                 </a>
-//             </section>
-
-{/* <p className="text-lg dark:text-dark-text">
-    Feel free to reach out to me at{' '}
-    <a href="mailto:vaishakkmenon@gmail.com" className="font-medium">
-        vaishakkmenon@gmail.com
-    </a>
-</p> */}

@@ -91,18 +91,6 @@ export function Sidebar() {
                         >
                             Home
                         </a>
-                        <a
-                            href="/about"
-                            className="flex items-center gap-2 p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                        >
-                            About
-                        </a>
-                        <a
-                            href="/contact"
-                            className="flex items-center gap-2 p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                        >
-                            Contact
-                        </a>
                     </DrawerItems>
                 </div>
             </Drawer>
