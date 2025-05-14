@@ -81,7 +81,7 @@ export default function Home() {
             {/* Education Section */}
             <motion.section
                 id="education"
-                className="h-screen flex flex-col justify-center items-center"
+                className="h-screen flex flex-col justify-center items-center bg-white dark:bg-gray-900"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }}
@@ -121,7 +121,7 @@ export default function Home() {
             {/* Certifications Section */}
             <motion.section
                 id="certs"
-                className="h-screen flex flex-col justify-center items-center"
+                className="h-screen flex flex-col justify-center items-center bg-white dark:bg-gray-900"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }}
