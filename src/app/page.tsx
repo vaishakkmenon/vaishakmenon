@@ -133,7 +133,7 @@ export default function Home() {
                         Certifications
                     </h2>
                     <hr className="border-t border-gray-300 dark:border-gray-600 my-4" />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-h-[80vh] overflow-y-auto">
                         {slots.map((cert, idx) =>
                             cert ? (
                                 <a
