@@ -11,6 +11,7 @@ module.exports = {
     "node_modules/flowbite/**/*.{js,jsx,ts,tsx}",
     "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
   ],
+  safelist: ["bg-white"],
   theme: { extend: {} },
   plugins: [require("flowbite/plugin"), require("flowbite-react/plugin")],
 };
