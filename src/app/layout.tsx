@@ -2,8 +2,8 @@
 // app/layout.tsx
 import 'flowbite';
 import 'flowbite-react';
-import "@/styles/layout.css";
 import "@/styles/globals.css";
+import "@/styles/layout.css";
 
 import { Metadata } from 'next';
 import { Header } from "./header";
