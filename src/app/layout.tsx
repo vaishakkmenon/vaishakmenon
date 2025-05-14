@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 
 export default function Root({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className="h-full">
+    <html lang="en" suppressHydrationWarning className="h-full text-lg">
       <body suppressHydrationWarning className={`${inter.className} flex flex-col h-full overflow-hidden`}>
         <ThemeProvider
           attribute="class"
@@ -41,11 +41,6 @@ export default function Root({ children }: { children: React.ReactNode }) {
           <main className="site-main flex-grow px-4 py-6">
             {children}
           </main>
-
-          {/* ---------- Footer ---------- */}
-          <footer className="site-footer px-4 py-3 text-center">
-            © {new Date().getFullYear()} Vaishak Menon. All rights reserved.
-          </footer>
         </ThemeProvider>
       </body>
     </html>

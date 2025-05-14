@@ -69,10 +69,10 @@ export default function Home() {
                     </h2>
                     <hr className="border-t border-gray-300 dark:border-gray-600 my-4" />
                     <p className="text-lg leading-relaxed">
-                        Hi! I'm a recent computer science graduate with Python development
+                        Hi! I&apos;m a recent computer science graduate with Python development
                         and machine/deep learning project experience. A Certified Kubernetes
                         Administrator with basic GCP exposure, comfortable with Git and Docker
-                        on Linux, I'm seeking an entry level software engineering or DevOps role
+                        on Linux, I&apos;m seeking an entry level software engineering or DevOps role
                         where I can grow and ship reliable code.
                     </p>
                 </section>
@@ -199,6 +199,11 @@ export default function Home() {
                     </a>
                 </section>
             </motion.section>
+            <section id="footer" className="flex justify-center items-center py-8">
+                <footer className="text-center">
+                    © {new Date().getFullYear()} Vaishak Menon. All rights reserved.
+                </footer>
+            </section>
         </div>
     );
 }

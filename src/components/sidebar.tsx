@@ -1,8 +1,9 @@
 // components/sidebar.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 import { Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
 
 export function Sidebar() {
@@ -85,12 +86,9 @@ export function Sidebar() {
                         className="border-b border-gray-700 text-white"
                     />
                     <DrawerItems className="pt-4">
-                        <a
-                            href="/"
-                            className="flex items-center gap-2 p-2 text-white hover:bg-gray-800"
-                        >
+                        <Link href="/" className="flex items-center gap-2 p-2 text-white hover:bg-gray-800">
                             Home
-                        </a>
+                        </Link>
                     </DrawerItems>
                 </div>
             </Drawer>

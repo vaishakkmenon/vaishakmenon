@@ -1,8 +1,4 @@
 /* layout.css*/
-@import "tailwindcss";
-@plugin "flowbite-react/plugin/tailwindcss";
-@source "../../.flowbite-react/class-list.json";
-
 .site-header {
   @apply flex items-center bg-white px-4 py-3;
 }

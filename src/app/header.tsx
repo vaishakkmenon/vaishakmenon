@@ -45,11 +45,11 @@ export function Header() {
                 <Sidebar />
             </div>
             <div className="flex items-center space-x-2">
-                <Link href="/" className="site-title font-bold text-lg">
+                <Link href="/" className="site-title font-bold text-2xl">
                     Vaishak Menon
                 </Link>
                 {/* LinkedIn */}
-                <Link href="https://linkedin.com/in/your-profile" target="_blank">
+                <Link href="https://linkedin.com/in/vaishakkmenon" target="_blank">
                     <ThemeIcon
                         lightSvg="/linkedin-white.png"
                         darkSvg="/linkedin.png"
@@ -60,7 +60,7 @@ export function Header() {
                 </Link>
 
                 {/* GitHub */}
-                <Link href="https://github.com/your-username" target="_blank">
+                <Link href="https://github.com/vaishakkmenon" target="_blank">
                     <ThemeIcon
                         lightSvg="/github-white.svg"
                         darkSvg="/github.svg"
