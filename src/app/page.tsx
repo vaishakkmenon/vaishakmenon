@@ -31,7 +31,7 @@ export default function Home() {
             style={{ overscrollBehavior: 'contain' }}
         >
             {/* Hero Section */}
-            <section className="h-screen flex flex-col justify-center items-center text-center snap-start bg-hero font-headline">
+            <section className="h-[100svh] flex flex-col justify-center items-center text-center snap-start bg-hero font-headline">
                 <h1 className="text-6xl md:text-8xl font-extrabold mb-4">
                     Vaishak Menon
                 </h1>
@@ -56,7 +56,7 @@ export default function Home() {
             {/* About Me Section */}
             <motion.section
                 id="about"
-                className="h-screen flex flex-col justify-center items-center snap-start"
+                className="h-[100svh] flex flex-col justify-center items-center snap-start"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }}
@@ -81,7 +81,7 @@ export default function Home() {
             {/* Education Section */}
             <motion.section
                 id="education"
-                className="h-screen flex flex-col justify-center items-center snap-start bg-white dark:bg-gray-900"
+                className="h-[100svh] flex flex-col justify-center items-center snap-start bg-white dark:bg-gray-900"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }}
@@ -121,7 +121,7 @@ export default function Home() {
             {/* Certifications Section */}
             <motion.section
                 id="certs"
-                className="h-screen flex flex-col justify-center items-center snap-start bg-white dark:bg-gray-900"
+                className="h-[100svh] flex flex-col justify-center items-center snap-start bg-white dark:bg-gray-900"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }}
@@ -173,7 +173,7 @@ export default function Home() {
             {/* Resume Section */}
             <motion.section
                 id="resume"
-                className="h-screen flex flex-col justify-center items-center snap-start"
+                className="h-[100svh] flex flex-col justify-center items-center snap-start"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }}
