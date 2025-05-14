@@ -7,10 +7,15 @@ import { useState, useEffect } from 'react';
 interface ThemeIconProps extends Omit<ImageProps, 'src'> {
     lightSvg: string;
     darkSvg: string;
+    alt: string;
 }
 
-export function ThemeIcon({ lightSvg, darkSvg, ...imgProps }: ThemeIconProps) {
-    // 1) Always call hooks in the same order:
+export function ThemeIcon({
+    lightSvg,
+    darkSvg,
+    alt,
+    ...imgProps
+}: ThemeIconProps) {
     const { theme, systemTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
@@ -18,9 +23,6 @@ export function ThemeIcon({ lightSvg, darkSvg, ...imgProps }: ThemeIconProps) {
         setMounted(true);
     }, []);
 
-    // 2) Decide which src to use
-    //    Before mount: stick to lightSvg so SSR + first client render match
-    //    After mount: pick based on actual theme
     const current = theme === 'system' ? systemTheme : theme;
     const src = !mounted
         ? lightSvg
@@ -28,5 +30,11 @@ export function ThemeIcon({ lightSvg, darkSvg, ...imgProps }: ThemeIconProps) {
             ? lightSvg
             : darkSvg;
 
-    return <Image src={src} {...imgProps} />;
+    return (
+        <Image
+            src={src}
+            alt={alt}
+            {...imgProps}
+        />
+    );
 }
