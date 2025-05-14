@@ -27,7 +27,7 @@ export default function Home() {
     return (
         <div
             id="scroll-container"
-            className="snap-container fixed inset-0 w-screen overflow-y-scroll"
+            className="fixed inset-0 w-screen overflow-y-scroll snap-y snap-mandatory"
             style={{ overscrollBehavior: 'contain' }}
         >
             {/* Hero Section */}
@@ -56,7 +56,7 @@ export default function Home() {
             {/* About Me Section */}
             <motion.section
                 id="about"
-                className="h-screen flex flex-col justify-center items-center"
+                className="h-screen flex flex-col justify-center items-center snap-start"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }}
@@ -81,7 +81,7 @@ export default function Home() {
             {/* Education Section */}
             <motion.section
                 id="education"
-                className="h-screen flex flex-col justify-center items-center bg-white dark:bg-gray-900"
+                className="h-screen flex flex-col justify-center items-center snap-start bg-white dark:bg-gray-900"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }}
@@ -121,7 +121,7 @@ export default function Home() {
             {/* Certifications Section */}
             <motion.section
                 id="certs"
-                className="h-screen flex flex-col justify-center items-center bg-white dark:bg-gray-900"
+                className="h-screen flex flex-col justify-center items-center snap-start bg-white dark:bg-gray-900"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }}
@@ -173,7 +173,7 @@ export default function Home() {
             {/* Resume Section */}
             <motion.section
                 id="resume"
-                className="h-screen flex flex-col justify-center items-center"
+                className="h-screen flex flex-col justify-center items-center snap-start"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }}
