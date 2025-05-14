@@ -31,7 +31,7 @@ export default function Home() {
             style={{ overscrollBehavior: 'contain' }}
         >
             {/* Hero Section */}
-            <section className="h-screen flex flex-col justify-center items-center bg-hero font-headline">
+            <section className="h-screen flex flex-col justify-center items-center text-center bg-hero font-headline">
                 <h1 className="text-6xl md:text-8xl font-extrabold mb-4">
                     Vaishak Menon
                 </h1>
