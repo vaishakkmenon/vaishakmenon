@@ -190,7 +190,7 @@ export default function Home() {
                         My Resume
                     </h2>
                     <a
-                        href="/resume/Resume-Vaishak-Menon.pdf"
+                        href="\resume\Resume-Vaishak_Menon.pdf"
                         download
                         className="inline-block transition-transform hover:scale-105"
                     >
