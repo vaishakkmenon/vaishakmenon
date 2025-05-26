@@ -11,6 +11,11 @@ export default function Home() {
             file: '/certs/CKA_Cert.pdf',
             image: '/kubernetes-cka.svg',
         },
+        {
+            name: 'AWS Certified Cloud Practitioner',
+            file: '/certs/AWS-CCP-Cert.pdf',
+            image: '/aws-ccp.png',
+        },
     ];
 
     const slots = [
