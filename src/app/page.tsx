@@ -146,13 +146,13 @@ export default function Home() {
                                     href={cert.file}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-white dark:bg-dark-card rounded-lg shadow p-6 w-56 h-56 flex flex-col items-center justify-center transition-transform hover:scale-105"
+                                    className="bg-white dark:bg-dark-card rounded-lg shadow p-4 w-56 h-56 flex flex-col items-center justify-center transition-transform hover:scale-96"
                                 >
                                     <Image
                                         src={cert.image}
                                         alt={cert.name}
-                                        width={80}
-                                        height={80}
+                                        width={56}
+                                        height={56}
                                         className="object-contain mb-4"
                                     />
                                     <span className="text-center font-medium text-gray-800 dark:text-dark-text">
