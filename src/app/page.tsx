@@ -16,6 +16,11 @@ export default function Home() {
             file: '/certs/AWS-CCP-Cert.pdf',
             image: '/aws-ccp.png',
         },
+        {
+            name: 'AWS Certified AI Practitioner',
+            file: '/certs/AWS-CAP-Cert.pdf',
+            image: '/aws-cap.png',
+        },
     ];
 
     const slots = [
@@ -151,8 +156,8 @@ export default function Home() {
                                     <Image
                                         src={cert.image}
                                         alt={cert.name}
-                                        width={56}
-                                        height={56}
+                                        width={100}
+                                        height={100}
                                         className="object-contain mb-4"
                                     />
                                     <span className="text-center font-medium text-gray-800 dark:text-dark-text">
