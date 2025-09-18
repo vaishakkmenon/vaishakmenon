@@ -64,20 +64,27 @@ a:hover {
   }
 }
 
+/* ---------- Neutral ambient edge/corner glow (grayscale) ---------- */
 
-/* ---------- Plain bg-shell (neutral baseline) ---------- */
-
-/* Simple variables you can tune */
+/* tuning vars — change alphas/sizes below to taste */
 :root {
   --bg-fallback: Canvas;
+  --ambient-corner-alpha: 0.06;
+  /* corner wash strength (white-ish) */
+  --ambient-edge-alpha: 0.03;
+  /* side/edge wrap */
   --vignette-alpha: 0.04;
+  /* bottom vignette to add depth */
+  --ambient-large: 60vmax;
+  /* size for corner washes */
+  --ambient-med: 40vmax;
+  /* medium size */
   --spot-opacity: 0.90;
-  /* increased from 0.75 -> brighter overall */
   --mx: 50%;
   --my: 30%;
 }
 
-/* bg-shell sits behind spotlight now (z-index -2) */
+/* Neutral, soft ambient glow (no color) */
 .bg-shell {
   position: fixed;
   inset: 0;
@@ -85,12 +92,45 @@ a:hover {
   z-index: -2;
 
   background:
+    /* subtle soft white-ish corner washes (creates 'lit' edges without color) */
+    radial-gradient(var(--ambient-large) var(--ambient-med) at 6% 8%,
+      rgba(255, 255, 255, var(--ambient-corner-alpha)), transparent 35%),
+    radial-gradient(var(--ambient-large) var(--ambient-med) at 94% 8%,
+      rgba(255, 255, 255, var(--ambient-corner-alpha)), transparent 35%),
+    radial-gradient(var(--ambient-large) var(--ambient-med) at 6% 92%,
+      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.8)), transparent 35%),
+    radial-gradient(var(--ambient-large) var(--ambient-med) at 94% 92%,
+      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.8)), transparent 35%),
+
+    /* faint side bands to wrap edges */
+    radial-gradient(36vmax 26vmax at 2% 50%, rgba(255, 255, 255, var(--ambient-edge-alpha)), transparent 40%),
+    radial-gradient(36vmax 26vmax at 98% 50%, rgba(255, 255, 255, var(--ambient-edge-alpha)), transparent 40%),
+
+    /* soft central wash so the hero doesn't sit on pure black */
+    radial-gradient(70vmax 44vmax at 50% 45%, rgba(255, 255, 255, 0.02), transparent 45%),
+
+    /* subtle bottom vignette (keeps text readable by darkening lower edge) */
     radial-gradient(1200px 600px at 50% 120%, rgba(0, 0, 0, var(--vignette-alpha)), transparent 40%),
+
+    /* fallback */
     var(--bg-fallback);
   background-repeat: no-repeat;
   background-attachment: scroll;
+  /* safe on mobile */
   will-change: opacity;
   overflow: visible;
+}
+
+/* Dark mode: reduce white intensity and keep subtle vignette so contrast stays good */
+html.dark .bg-shell {
+  background:
+    radial-gradient(var(--ambient-large) var(--ambient-med) at 6% 8%,
+      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.45)), transparent 35%),
+    radial-gradient(var(--ambient-large) var(--ambient-med) at 94% 8%,
+      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.45)), transparent 35%),
+    radial-gradient(70vmax 44vmax at 50% 45%, rgba(255, 255, 255, 0.01), transparent 45%),
+    radial-gradient(1200px 600px at 50% 120%, rgba(0, 0, 0, 0.06), transparent 40%),
+    var(--bg-fallback);
 }
 
 /* spotlight sits above the shell (z-index -1) but below the page (which is z:auto/0) */
