@@ -38,7 +38,7 @@ export default function Home() {
             <motion.section id="about" className="py-24 md:py-32" initial="hidden" whileInView="visible"
                 viewport={{ once: true, amount: 0.25 }} variants={sectionVariants} transition={{ duration: 0.6 }}>
                 <div className="mx-auto max-w-3xl px-4">
-                    <h2 className="text-2xl font-bold">About Me</h2>
+                    <h2 className="text-2xl text-center font-bold">About Me</h2>
                     <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
                     <p className="leading-relaxed text-lg">
                         Recent Computer Science graduate with a versatile foundation spanning Python development,
