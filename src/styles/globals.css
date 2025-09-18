@@ -79,7 +79,7 @@ a:hover {
   /* size for corner washes */
   --ambient-med: 40vmax;
   /* medium size */
-  --spot-opacity: 0.90;
+  --spot-opacity: 0.9;
   --mx: 50%;
   --my: 30%;
   --spot-size: 600px;
@@ -94,28 +94,50 @@ a:hover {
   z-index: -2;
 
   background:
-    /* subtle soft white-ish corner washes (creates 'lit' edges without color) */
-    radial-gradient(var(--ambient-large) var(--ambient-med) at 6% 8%,
-      rgba(255, 255, 255, var(--ambient-corner-alpha)), transparent 35%),
-    radial-gradient(var(--ambient-large) var(--ambient-med) at 94% 8%,
-      rgba(255, 255, 255, var(--ambient-corner-alpha)), transparent 35%),
-    radial-gradient(var(--ambient-large) var(--ambient-med) at 6% 92%,
-      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.8)), transparent 35%),
-    radial-gradient(var(--ambient-large) var(--ambient-med) at 94% 92%,
-      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.8)), transparent 35%),
-
+    /* subtle soft white-ish corner washes (creates 'lit' edges without color) */ radial-gradient(
+      var(--ambient-large) var(--ambient-med) at 6% 8%,
+      rgba(255, 255, 255, var(--ambient-corner-alpha)),
+      transparent 35%
+    ),
+    radial-gradient(
+      var(--ambient-large) var(--ambient-med) at 94% 8%,
+      rgba(255, 255, 255, var(--ambient-corner-alpha)),
+      transparent 35%
+    ),
+    radial-gradient(
+      var(--ambient-large) var(--ambient-med) at 6% 92%,
+      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.8)),
+      transparent 35%
+    ),
+    radial-gradient(
+      var(--ambient-large) var(--ambient-med) at 94% 92%,
+      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.8)),
+      transparent 35%
+    ),
     /* faint side bands to wrap edges */
-    radial-gradient(36vmax 26vmax at 2% 50%, rgba(255, 255, 255, var(--ambient-edge-alpha)), transparent 40%),
-    radial-gradient(36vmax 26vmax at 98% 50%, rgba(255, 255, 255, var(--ambient-edge-alpha)), transparent 40%),
-
+      radial-gradient(
+        36vmax 26vmax at 2% 50%,
+        rgba(255, 255, 255, var(--ambient-edge-alpha)),
+        transparent 40%
+      ),
+    radial-gradient(
+      36vmax 26vmax at 98% 50%,
+      rgba(255, 255, 255, var(--ambient-edge-alpha)),
+      transparent 40%
+    ),
     /* soft central wash so the hero doesn't sit on pure black */
-    radial-gradient(70vmax 44vmax at 50% 45%, rgba(255, 255, 255, 0.02), transparent 45%),
-
+      radial-gradient(
+        70vmax 44vmax at 50% 45%,
+        rgba(255, 255, 255, 0.02),
+        transparent 45%
+      ),
     /* subtle bottom vignette (keeps text readable by darkening lower edge) */
-    radial-gradient(1200px 600px at 50% 120%, rgba(0, 0, 0, var(--vignette-alpha)), transparent 40%),
-
-    /* fallback */
-    var(--bg-fallback);
+      radial-gradient(
+        1200px 600px at 50% 120%,
+        rgba(0, 0, 0, var(--vignette-alpha)),
+        transparent 40%
+      ),
+    /* fallback */ var(--bg-fallback);
   background-repeat: no-repeat;
   background-attachment: scroll;
   /* safe on mobile */
@@ -125,13 +147,26 @@ a:hover {
 
 /* Dark mode: reduce white intensity and keep subtle vignette so contrast stays good */
 html.dark .bg-shell {
-  background:
-    radial-gradient(var(--ambient-large) var(--ambient-med) at 6% 8%,
-      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.45)), transparent 35%),
-    radial-gradient(var(--ambient-large) var(--ambient-med) at 94% 8%,
-      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.45)), transparent 35%),
-    radial-gradient(70vmax 44vmax at 50% 45%, rgba(255, 255, 255, 0.01), transparent 45%),
-    radial-gradient(1200px 600px at 50% 120%, rgba(0, 0, 0, 0.06), transparent 40%),
+  background: radial-gradient(
+      var(--ambient-large) var(--ambient-med) at 6% 8%,
+      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.45)),
+      transparent 35%
+    ),
+    radial-gradient(
+      var(--ambient-large) var(--ambient-med) at 94% 8%,
+      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.45)),
+      transparent 35%
+    ),
+    radial-gradient(
+      70vmax 44vmax at 50% 45%,
+      rgba(255, 255, 255, 0.01),
+      transparent 45%
+    ),
+    radial-gradient(
+      1200px 600px at 50% 120%,
+      rgba(0, 0, 0, 0.06),
+      transparent 40%
+    ),
     var(--bg-fallback);
 }
 
@@ -146,20 +181,22 @@ html.dark .bg-shell {
 
   /* compensate blur growth by using a slightly smaller radius (480px instead of 520px) */
   filter: blur(var(--spot-blur));
-  background:
-    radial-gradient(480px 480px at var(--mx, 50%) var(--my, 30%),
-      rgba(255, 255, 255, 0.20),
-      rgba(255, 255, 255, 0) 60%);
+  background: radial-gradient(
+    480px 480px at var(--mx, 50%) var(--my, 30%),
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0) 60%
+  );
   background-repeat: no-repeat;
 }
 
 html.dark .spotlight {
   opacity: calc(var(--spot-opacity) * 0.6);
   filter: blur(var(--spot-blur));
-  background:
-    radial-gradient(480px 480px at var(--mx, 50%) var(--my, 30%),
-      rgba(255, 255, 255, 0.14),
-      rgba(255, 255, 255, 0) 60%);
+  background: radial-gradient(
+    480px 480px at var(--mx, 50%) var(--my, 30%),
+    rgba(255, 255, 255, 0.14),
+    rgba(255, 255, 255, 0) 60%
+  );
   background-repeat: no-repeat;
 }
 
