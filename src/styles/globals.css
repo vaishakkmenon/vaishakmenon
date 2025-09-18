@@ -1,71 +1,77 @@
+/* Tailwind (v4 style import) */
 @import "tailwindcss";
-@import "flowbite";
 
-/* Global transitions */
-* {
-  transition-property: color, background-color, border-color;
+/* ---------- Base resets ---------- */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  /* IMPORTANT: allow natural page height & scrolling (no height:100% lock) */
+  overflow-y: auto;
+}
+
+/* Typography + theme-safe backgrounds */
+body {
+  /* Neutral light theme */
+  @apply bg-white text-black antialiased;
+}
+
+html.dark body {
+  /* Neutral dark theme */
+  @apply bg-gray-950 text-gray-100;
+}
+
+/* Make media elements behave nicely by default */
+img,
+svg,
+video,
+canvas,
+audio,
+iframe {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Links */
+a {
+  @apply underline-offset-4 decoration-transparent transition;
+}
+
+a:hover {
+  @apply decoration-current;
+}
+
+/* ---------- Scoped transitions (lighter than * { transition }) ---------- */
+:where(a, button, [role="button"], input, select, textarea, summary, details, .card, .nav-link, [data-animate]) {
+  transition-property: color, background-color, border-color, box-shadow, transform;
   transition-duration: 200ms;
   transition-timing-function: ease-in-out;
 }
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden; /* only the inner container will scroll */
-}
-body {
-  @apply bg-white text-black;
+/* Focus styles (keyboard accessibility) */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
-/* Dark mode overrides when <html class="dark"> */
-html.dark body {
-  @apply bg-gray-900 text-gray-100;
+/* ---------- Motion preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-/* Input fields */
-.inputField {
-  @apply bg-gray-100 text-black border-gray-300;
-}
-html.dark .inputField {
-  @apply bg-gray-800 text-gray-200 border-gray-600;
-}
-
-/* Buttons */
-.button {
-  @apply bg-blue-500 text-black;
-}
-html.dark .button {
-  @apply bg-blue-400 text-gray-900;
-}
-
-/* globals.css (make sure this is actually imported!) */
-
-/* 1) Target your scroll container *and* its pseudo-elements */
-.snap-container,
-.snap-container::-webkit-scrollbar,
-.snap-container::-webkit-scrollbar-track,
-.snap-container::-webkit-scrollbar-thumb {
-  /* force everything transparent/non-bordered */
-  background: transparent !important;
-  border: none !important;
-}
-
-/* 2) Thumb styling */
-.snap-container::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.4) !important;
-  border-radius: 9999px !important;
-}
-
-/* 3) Thickness */
-.snap-container::-webkit-scrollbar {
-  width: 16px !important;
-  height: 16px !important;
-}
-
-/* 4) Firefox fallback */
+/* ---------- Legacy safety overrides (harmless, prevents old layout from hijacking scroll) ---------- */
+#scroll-container,
 .snap-container {
-  scrollbar-width: thin !important;
-  scrollbar-color: rgba(255, 255, 255, 0.4) transparent !important;
+  position: static !important;
+  inset: auto !important;
+  width: auto !important;
+  height: auto !important;
+  overflow: visible !important;
 }

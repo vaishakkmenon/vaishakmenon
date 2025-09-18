@@ -1,42 +1,16 @@
 /* layout.css*/
-.site-header {
-  @apply flex items-center bg-white px-4 py-3;
-}
-html.dark .site-header {
-  @apply bg-gray-800;
-}
-
-.site-title {
-  @apply ml-4 text-2xl md:text-3xl font-bold text-black;
-}
-html.dark .site-title {
-  @apply text-gray-100;
-}
-
 .site-main {
   @apply container mx-auto px-4 py-8 bg-white text-black;
 }
+
 html.dark .site-main {
   @apply bg-gray-900 text-gray-200;
-}
-
-.site-footer {
-  @apply bg-white mt-8 text-center text-black;
-}
-html.dark .site-footer {
-  @apply bg-gray-800 text-gray-400;
-}
-
-.site-footer > div {
-  @apply container mx-auto px-4 py-6 text-center text-gray-600 text-sm;
-}
-html.dark .site-footer > div {
-  @apply text-gray-500;
 }
 
 .card {
   @apply bg-white rounded-lg border-0 text-black;
 }
+
 html.dark .card {
   @apply bg-inherit text-gray-100;
 }
