@@ -49,24 +49,6 @@ export default function Home() {
                 </div>
             </motion.section>
 
-            {/* SKILLS */}
-            <motion.section id="skills" className="py-24 md:py-32" initial="hidden" whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }} variants={sectionVariants} transition={{ duration: 0.6, delay: 0.05 }}>
-                <div className="mx-auto max-w-4xl px-4">
-                    <h2 className="text-2xl font-bold text-center">Skills</h2>
-                    <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
-                    <ul className="space-y-3 text-lg">
-                        <li><strong>Programming &amp; Development:</strong> Python; Java; C; OOP; APIs</li>
-                        <li><strong>ML / Data Science:</strong> Machine Learning; Deep Learning; PyTorch; Scikit-Learn; Pandas; NumPy; Jupyter</li>
-                        <li><strong>DevOps &amp; Cloud:</strong> Kubernetes (CKA); Docker; Git; Linux; CI/CD; GCP; AWS</li>
-                        <li><strong>Collaboration &amp; Tools:</strong> Agile/Scrum</li>
-                    </ul>
-                    <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-                        Keywords: Entry-Level Software Engineer; Junior DevOps Engineer; Cloud Engineer
-                    </p>
-                </div>
-            </motion.section>
-
             {/* EDUCATION */}
             <motion.section id="education" className="py-24 md:py-32" initial="hidden" whileInView="visible"
                 viewport={{ once: true, amount: 0.25 }} variants={sectionVariants} transition={{ duration: 0.6, delay: 0.05 }}>
