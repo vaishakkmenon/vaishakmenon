@@ -64,60 +64,74 @@ a:hover {
   }
 }
 
-/* ---------- Plain background shell ---------- */
-/* A single fixed element behind content to hold background layers.
-   Keep this simple — Canvas (system color) fallback used last.
-*/
+
+/* ===== Whole-page ambient glow (corner + edge + center) ===== */
+
+/* STRONGER ambient glow — paste into globals.css to replace/override your current bg-shell block */
+:root {
+  --glow-a: rgba(56, 189, 248, 0.14);
+  /* sky stronger */
+  --glow-b: rgba(16, 185, 129, 0.12);
+  /* emerald stronger */
+  --glow-c: rgba(236, 72, 153, 0.10);
+  /* optional warm accent */
+  --vmax-large: 90vmax;
+  --vmax-med: 60vmax;
+  --vmax-small: 40vmax;
+}
+
+/* Larger, higher-alpha continuous glow */
 .bg-shell {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  background: Canvas;
-  /* optionally add a very soft radial vignette */
-  background-image: radial-gradient(800px 400px at 50% -10%, rgba(0, 0, 0, 0.02), transparent 50%);
+
+  background:
+    /* strong rim corners */
+    radial-gradient(var(--vmax-large) var(--vmax-med) at 8% 10%, var(--glow-a), transparent 30%),
+    radial-gradient(var(--vmax-large) var(--vmax-med) at 92% 10%, var(--glow-b), transparent 30%),
+    radial-gradient(var(--vmax-med) var(--vmax-small) at 8% 92%, var(--glow-a), transparent 30%),
+    radial-gradient(var(--vmax-med) var(--vmax-small) at 92% 92%, var(--glow-b), transparent 30%),
+
+    /* soft edge bands to wrap sides and top/bottom */
+    radial-gradient(50vmax 30vmax at 2% 50%, rgba(56, 189, 248, 0.06), transparent 35%),
+    radial-gradient(50vmax 30vmax at 98% 50%, rgba(16, 185, 129, 0.06), transparent 35%),
+    radial-gradient(60vmax 20vmax at 50% 2%, rgba(56, 189, 248, 0.04), transparent 35%),
+    radial-gradient(60vmax 20vmax at 50% 98%, rgba(16, 185, 129, 0.04), transparent 35%),
+
+    /* stronger center wash so you actually see color behind hero */
+    radial-gradient(60vmax 40vmax at 50% 45%, rgba(56, 189, 248, 0.06), transparent 45%),
+
+    /* subtle vignette for depth */
+    radial-gradient(1200px 600px at 50% 120%, rgba(0, 0, 0, 0.06), transparent 40%),
+
+    /* optional noise or fallback */
+    Canvas;
+
+  background-blend-mode: screen, normal, normal, normal;
   background-repeat: no-repeat;
-  background-attachment: scroll;
-  /* safe on mobile */
+  background-attachment: fixed;
+  will-change: opacity;
+  overflow: visible;
 }
 
-/* ---------- Spotlight overlay (cool effect) ----------
-   Usage:
-   - Keep this CSS. To enable the spotlight, render a small client component
-     that updates CSS vars --mx and --my on document.documentElement when the
-     mouse moves (or sets default values on mount).
-   - Example Spotlight client component sets:
-       document.documentElement.style.setProperty('--mx', e.clientX + 'px');
-       document.documentElement.style.setProperty('--my', e.clientY + 'px');
-   - The overlay uses mix-blend for a subtle lightening effect.
-   - The overlay is intentionally low-opacity and respects reduced-motion.
-*/
-.spotlight {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  mix-blend-mode: overlay;
-  opacity: 0.35;
-  transition: opacity 300ms ease;
-  /* radial centered on CSS variables --mx and --my set by JS */
-  background: radial-gradient(420px 420px at var(--mx, 50%) var(--my, 20%),
-      rgba(255, 255, 255, 0.08),
-      rgba(255, 255, 255, 0) 55%);
-}
-
-/* darker theme tweak: softer spotlight */
-html.dark .spotlight {
-  opacity: 0.20;
-  background: radial-gradient(420px 420px at var(--mx, 50%) var(--my, 20%),
-      rgba(255, 255, 255, 0.06),
-      rgba(255, 255, 255, 0) 55%);
-}
-
-/* Respect reduced motion: make spotlight static (no transitions) */
-@media (prefers-reduced-motion: reduce) {
-  .spotlight {
-    transition: none;
-    opacity: 0.25;
+/* keep mobile safe */
+@media (pointer: coarse) {
+  .bg-shell {
+    background-attachment: scroll;
   }
+}
+
+/* Dark-mode tweak: lower some alphas to keep contrast */
+html.dark .bg-shell {
+  /* reduce overall intensity in dark mode */
+  background:
+    radial-gradient(var(--vmax-large) var(--vmax-med) at 8% 10%, rgba(56, 189, 248, 0.10), transparent 30%),
+    radial-gradient(var(--vmax-large) var(--vmax-med) at 92% 10%, rgba(16, 185, 129, 0.09), transparent 30%),
+    radial-gradient(var(--vmax-med) var(--vmax-small) at 8% 92%, rgba(56, 189, 248, 0.05), transparent 30%),
+    radial-gradient(var(--vmax-med) var(--vmax-small) at 92% 92%, rgba(16, 185, 129, 0.05), transparent 30%),
+    radial-gradient(60vmax 40vmax at 50% 45%, rgba(56, 189, 248, 0.04), transparent 45%),
+    radial-gradient(1200px 600px at 50% 120%, rgba(0, 0, 0, 0.06), transparent 40%),
+    Canvas;
 }

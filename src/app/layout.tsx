@@ -36,6 +36,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
         />
       </head>
       <body className={`${inter.className} min-h-dvh`}>
+        <div aria-hidden className="bg-shell" />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="theme">
           <Header />
           <main>{children}</main>
