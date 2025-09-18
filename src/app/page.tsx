@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import SectionHeading from "@/components/SectionHeading";
 
 const sectionVariants = {
     hidden: { opacity: 0, y: 24 },
@@ -35,16 +36,27 @@ export default function Home() {
             </section>
 
             {/* ABOUT */}
-            <motion.section id="about" className="py-24 md:py-32" initial="hidden" whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }} variants={sectionVariants} transition={{ duration: 0.6 }}>
-                <div className="mx-auto max-w-3xl px-4">
-                    <h2 className="text-2xl text-center font-bold">About Me</h2>
-                    <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
+            <motion.section
+                id="about"
+                className="py-24 md:py-32"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                variants={sectionVariants}
+                transition={{ duration: 0.6 }}
+            >
+                {/* Heading at section container width so divider spans wide */}
+                <SectionHeading id="about" max="3xl">About Me</SectionHeading>
+
+                {/* Content remains comfortably narrow */}
+                <div className="mx-auto max-w-3xl px-4 translate-x-[12px] lg:translate-x-[20px]">
                     <p className="leading-relaxed text-lg">
-                        Recent Computer Science graduate with a versatile foundation spanning Python development,
-                        machine/deep learning projects, and DevOps practices. Certified Kubernetes Administrator with
-                        working knowledge of GCP, Git, Docker, and Linux. Eager to contribute on an entry-level team—whether
-                        in Software Engineering, DevOps, or IT operations—and grow into a well-rounded technology professional.
+                        Recent Computer Science graduate with a versatile foundation spanning
+                        Python development, machine/deep learning projects, and DevOps
+                        practices. Certified Kubernetes Administrator with working knowledge
+                        of GCP, Git, Docker, and Linux. Eager to contribute on an
+                        entry-level team—whether in Software Engineering, DevOps, or IT
+                        operations—and grow into a well-rounded technology professional.
                     </p>
                 </div>
             </motion.section>
@@ -53,8 +65,7 @@ export default function Home() {
             <motion.section id="education" className="py-24 md:py-32" initial="hidden" whileInView="visible"
                 viewport={{ once: true, amount: 0.25 }} variants={sectionVariants} transition={{ duration: 0.6, delay: 0.05 }}>
                 <div className="mx-auto max-w-5xl px-4">
-                    <h2 className="text-2xl font-bold text-center">Education</h2>
-                    <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
+                    <SectionHeading id="education">Education</SectionHeading>
                     <div className="grid gap-8 md:grid-cols-2">
                         <div className="text-center">
                             <p className="mb-4 text-lg leading-relaxed">School: University of Alabama at Birmingham</p>
@@ -78,8 +89,7 @@ export default function Home() {
             <motion.section id="certs" className="py-24 md:py-32" initial="hidden" whileInView="visible"
                 viewport={{ once: true, amount: 0.25 }} variants={sectionVariants} transition={{ duration: 0.6, delay: 0.1 }}>
                 <div className="mx-auto max-w-5xl px-4">
-                    <h2 className="text-2xl font-bold text-center">Certifications</h2>
-                    <hr className="my-4 border-t border-gray-300 dark:border-gray-600" />
+                    <SectionHeading id="certs">Certifications</SectionHeading>
                     <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
                         {certifications.map((cert, idx) => (
                             <div key={idx} className="mx-auto flex h-56 w-56 flex-col items-center justify-center rounded-lg border p-4 shadow-sm transition hover:shadow">
@@ -100,7 +110,7 @@ export default function Home() {
             <motion.section id="resume" className="py-24 md:py-32" initial="hidden" whileInView="visible"
                 viewport={{ once: true, amount: 0.25 }} variants={sectionVariants} transition={{ duration: 0.6, delay: 0.15 }}>
                 <div className="mx-auto max-w-md px-4 text-center">
-                    <h2 className="text-2xl font-bold">My Resume</h2>
+                    <SectionHeading id="resume">My Resume</SectionHeading>
                     <a href="/resume/Resume-Vaishak_Menon.pdf" download className="mt-4 inline-block transition-transform hover:scale-105">
                         <Image src="/resume/resume_preview.png" alt="Preview of Vaishak Menon's one-page resume" width={300} height={400} className="rounded-lg shadow-lg" />
                     </a>
