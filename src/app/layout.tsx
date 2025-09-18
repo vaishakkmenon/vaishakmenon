@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
 import { Header } from "@/components/Header";
+import Spotlight from "@/components/Spotlight";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,6 +38,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
       </head>
       <body className={`${inter.className} min-h-dvh`}>
         <div aria-hidden className="bg-shell" />
+        <Spotlight />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="theme">
           <Header />
           <main>{children}</main>
