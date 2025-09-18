@@ -19,7 +19,7 @@ export default function Home() {
     return (
         <>
             {/* HERO */}
-            <section className="min-h-[75vh] flex items-center">
+            <section id="hero" className="min-h-[75vh] flex items-center">
                 <div className="mx-auto max-w-5xl px-4 text-center">
                     <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">Vaishak Menon</h1>
                     <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">

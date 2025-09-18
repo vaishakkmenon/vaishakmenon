@@ -1,4 +1,10 @@
-/* Tailwind (v4 style import) */
+/* Minimal globals.css — reset to basics + spotlight overlay
+   - Keeps Tailwind import as requested.
+   - Plain, neutral background with optional spotlight overlay.
+   - Safe defaults: reduced-motion respected, mobile-friendly.
+*/
+
+/* Tailwind import (kept as requested) */
 @import "tailwindcss";
 
 /* ---------- Base resets ---------- */
@@ -7,22 +13,22 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  /* IMPORTANT: allow natural page height & scrolling (no height:100% lock) */
   overflow-y: auto;
+  /* allow natural scrolling */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography + theme-safe backgrounds */
+/* Typography + simple theme-safe backgrounds (Tailwind utility applied) */
 body {
-  /* Neutral light theme */
-  @apply bg-white text-black antialiased;
+  @apply bg-white text-black;
 }
 
 html.dark body {
-  /* Neutral dark theme */
   @apply bg-gray-950 text-gray-100;
 }
 
-/* Make media elements behave nicely by default */
+/* Media defaults */
 img,
 svg,
 video,
@@ -34,7 +40,7 @@ iframe {
   height: auto;
 }
 
-/* Links */
+/* Links - subtle underline affordance */
 a {
   @apply underline-offset-4 decoration-transparent transition;
 }
@@ -43,35 +49,75 @@ a:hover {
   @apply decoration-current;
 }
 
-/* ---------- Scoped transitions (lighter than * { transition }) ---------- */
-:where(a, button, [role="button"], input, select, textarea, summary, details, .card, .nav-link, [data-animate]) {
-  transition-property: color, background-color, border-color, box-shadow, transform;
-  transition-duration: 200ms;
-  transition-timing-function: ease-in-out;
-}
-
-/* Focus styles (keyboard accessibility) */
+/* Focus-visible for keyboard users */
 :focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
-/* ---------- Motion preferences ---------- */
+/* Respect user motion preferences */
 @media (prefers-reduced-motion: reduce) {
   * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    animation: none !important;
+    transition: none !important;
     scroll-behavior: auto !important;
   }
 }
 
-/* ---------- Legacy safety overrides (harmless, prevents old layout from hijacking scroll) ---------- */
-#scroll-container,
-.snap-container {
-  position: static !important;
-  inset: auto !important;
-  width: auto !important;
-  height: auto !important;
-  overflow: visible !important;
+/* ---------- Plain background shell ---------- */
+/* A single fixed element behind content to hold background layers.
+   Keep this simple — Canvas (system color) fallback used last.
+*/
+.bg-shell {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: Canvas;
+  /* optionally add a very soft radial vignette */
+  background-image: radial-gradient(800px 400px at 50% -10%, rgba(0, 0, 0, 0.02), transparent 50%);
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  /* safe on mobile */
+}
+
+/* ---------- Spotlight overlay (cool effect) ----------
+   Usage:
+   - Keep this CSS. To enable the spotlight, render a small client component
+     that updates CSS vars --mx and --my on document.documentElement when the
+     mouse moves (or sets default values on mount).
+   - Example Spotlight client component sets:
+       document.documentElement.style.setProperty('--mx', e.clientX + 'px');
+       document.documentElement.style.setProperty('--my', e.clientY + 'px');
+   - The overlay uses mix-blend for a subtle lightening effect.
+   - The overlay is intentionally low-opacity and respects reduced-motion.
+*/
+.spotlight {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  mix-blend-mode: overlay;
+  opacity: 0.35;
+  transition: opacity 300ms ease;
+  /* radial centered on CSS variables --mx and --my set by JS */
+  background: radial-gradient(420px 420px at var(--mx, 50%) var(--my, 20%),
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0) 55%);
+}
+
+/* darker theme tweak: softer spotlight */
+html.dark .spotlight {
+  opacity: 0.20;
+  background: radial-gradient(420px 420px at var(--mx, 50%) var(--my, 20%),
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0) 55%);
+}
+
+/* Respect reduced motion: make spotlight static (no transitions) */
+@media (prefers-reduced-motion: reduce) {
+  .spotlight {
+    transition: none;
+    opacity: 0.25;
+  }
 }
