@@ -207,3 +207,32 @@ html.dark .spotlight {
     opacity: 0.25;
   }
 }
+
+/* Animated underline utility (no reflow) */
+.link-underline {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px
+    no-repeat;
+  transition: background-size 0.26s cubic-bezier(0.2, 0.9, 0.2, 1),
+    color 0.18s ease;
+  text-decoration: none;
+}
+.link-underline:hover,
+.link-underline:focus {
+  background-size: 100% 2px;
+  outline: none;
+}
+.link-underline:focus-visible {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+  border-radius: 2px;
+}
+.link-underline-sm {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px
+    no-repeat;
+  transition: background-size 0.22s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .link-underline,
+  .link-underline-sm {
+    transition: none;
+  }
+}

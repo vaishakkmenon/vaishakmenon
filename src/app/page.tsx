@@ -26,10 +26,10 @@ export default function Home() {
                         Entry-Level Software Engineer | Python Developer | Certified Kubernetes Administrator
                     </p>
                     <nav className="mt-6 flex items-center justify-center gap-6 text-base">
-                        <a href="#about" className="underline underline-offset-4 hover:opacity-80">About</a>
-                        <a href="#education" className="underline underline-offset-4 hover:opacity-80">Education</a>
-                        <a href="#certs" className="underline underline-offset-4 hover:opacity-80">Certs</a>
-                        <a href="#resume" className="underline underline-offset-4 hover:opacity-80">Resume</a>
+                        <a href="#about" className="link-underline underline-offset-4 hover:opacity-80">About</a>
+                        <a href="#education" className="link-underline underline-offset-4 hover:opacity-80">Education</a>
+                        <a href="#certs" className="link-underline underline-offset-4 hover:opacity-80">Certs</a>
+                        <a href="#resume" className="link-underline underline-offset-4 hover:opacity-80">Resume</a>
                     </nav>
                 </div>
             </section>
