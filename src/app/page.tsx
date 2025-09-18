@@ -2,20 +2,38 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { useReducedMotion, motion } from "framer-motion";
 import SectionHeading from "@/components/SectionHeading";
-
-const sectionVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: { opacity: 1, y: 0 },
-};
+import { VARIANTS, TRANSITION, VIEWPORT } from "@/lib/motion";
 
 export default function Home() {
+
+    const preferReduced = useReducedMotion();
+    const variants = preferReduced ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } } : VARIANTS;
+    const transition = preferReduced ? { duration: 0 } : TRANSITION;
+
     const certifications = [
         { name: "Certified Kubernetes Administrator", file: "/certs/CKA_Cert.pdf", image: "/images/kubernetes-cka.svg", earned: "Jun 2024", verifyUrl: "https://www.credly.com/badges/6fb906d2-66a0-4f00-8803-69458e122ad1/public_url" },
         { name: "AWS Certified Cloud Practitioner", file: "/certs/AWS-CCP-Cert.pdf", image: "/images/aws-ccp.png", earned: "May 2025", verifyUrl: "https://www.credly.com/badges/dd7e3d8e-f4f0-4caa-ac05-5a50876e79a6/public_url" },
         { name: "AWS Certified AI Practitioner", file: "/certs/AWS_AI-Cert.pdf", image: "/images/aws-cap.png", earned: "Jun 2025", verifyUrl: "https://www.credly.com/badges/9c907d66-ce15-4892-b2b5-3141d9339349/public_url" },
     ];
+
+    const list = preferReduced
+        ? undefined
+        : {
+            hidden: { opacity: 1 },
+            visible: {
+                opacity: 1,
+                transition: { delayChildren: 0.05, staggerChildren: 0.06 },
+            },
+        };
+
+    const item = preferReduced
+        ? undefined
+        : {
+            hidden: { opacity: 0, y: 8 },
+            visible: { opacity: 1, y: 0 },
+        };
 
     return (
         <>
@@ -41,9 +59,9 @@ export default function Home() {
                 className="py-24 md:py-32"
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }}
-                variants={sectionVariants}
-                transition={{ duration: 0.6 }}
+                variants={variants}
+                transition={transition}
+                viewport={VIEWPORT}
             >
                 {/* Heading at section container width so divider spans wide */}
                 <SectionHeading id="about" max="3xl">About Me</SectionHeading>
@@ -63,7 +81,7 @@ export default function Home() {
 
             {/* EDUCATION */}
             <motion.section id="education" className="py-24 md:py-32" initial="hidden" whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }} variants={sectionVariants} transition={{ duration: 0.6, delay: 0.05 }}>
+                variants={variants} transition={transition} viewport={VIEWPORT}>
                 <div className="mx-auto max-w-5xl px-4">
                     <SectionHeading id="education">Education</SectionHeading>
                     <div className="grid gap-8 md:grid-cols-2">
@@ -86,29 +104,64 @@ export default function Home() {
             </motion.section>
 
             {/* CERTIFICATIONS */}
-            <motion.section id="certs" className="py-24 md:py-32" initial="hidden" whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }} variants={sectionVariants} transition={{ duration: 0.6, delay: 0.1 }}>
+            <motion.section
+                id="certs"
+                className="py-24 md:py-32"
+                initial="hidden"
+                whileInView="visible"
+                variants={variants}
+                transition={transition}
+                viewport={VIEWPORT}
+            >
                 <div className="mx-auto max-w-5xl px-4">
                     <SectionHeading id="certs">Certifications</SectionHeading>
-                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+
+                    {/* parent controls stagger of children */}
+                    <motion.div
+                        className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3"
+                        variants={list}
+                    >
                         {certifications.map((cert, idx) => (
-                            <div key={idx} className="mx-auto flex h-56 w-56 flex-col items-center justify-center rounded-lg border p-4 shadow-sm transition hover:shadow">
-                                <a href={cert.file} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center focus:outline-none">
-                                    <Image src={cert.image} alt={cert.name} width={100} height={100} className="mb-4 object-contain" />
+                            <motion.div
+                                key={idx}
+                                variants={item}
+                                className="mx-auto flex h-56 w-56 flex-col items-center justify-center rounded-lg border p-4 shadow-sm transition hover:shadow"
+                            >
+                                <a
+                                    href={cert.file}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex flex-col items-center justify-center focus:outline-none"
+                                >
+                                    <Image
+                                        src={cert.image}
+                                        alt={cert.name}
+                                        width={100}
+                                        height={100}
+                                        className="mb-4 object-contain"
+                                    />
                                     <span className="text-center font-medium">{cert.name}</span>
                                 </a>
                                 <span className="mt-1 text-xs text-gray-600 dark:text-gray-400">
-                                    Earned: {cert.earned} · <a href={cert.verifyUrl} target="_blank" rel="noopener noreferrer" className="underline">Verify</a>
+                                    Earned: {cert.earned} ·{" "}
+                                    <a
+                                        href={cert.verifyUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="link-underline-sm"
+                                    >
+                                        Verify
+                                    </a>
                                 </span>
-                            </div>
+                            </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
             </motion.section>
 
             {/* RESUME */}
             <motion.section id="resume" className="py-24 md:py-32" initial="hidden" whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }} variants={sectionVariants} transition={{ duration: 0.6, delay: 0.15 }}>
+                variants={variants} transition={transition} viewport={VIEWPORT}>
                 <div className="mx-auto max-w-md px-4 text-center">
                     <SectionHeading id="resume">My Resume</SectionHeading>
                     <a href="/resume/Resume-Vaishak_Menon.pdf" download className="mt-4 inline-block transition-transform hover:scale-105">
