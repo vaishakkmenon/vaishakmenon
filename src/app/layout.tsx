@@ -39,6 +39,8 @@ export default function Root({ children }: { children: React.ReactNode }) {
       <body className={`${inter.className} min-h-dvh`}>
         <div aria-hidden className="bg-shell" />
         <Spotlight />
+        <div aria-hidden className="mobile-stars" />
+        <div aria-hidden className="mobile-stars-2" />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="theme">
           <Header />
           <main>{children}</main>

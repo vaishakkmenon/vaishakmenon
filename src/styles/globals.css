@@ -1,6 +1,6 @@
-/* Minimal globals.css — reset to basics + spotlight overlay
+/* Minimal globals.css — reset to basics + spotlight overlay + radial gradient background
    - Keeps Tailwind import as requested.
-   - Plain, neutral background with optional spotlight overlay.
+   - Dark center to light edges radial gradient background.
    - Safe defaults: reduced-motion respected, mobile-friendly.
 */
 
@@ -19,13 +19,238 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography + simple theme-safe backgrounds (Tailwind utility applied) */
+/* Typography + radial gradient backgrounds */
+
 body {
-  @apply bg-white text-black;
+  background: #0a0a0a;
+  color: #ffffff;
 }
 
-html.dark body {
-  @apply bg-gray-950 text-gray-100;
+/* Mobile-specific override */
+@media (max-width: 768px) {
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  }
+
+  /* Create additional pseudo-elements using a container */
+  body {
+    position: relative;
+  }
+
+  /* Left to Right - Top */
+  body::before {
+    animation: shootingStarLR1 12s linear infinite;
+  }
+
+  /* Right to Left - Bottom */
+  body::after {
+    animation: shootingStarRL1 16s linear infinite 4s;
+  }
+
+  /* Add more stars using a helper element */
+  .mobile-stars::before,
+  .mobile-stars::after {
+    content: "";
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  }
+
+  .mobile-stars::before {
+    animation: shootingStarLR2 20s linear infinite 8s;
+  }
+
+  .mobile-stars::after {
+    animation: shootingStarRL2 14s linear infinite 12s;
+  }
+
+  /* Add two more stars using a new helper element */
+  .mobile-stars-2::before,
+  .mobile-stars-2::after {
+    content: "";
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  }
+
+  .mobile-stars-2::before {
+    animation: shootingStarLR3 18s linear infinite 2s;
+  }
+
+  .mobile-stars-2::after {
+    animation: shootingStarRL3 15s linear infinite 6s;
+  }
+
+  @keyframes shootingStarLR1 {
+    0%,
+    100% {
+      top: 15%;
+      left: -5%;
+      opacity: 0;
+    }
+    5% {
+      opacity: 1;
+      box-shadow: -40px -8px 20px rgba(255, 255, 255, 0.3), 0 0 8px white;
+    }
+    20% {
+      top: 35%;
+      left: 50%;
+      opacity: 1;
+      box-shadow: -80px -16px 30px rgba(255, 255, 255, 0.2), 0 0 8px white;
+    }
+    30% {
+      top: 55%;
+      left: 105%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes shootingStarRL1 {
+    0%,
+    100% {
+      top: 65%;
+      left: 105%;
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+      box-shadow: 50px 10px 22px rgba(255, 255, 255, 0.3), 0 0 8px white;
+    }
+    25% {
+      top: 40%;
+      left: 50%;
+      opacity: 1;
+      box-shadow: 90px 18px 32px rgba(255, 255, 255, 0.2), 0 0 8px white;
+    }
+    35% {
+      top: 15%;
+      left: -5%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes shootingStarLR2 {
+    0%,
+    100% {
+      top: 80%;
+      left: -5%;
+      opacity: 0;
+    }
+    6% {
+      opacity: 0.8;
+      box-shadow: -35px -6px 18px rgba(255, 255, 255, 0.25),
+        0 0 6px rgba(255, 255, 255, 0.9);
+    }
+    22% {
+      top: 55%;
+      left: 50%;
+      opacity: 0.8;
+      box-shadow: -70px -12px 25px rgba(255, 255, 255, 0.15),
+        0 0 6px rgba(255, 255, 255, 0.9);
+    }
+    32% {
+      top: 30%;
+      left: 105%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes shootingStarRL2 {
+    0%,
+    100% {
+      top: 25%;
+      left: 105%;
+      opacity: 0;
+    }
+    7% {
+      opacity: 0.7;
+      box-shadow: 45px 8px 20px rgba(255, 255, 255, 0.25),
+        0 0 6px rgba(255, 255, 255, 0.8);
+    }
+    24% {
+      top: 50%;
+      left: 50%;
+      opacity: 0.7;
+      box-shadow: 80px 15px 28px rgba(255, 255, 255, 0.15),
+        0 0 6px rgba(255, 255, 255, 0.8);
+    }
+    34% {
+      top: 75%;
+      left: -5%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes shootingStarLR3 {
+    0%,
+    100% {
+      top: 5%;
+      left: -5%;
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.9;
+      box-shadow: -38px -7px 19px rgba(255, 255, 255, 0.28), 0 0 7px white;
+    }
+    28% {
+      top: 25%;
+      left: 60%;
+      opacity: 0.9;
+      box-shadow: -75px -14px 28px rgba(255, 255, 255, 0.18), 0 0 7px white;
+    }
+    38% {
+      top: 45%;
+      left: 105%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes shootingStarRL3 {
+    0%,
+    100% {
+      top: 90%;
+      left: 105%;
+      opacity: 0;
+    }
+    9% {
+      opacity: 0.85;
+      box-shadow: 48px 9px 21px rgba(255, 255, 255, 0.28), 0 0 7px white;
+    }
+    27% {
+      top: 70%;
+      left: 45%;
+      opacity: 0.85;
+      box-shadow: 85px 16px 30px rgba(255, 255, 255, 0.18), 0 0 7px white;
+    }
+    37% {
+      top: 50%;
+      left: -5%;
+      opacity: 0;
+    }
+  }
+
+  .spotlight {
+    display: none;
+  }
 }
 
 /* Media defaults */
@@ -62,112 +287,6 @@ a:hover {
     transition: none !important;
     scroll-behavior: auto !important;
   }
-}
-
-/* ---------- Neutral ambient edge/corner glow (grayscale) ---------- */
-
-/* tuning vars — change alphas/sizes below to taste */
-:root {
-  --bg-fallback: Canvas;
-  --ambient-corner-alpha: 0.06;
-  /* corner wash strength (white-ish) */
-  --ambient-edge-alpha: 0.03;
-  /* side/edge wrap */
-  --vignette-alpha: 0.04;
-  /* bottom vignette to add depth */
-  --ambient-large: 60vmax;
-  /* size for corner washes */
-  --ambient-med: 40vmax;
-  /* medium size */
-  --spot-opacity: 0.9;
-  --mx: 50%;
-  --my: 30%;
-  --spot-size: 600px;
-  --spot-blur: 10px;
-}
-
-/* Neutral, soft ambient glow (no color) */
-.bg-shell {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -2;
-
-  background:
-    /* subtle soft white-ish corner washes (creates 'lit' edges without color) */ radial-gradient(
-      var(--ambient-large) var(--ambient-med) at 6% 8%,
-      rgba(255, 255, 255, var(--ambient-corner-alpha)),
-      transparent 35%
-    ),
-    radial-gradient(
-      var(--ambient-large) var(--ambient-med) at 94% 8%,
-      rgba(255, 255, 255, var(--ambient-corner-alpha)),
-      transparent 35%
-    ),
-    radial-gradient(
-      var(--ambient-large) var(--ambient-med) at 6% 92%,
-      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.8)),
-      transparent 35%
-    ),
-    radial-gradient(
-      var(--ambient-large) var(--ambient-med) at 94% 92%,
-      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.8)),
-      transparent 35%
-    ),
-    /* faint side bands to wrap edges */
-      radial-gradient(
-        36vmax 26vmax at 2% 50%,
-        rgba(255, 255, 255, var(--ambient-edge-alpha)),
-        transparent 40%
-      ),
-    radial-gradient(
-      36vmax 26vmax at 98% 50%,
-      rgba(255, 255, 255, var(--ambient-edge-alpha)),
-      transparent 40%
-    ),
-    /* soft central wash so the hero doesn't sit on pure black */
-      radial-gradient(
-        70vmax 44vmax at 50% 45%,
-        rgba(255, 255, 255, 0.02),
-        transparent 45%
-      ),
-    /* subtle bottom vignette (keeps text readable by darkening lower edge) */
-      radial-gradient(
-        1200px 600px at 50% 120%,
-        rgba(0, 0, 0, var(--vignette-alpha)),
-        transparent 40%
-      ),
-    /* fallback */ var(--bg-fallback);
-  background-repeat: no-repeat;
-  background-attachment: scroll;
-  /* safe on mobile */
-  will-change: opacity;
-  overflow: visible;
-}
-
-/* Dark mode: reduce white intensity and keep subtle vignette so contrast stays good */
-html.dark .bg-shell {
-  background: radial-gradient(
-      var(--ambient-large) var(--ambient-med) at 6% 8%,
-      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.45)),
-      transparent 35%
-    ),
-    radial-gradient(
-      var(--ambient-large) var(--ambient-med) at 94% 8%,
-      rgba(255, 255, 255, calc(var(--ambient-corner-alpha) * 0.45)),
-      transparent 35%
-    ),
-    radial-gradient(
-      70vmax 44vmax at 50% 45%,
-      rgba(255, 255, 255, 0.01),
-      transparent 45%
-    ),
-    radial-gradient(
-      1200px 600px at 50% 120%,
-      rgba(0, 0, 0, 0.06),
-      transparent 40%
-    ),
-    var(--bg-fallback);
 }
 
 .spotlight {
