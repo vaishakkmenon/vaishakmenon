@@ -41,7 +41,7 @@ export default function Home() {
             <section id="hero" className="min-h-[75vh] flex items-center">
                 <div className="mx-auto max-w-5xl px-4 text-center">
                     <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">Vaishak Menon</h1>
-                    <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">
+                    <p className="mt-4 text-xl">
                         Entry-Level Software Engineer | Python Developer | Certified Kubernetes Administrator
                     </p>
                     <nav className="mt-6 flex items-center justify-center gap-6 text-base">

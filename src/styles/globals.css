@@ -21,24 +21,58 @@ body {
 
 /* Typography + radial gradient backgrounds */
 
+/* Define CSS variables for colors */
+:root {
+  --color-background: #0a0a0a;
+  --color-foreground: #ffffff;
+}
+
+/* Light Mode Variables */
+html.light {
+  --color-background: #f8f8f8;
+  --color-foreground: #36454f; /* Dark charcoal */
+  --color-header-text: #212121; /* Very dark grey for header title */
+}
+
+html.light header a {
+  color: #212121 !important; /* A very dark grey for strong contrast, using !important to override Tailwind */
+}
+
+/* Set body colors using the new variables */
 body {
-  background: #0a0a0a;
-  color: #ffffff;
+  background: var(--color-background);
+  color: var(--color-foreground);
 }
 
 /* Mobile-specific override */
 @media (max-width: 768px) {
+  /* Dark Mode Shooting Stars */
   body::before,
-  body::after {
+  body::after,
+  .mobile-stars::before,
+  .mobile-stars::after,
+  .mobile-stars-2::before,
+  .mobile-stars-2::after {
     content: "";
     position: fixed;
     width: 2px;
     height: 2px;
-    background: white;
     border-radius: 50%;
     pointer-events: none;
     z-index: -1;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  }
+
+  /* Light Mode Shooting Stars - Subtly dark and less glowing */
+  html.light body::before,
+  html.light body::after,
+  html.light .mobile-stars::before,
+  html.light .mobile-stars::after,
+  html.light .mobile-stars-2::before,
+  html.light .mobile-stars-2::after {
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
   }
 
   /* Create additional pseudo-elements using a container */
@@ -57,19 +91,6 @@ body {
   }
 
   /* Add more stars using a helper element */
-  .mobile-stars::before,
-  .mobile-stars::after {
-    content: "";
-    position: fixed;
-    width: 2px;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: -1;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
-  }
-
   .mobile-stars::before {
     animation: shootingStarLR2 20s linear infinite 8s;
   }
@@ -79,19 +100,6 @@ body {
   }
 
   /* Add two more stars using a new helper element */
-  .mobile-stars-2::before,
-  .mobile-stars-2::after {
-    content: "";
-    position: fixed;
-    width: 2px;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: -1;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
-  }
-
   .mobile-stars-2::before {
     animation: shootingStarLR3 18s linear infinite 2s;
   }
@@ -269,9 +277,16 @@ iframe {
 a {
   @apply underline-offset-4 decoration-transparent transition;
 }
-
 a:hover {
   @apply decoration-current;
+}
+/* Light Mode Links */
+html.light a {
+  color: #6c7a89;
+}
+/* Dark Mode Links */
+html.dark a {
+  color: #fff;
 }
 
 /* Focus-visible for keyboard users */
@@ -308,6 +323,19 @@ a:hover {
   background-repeat: no-repeat;
 }
 
+/* Light Mode Spotlight */
+html.light .spotlight {
+  opacity: calc(var(--spot-opacity) * 0.4);
+  filter: blur(var(--spot-blur));
+  background: radial-gradient(
+    480px 480px at var(--mx, 50%) var(--my, 30%),
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0) 60%
+  );
+  background-repeat: no-repeat;
+}
+
+/* Dark Mode Spotlight */
 html.dark .spotlight {
   opacity: calc(var(--spot-opacity) * 0.6);
   filter: blur(var(--spot-blur));
