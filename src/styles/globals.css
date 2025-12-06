@@ -7,6 +7,10 @@
 /* Tailwind import (kept as requested) */
 @import "tailwindcss";
 
+/* Tailwind v4 source paths */
+@source "../../src";
+@source "../../app";
+
 /* ---------- Base resets ---------- */
 html,
 body {

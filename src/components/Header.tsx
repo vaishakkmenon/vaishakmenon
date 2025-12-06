@@ -29,6 +29,9 @@ export function Header() {
             <div className="mx-auto max-w-5xl flex items-center justify-between px-4 py-3">
                 <Link href="/" className="font-bold text-xl">Vaishak Menon</Link>
                 <nav className="flex items-center gap-3">
+                    <Link href="/chat" className="link-underline underline-offset-4">
+                        Chat
+                    </Link>
                     <Link href="https://linkedin.com/in/vaishakkmenon" target="_blank" aria-label="LinkedIn">
                         <ThemeIcon lightSvg="/images/linkedin-white.png" darkSvg="/images/linkedin.png" width={24} height={24} alt="LinkedIn" />
                     </Link>
