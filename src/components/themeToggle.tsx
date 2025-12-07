@@ -2,15 +2,25 @@
 "use client";
 
 import { useTheme } from 'next-themes';
-import { useState, useEffect } from 'react';
 import { HiSun, HiMoon } from 'react-icons/hi';
+import { useClientOnly } from '@/hooks/useClientOnly';
 
-export function ThemeToggle() {
+/**
+ * Theme toggle button for switching between dark and light modes
+ *
+ * Uses next-themes for theme management and prevents hydration mismatches
+ * by only rendering the actual toggle after client-side mount.
+ *
+ * @returns Theme toggle button with sun/moon icons
+ *
+ * @example
+ * ```tsx
+ * <ThemeToggle />
+ * ```
+ */
+export function ThemeToggle(): React.ReactElement {
     // Prevent hydration mismatch
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    const mounted = useClientOnly();
 
     const { theme, setTheme, systemTheme } = useTheme();
     const current = theme === 'system' ? systemTheme : theme;

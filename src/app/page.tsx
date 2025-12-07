@@ -2,43 +2,59 @@
 "use client";
 
 import Image from "next/image";
-import { useReducedMotion, motion } from "framer-motion";
+import { useMemo } from 'react';
+import { useReducedMotion, motion, Variants } from "framer-motion";
 import SectionHeading from "@/components/SectionHeading";
 import { VARIANTS, TRANSITION, VIEWPORT } from "@/lib/motion";
+import { CERTIFICATIONS } from "@/lib/data/certifications";
+import { ROUTES, ANIMATION, SECTION_IDS } from '@/lib/constants';
 
-export default function Home() {
+export default function Home(): React.ReactElement {
 
-    const preferReduced = useReducedMotion();
-    const variants = preferReduced ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } } : VARIANTS;
-    const transition = preferReduced ? { duration: 0 } : TRANSITION;
+    const preferReduced: boolean | null = useReducedMotion();
 
-    const certifications = [
-        { name: "Certified Kubernetes Administrator", file: "/certs/CKA_Cert.pdf", image: "/images/kubernetes-cka.svg", earned: "Jun 2024", verifyUrl: "https://www.credly.com/badges/6fb906d2-66a0-4f00-8803-69458e122ad1/public_url" },
-        { name: "AWS Certified Cloud Practitioner", file: "/certs/AWS-CCP-Cert.pdf", image: "/images/aws-ccp.png", earned: "May 2025", verifyUrl: "https://www.credly.com/badges/dd7e3d8e-f4f0-4caa-ac05-5a50876e79a6/public_url" },
-        { name: "AWS Certified AI Practitioner", file: "/certs/AWS_AI-Cert.pdf", image: "/images/aws-cap.png", earned: "Jun 2025", verifyUrl: "https://www.credly.com/badges/9c907d66-ce15-4892-b2b5-3141d9339349/public_url" },
-    ];
+    const variants: Variants = useMemo(() =>
+        preferReduced
+            ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
+            : VARIANTS,
+        [preferReduced]
+    );
 
-    const list = preferReduced
-        ? undefined
-        : {
-            hidden: { opacity: 1 },
-            visible: {
-                opacity: 1,
-                transition: { delayChildren: 0.05, staggerChildren: 0.06 },
+    const transition = useMemo(() =>
+        preferReduced ? { duration: 0 } : TRANSITION,
+        [preferReduced]
+    );
+
+    const list: Variants | undefined = useMemo(() =>
+        preferReduced
+            ? undefined
+            : {
+                hidden: { opacity: 1 },
+                visible: {
+                    opacity: 1,
+                    transition: {
+                        delayChildren: ANIMATION.stagger.delayChildren,
+                        staggerChildren: ANIMATION.stagger.staggerChildren
+                    },
+                },
             },
-        };
+        [preferReduced]
+    );
 
-    const item = preferReduced
-        ? undefined
-        : {
-            hidden: { opacity: 0, y: 8 },
-            visible: { opacity: 1, y: 0 },
-        };
+    const item: Variants | undefined = useMemo(() =>
+        preferReduced
+            ? undefined
+            : {
+                hidden: { opacity: 0, y: 8 },
+                visible: { opacity: 1, y: 0 },
+            },
+        [preferReduced]
+    );
 
     return (
         <>
             {/* HERO */}
-            <section id="hero" className="min-h-[75vh] flex items-center">
+            <section id={SECTION_IDS.hero} className="min-h-[75vh] flex items-center">
                 <div className="mx-auto max-w-5xl px-4 text-center">
                     <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">Vaishak Menon</h1>
                     <p className="mt-4 text-xl">
@@ -55,7 +71,7 @@ export default function Home() {
 
             {/* ABOUT */}
             <motion.section
-                id="about"
+                id={SECTION_IDS.about}
                 className="py-24 md:py-32"
                 initial="hidden"
                 whileInView="visible"
@@ -80,7 +96,7 @@ export default function Home() {
             </motion.section>
 
             {/* EDUCATION */}
-            <motion.section id="education" className="py-24 md:py-32" initial="hidden" whileInView="visible"
+            <motion.section id={SECTION_IDS.education} className="py-24 md:py-32" initial="hidden" whileInView="visible"
                 variants={variants} transition={transition} viewport={VIEWPORT}>
                 <div className="mx-auto max-w-5xl px-4">
                     <SectionHeading id="education">Education</SectionHeading>
@@ -105,7 +121,7 @@ export default function Home() {
 
             {/* CERTIFICATIONS */}
             <motion.section
-                id="certs"
+                id={SECTION_IDS.certs}
                 className="py-24 md:py-32"
                 initial="hidden"
                 whileInView="visible"
@@ -121,51 +137,85 @@ export default function Home() {
                         className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3"
                         variants={list}
                     >
-                        {certifications.map((cert, idx) => (
-                            <motion.div
-                                key={idx}
-                                variants={item}
-                                className="mx-auto flex h-56 w-56 flex-col items-center justify-center rounded-lg border p-4 shadow-sm transition hover:shadow"
-                            >
-                                <a
-                                    href={cert.file}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex flex-col items-center justify-center focus:outline-none"
-                                >
-                                    <Image
-                                        src={cert.image}
-                                        alt={cert.name}
-                                        width={100}
-                                        height={100}
-                                        className="mb-4 object-contain"
-                                    />
-                                    <span className="text-center font-medium">{cert.name}</span>
-                                </a>
-                                <span className="mt-1 text-xs text-gray-600 dark:text-gray-400">
-                                    Earned: {cert.earned} ·{" "}
-                                    <a
-                                        href={cert.verifyUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="link-underline-sm"
+                        {CERTIFICATIONS && CERTIFICATIONS.length > 0 ? (
+                            CERTIFICATIONS.map((cert) => {
+                                // Validate required fields
+                                if (!cert?.id || !cert?.name || !cert?.image || !cert?.file) {
+                                    if (process.env.NODE_ENV === 'development') {
+                                        console.warn('Invalid certification data:', cert);
+                                    }
+                                    return null;
+                                }
+
+                                return (
+                                    <motion.div
+                                        key={cert.id}
+                                        variants={item}
+                                        className="mx-auto flex h-56 w-56 flex-col items-center justify-center rounded-lg border p-4 shadow-sm transition hover:shadow"
                                     >
-                                        Verify
-                                    </a>
-                                </span>
-                            </motion.div>
-                        ))}
+                                        <a
+                                            href={cert.file}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex flex-col items-center justify-center focus:outline-none"
+                                        >
+                                            <Image
+                                                src={cert.image}
+                                                alt={`${cert.name} certification badge`}
+                                                width={100}
+                                                height={100}
+                                                className="mb-4 object-contain"
+                                                onError={(e) => {
+                                                    console.error(`Failed to load image: ${cert.image}`);
+                                                    e.currentTarget.style.display = 'none';
+                                                }}
+                                                quality={85}
+                                                priority={false}
+                                            />
+                                            <span className="text-center font-medium">{cert.name}</span>
+                                        </a>
+                                        <span className="mt-1 text-xs text-gray-600 dark:text-gray-400">
+                                            Earned: {cert.earned} ·{" "}
+                                            <a
+                                                href={cert.verifyUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="link-underline-sm"
+                                            >
+                                                Verify
+                                            </a>
+                                        </span>
+                                    </motion.div>
+                                );
+                            })
+                        ) : (
+                            <p className="text-center text-gray-500 col-span-full">
+                                No certifications available
+                            </p>
+                        )}
                     </motion.div>
                 </div>
             </motion.section>
 
             {/* RESUME */}
-            <motion.section id="resume" className="py-24 md:py-32" initial="hidden" whileInView="visible"
+            <motion.section id={SECTION_IDS.resume} className="py-24 md:py-32" initial="hidden" whileInView="visible"
                 variants={variants} transition={transition} viewport={VIEWPORT}>
                 <div className="mx-auto max-w-md px-4 text-center">
                     <SectionHeading id="resume">My Resume</SectionHeading>
-                    <a href="/resume/Resume-Vaishak_Menon.pdf" download className="mt-4 inline-block transition-transform hover:scale-105">
-                        <Image src="/resume/resume_preview.png" alt="Preview of Vaishak Menon's one-page resume" width={300} height={400} className="rounded-lg shadow-lg" />
+                    <a href={ROUTES.resume} download className="mt-4 inline-block transition-transform hover:scale-105">
+                        <Image
+                            src={ROUTES.resumePreview}
+                            alt="Preview of Vaishak Menon's one-page resume"
+                            width={300}
+                            height={400}
+                            className="rounded-lg shadow-lg"
+                            onError={(e) => {
+                                console.error('Failed to load resume preview');
+                                e.currentTarget.style.display = 'none';
+                            }}
+                            quality={85}
+                            priority={false}
+                        />
                     </a>
                 </div>
             </motion.section>

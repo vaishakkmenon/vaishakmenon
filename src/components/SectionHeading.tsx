@@ -1,4 +1,21 @@
 // components/SectionHeading.tsx
+
+/**
+ * Reusable section heading component with optional divider
+ *
+ * @param id - Optional ID for the heading element (for anchor links)
+ * @param children - Heading text content
+ * @param className - Additional CSS classes
+ * @param bleed - If true, divider extends full viewport width
+ * @param max - Maximum width constraint (3xl, 5xl, 7xl, or none)
+ *
+ * @returns Section heading with optional divider
+ *
+ * @example
+ * ```tsx
+ * <SectionHeading id="about" max="3xl">About Me</SectionHeading>
+ * ```
+ */
 type MaxWidth = "3xl" | "5xl" | "7xl" | "none";
 
 export default function SectionHeading({
@@ -13,7 +30,7 @@ export default function SectionHeading({
     className?: string;
     bleed?: boolean;
     max?: MaxWidth;
-}) {
+}): React.ReactElement {
     const maxClass =
         max === "none" ? "" : max === "3xl" ? "max-w-3xl" : max === "7xl" ? "max-w-7xl" : "max-w-5xl";
 

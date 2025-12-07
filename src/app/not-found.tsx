@@ -1,4 +1,4 @@
-export default function NotFound() {
+export default function NotFound(): React.ReactElement {
     return (
         <main className="site-main p-8 text-center">
             <h1 className="text-3xl font-bold">Page not found</h1>

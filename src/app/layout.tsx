@@ -5,8 +5,8 @@ import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
-import { Header } from "@/components/Header";
-import Spotlight from "@/components/Spotlight";
+import { Header, Spotlight } from "@/components";
+import { THEME } from '@/lib/constants';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: { title: "Vaishak Menon", description: "Personal website...", type: "website" },
 };
 
-export default function Root({ children }: { children: React.ReactNode }) {
+export default function Root({ children }: { children: React.ReactNode }): React.ReactElement {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -27,7 +27,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                var t = localStorage.getItem('theme');
+                var t = localStorage.getItem('${THEME.STORAGE_KEY}');
                 var d = t==='dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
                 if (d) document.documentElement.classList.add('dark');
                 else document.documentElement.classList.remove('dark');
@@ -41,7 +41,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <Spotlight />
         <div aria-hidden className="mobile-stars" />
         <div aria-hidden className="mobile-stars-2" />
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="theme">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey={THEME.STORAGE_KEY}>
           <Header />
           <main>{children}</main>
         </ThemeProvider>
