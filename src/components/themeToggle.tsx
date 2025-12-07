@@ -1,8 +1,8 @@
 // components/themeToggle.tsx
-"use client";
+'use client';
 
 import { useTheme } from 'next-themes';
-import { HiSun, HiMoon } from 'react-icons/hi';
+import { Sun, Moon } from 'lucide-react';
 import { useClientOnly } from '@/hooks/useClientOnly';
 
 /**
@@ -37,9 +37,9 @@ export function ThemeToggle(): React.ReactElement {
             className="p-2 rounded transition-colors"
         >
             {current === 'dark' ? (
-                <HiSun className="w-5 h-5" />
+                <Sun className="w-5 h-5" />
             ) : (
-                <HiMoon className="w-5 h-5 text-gray-700 hover:text-gray-900 transition-colors" />
+                <Moon className="w-5 h-5 text-gray-700 hover:text-gray-900 transition-colors" />
             )}
         </button>
     );

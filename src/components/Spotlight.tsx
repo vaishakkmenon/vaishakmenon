@@ -1,5 +1,5 @@
-"use client";
-import { useEffect } from "react";
+'use client';
+import { useEffect } from 'react';
 
 /**
  * Mouse-following spotlight effect overlay
@@ -19,22 +19,22 @@ import { useEffect } from "react";
  */
 export default function Spotlight(): React.ReactElement {
     useEffect(() => {
-        if (typeof window === "undefined") return;
-        if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+        if (typeof window === 'undefined') return;
+        if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
 
         const root = document.documentElement;
         if (!root) return;
 
         try {
-            root.style.setProperty("--mx", root.style.getPropertyValue("--mx") || "50%");
-            root.style.setProperty("--my", root.style.getPropertyValue("--my") || "30%");
+            root.style.setProperty('--mx', root.style.getPropertyValue('--mx') || '50%');
+            root.style.setProperty('--my', root.style.getPropertyValue('--my') || '30%');
         } catch (error) {
-            console.error("Failed to initialize spotlight:", error);
+            console.error('Failed to initialize spotlight:', error);
             return;
         }
 
         if (process.env.NODE_ENV === 'development') {
-            console.debug("Spotlight mounted — writing --mx/--my on mousemove");
+            console.debug('Spotlight mounted — writing --mx/--my on mousemove');
         }
 
         let frameId: number | null = null;
@@ -46,20 +46,20 @@ export default function Spotlight(): React.ReactElement {
             frameId = requestAnimationFrame(() => {
                 try {
                     if (root) {
-                        root.style.setProperty("--mx", `${e.clientX}px`);
-                        root.style.setProperty("--my", `${e.clientY}px`);
+                        root.style.setProperty('--mx', `${e.clientX}px`);
+                        root.style.setProperty('--my', `${e.clientY}px`);
                     }
                 } catch (error) {
-                    console.error("Failed to update spotlight:", error);
+                    console.error('Failed to update spotlight:', error);
                 }
                 frameId = null;
             });
         };
 
-        window.addEventListener("mousemove", onMove, { passive: true });
+        window.addEventListener('mousemove', onMove, { passive: true });
 
         return () => {
-            window.removeEventListener("mousemove", onMove);
+            window.removeEventListener('mousemove', onMove);
             if (frameId) {
                 cancelAnimationFrame(frameId);
             }

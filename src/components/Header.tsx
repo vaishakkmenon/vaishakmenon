@@ -1,9 +1,9 @@
 // components/Header.tsx
-"use client"
-import Link from "next/link"
-import { useEffect, useState } from "react"
-import { ThemeIcon, ThemeToggle } from "@/components"
-import { SOCIAL_LINKS, LAYOUT } from '@/lib/constants'
+'use client';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { ThemeIcon, ThemeToggle } from '@/components';
+import { SOCIAL_LINKS, LAYOUT } from '@/lib/constants';
 
 /**
  * Sticky header with scroll-sensitive fade effect
@@ -22,7 +22,7 @@ import { SOCIAL_LINKS, LAYOUT } from '@/lib/constants'
  * ```
  */
 export function Header(): React.ReactElement {
-    const [opacity, setOpacity] = useState<number>(1)
+    const [opacity, setOpacity] = useState<number>(1);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -62,7 +62,7 @@ export function Header(): React.ReactElement {
                 cancelAnimationFrame(animationId);
             }
         };
-    }, [])
+    }, []);
 
     return (
         <header
@@ -92,5 +92,5 @@ export function Header(): React.ReactElement {
                 </nav>
             </div>
         </header>
-    )
+    );
 }

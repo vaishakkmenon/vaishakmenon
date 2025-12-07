@@ -16,14 +16,14 @@
  * <SectionHeading id="about" max="3xl">About Me</SectionHeading>
  * ```
  */
-type MaxWidth = "3xl" | "5xl" | "7xl" | "none";
+type MaxWidth = '3xl' | '5xl' | '7xl' | 'none';
 
 export default function SectionHeading({
     id,
     children,
-    className = "",
+    className = '',
     bleed = false,          // edge-to-edge divider when true
-    max = "5xl",            // choose container width without conflicting classes
+    max = '5xl',            // choose container width without conflicting classes
 }: {
     id?: string;
     children: React.ReactNode;
@@ -32,7 +32,7 @@ export default function SectionHeading({
     max?: MaxWidth;
 }): React.ReactElement {
     const maxClass =
-        max === "none" ? "" : max === "3xl" ? "max-w-3xl" : max === "7xl" ? "max-w-7xl" : "max-w-5xl";
+        max === 'none' ? '' : max === '3xl' ? 'max-w-3xl' : max === '7xl' ? 'max-w-7xl' : 'max-w-5xl';
 
     return (
         <div id={id} className={`mx-auto ${maxClass} px-4 scroll-mt-28 ${className}`}>
