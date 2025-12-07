@@ -39,7 +39,7 @@ export function ThemeToggle(): React.ReactElement {
             {current === 'dark' ? (
                 <HiSun className="w-5 h-5" />
             ) : (
-                <HiMoon className="w-5 h-5 text-gray-700 hover:text-white" />
+                <HiMoon className="w-5 h-5 text-gray-700 hover:text-gray-900 transition-colors" />
             )}
         </button>
     );

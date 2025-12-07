@@ -66,11 +66,21 @@ export function Header(): React.ReactElement {
 
     return (
         <header
-            style={{ opacity, transition: LAYOUT.header.fadeTransition }}
-            className="sticky top-0 z-20 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40"
+            style={{
+                opacity,
+                transition: LAYOUT.header.fadeTransition,
+                backgroundColor: 'var(--header-bg)'
+            }}
+            className="sticky top-0 z-20 backdrop-blur"
         >
             <div className="mx-auto max-w-5xl flex items-center justify-between px-4 py-3">
-                <Link href="/" className="font-bold text-xl">Vaishak Menon</Link>
+                <Link
+                    href="/"
+                    className="font-bold text-xl"
+                    style={{ color: 'var(--header-text)' }}
+                >
+                    Vaishak Menon
+                </Link>
                 <nav className="flex items-center gap-3">
                     <Link href={SOCIAL_LINKS.linkedin} target="_blank" aria-label="LinkedIn">
                         <ThemeIcon lightSvg="/images/linkedin-white.png" darkSvg="/images/linkedin.png" width={24} height={24} alt="LinkedIn" />

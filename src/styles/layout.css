@@ -1,22 +1,24 @@
-/* layout.css*/
+/* layout.css - Use CSS variables for theme consistency */
 .site-main {
-  @apply container mx-auto px-4 py-8 bg-white text-black;
-}
-
-html.dark .site-main {
-  @apply bg-gray-900 text-gray-200;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1rem;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
 }
 
 .card {
-  @apply bg-white rounded-lg border-0 text-black;
-}
-
-html.dark .card {
-  @apply bg-inherit text-gray-100;
+  border-radius: 0.5rem;
+  border: 1px solid var(--card-border);
+  background-color: var(--card-bg);
+  color: var(--color-foreground);
 }
 
 @layer utilities {
   #drawer-navigation {
-    @apply bg-black text-white;
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    backdrop-filter: blur(10px);
   }
 }

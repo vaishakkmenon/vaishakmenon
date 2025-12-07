@@ -41,10 +41,16 @@ export default function SectionHeading({
             {/* Divider */}
             {bleed ? (
                 <div aria-hidden className="relative mt-4 mb-8 h-px">
-                    <div className="absolute left-1/2 -translate-x-1/2 h-px w-screen bg-gray-300/70 dark:bg-gray-700/70" />
+                    <div
+                        className="absolute left-1/2 -translate-x-1/2 h-px w-screen"
+                        style={{ backgroundColor: 'var(--color-divider)' }}
+                    />
                 </div>
             ) : (
-                <div className="mt-4 mb-8 h-px w-full bg-gray-300/70 dark:bg-gray-700/70" />
+                <div
+                    className="mt-4 mb-8 h-px w-full"
+                    style={{ backgroundColor: 'var(--color-divider)' }}
+                />
             )}
         </div>
     );
