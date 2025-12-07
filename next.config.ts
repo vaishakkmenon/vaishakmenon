@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   images: {
     unoptimized: true,
+    qualities: [50, 75, 85, 90, 100],
   },
   webpack: (
     config: Configuration,
