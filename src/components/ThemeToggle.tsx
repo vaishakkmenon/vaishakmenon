@@ -1,16 +1,26 @@
 // components/themeToggle.tsx
-"use client";
+'use client';
 
 import { useTheme } from 'next-themes';
-import { useState, useEffect } from 'react';
-import { HiSun, HiMoon } from 'react-icons/hi';
+import { Sun, Moon } from 'lucide-react';
+import { useClientOnly } from '@/hooks/useClientOnly';
 
-export function ThemeToggle() {
+/**
+ * Theme toggle button for switching between dark and light modes
+ *
+ * Uses next-themes for theme management and prevents hydration mismatches
+ * by only rendering the actual toggle after client-side mount.
+ *
+ * @returns Theme toggle button with sun/moon icons
+ *
+ * @example
+ * ```tsx
+ * <ThemeToggle />
+ * ```
+ */
+export function ThemeToggle(): React.ReactElement {
     // Prevent hydration mismatch
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    const mounted = useClientOnly();
 
     const { theme, setTheme, systemTheme } = useTheme();
     const current = theme === 'system' ? systemTheme : theme;
@@ -27,9 +37,9 @@ export function ThemeToggle() {
             className="p-2 rounded transition-colors"
         >
             {current === 'dark' ? (
-                <HiSun className="w-5 h-5" />
+                <Sun className="w-5 h-5" />
             ) : (
-                <HiMoon className="w-5 h-5 text-gray-700 hover:text-white" />
+                <Moon className="w-5 h-5 text-gray-700 hover:text-gray-900 transition-colors" />
             )}
         </button>
     );

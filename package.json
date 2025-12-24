@@ -6,19 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "flowbite-react patch"
+    "lint": "next lint"
   },
   "dependencies": {
-    "flowbite": "^3.1.2",
-    "flowbite-react": "^0.11.7",
     "framer-motion": "^12.11.0",
     "lucide-react": "^0.510.0",
-    "next": "15.3.2",
+    "next": "15.5.7",
     "next-themes": "^0.4.6",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-icons": "^5.5.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -31,7 +27,7 @@
     "@types/webpack": "^5.28.5",
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
-    "eslint-config-next": "15.3.2",
+    "eslint-config-next": "15.5.7",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.6",
     "typescript": "^5"

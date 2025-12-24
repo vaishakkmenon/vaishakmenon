@@ -27,19 +27,49 @@ body {
 
 /* Define CSS variables for colors */
 :root {
+  /* Dark Mode (Default) */
   --color-background: #0a0a0a;
   --color-foreground: #ffffff;
+  --color-accent: #ffffff;
+  --color-muted: rgba(255, 255, 255, 0.6);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-divider: rgba(255, 255, 255, 0.15);
+
+  --header-bg: rgba(0, 0, 0, 0.4);
+  --header-text: #ffffff;
+  --card-bg: transparent;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --button-bg: rgba(255, 255, 255, 0.1);
+  --button-hover: rgba(255, 255, 255, 0.2);
+  --link-color: #ffffff;
+  --link-hover: #ffffff;
+  --focus-ring: rgba(255, 255, 255, 0.2);
+
+  --spot-opacity: 0.6;
+  --spot-blur: 80px;
+  --mx: 50%;
+  --my: 30%;
 }
 
 /* Light Mode Variables */
 html.light {
-  --color-background: #f8f8f8;
-  --color-foreground: #36454f; /* Dark charcoal */
-  --color-header-text: #212121; /* Very dark grey for header title */
-}
+  /* Warm Light Mode */
+  --color-background: #FAF8F3;
+  --color-foreground: #3D3026;
+  --color-accent: #A0826D;
+  --color-muted: #8B7963;
+  --color-border: #E5DCC9;
+  --color-divider: #D1C4AD;
 
-html.light header a {
-  color: #212121 !important; /* A very dark grey for strong contrast, using !important to override Tailwind */
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --header-text: #2B1F16;
+  --card-bg: #F5F1E8;
+  --card-border: #E5DCC9;
+  --button-bg: #E8DCC8;
+  --button-hover: #D4C4B0;
+  --link-color: #A0826D;
+  --link-hover: #8B6F5C;
+  --focus-ring: rgba(160, 130, 109, 0.25);
 }
 
 /* Set body colors using the new variables */
@@ -48,15 +78,15 @@ body {
   color: var(--color-foreground);
 }
 
-/* Mobile-specific override */
+/* Mobile-specific override - Dark Mode Only */
 @media (max-width: 768px) {
-  /* Dark Mode Shooting Stars */
-  body::before,
-  body::after,
-  .mobile-stars::before,
-  .mobile-stars::after,
-  .mobile-stars-2::before,
-  .mobile-stars-2::after {
+  /* Dark Mode Shooting Stars - Only visible in dark mode */
+  html.dark body::before,
+  html.dark body::after,
+  html.dark .mobile-stars::before,
+  html.dark .mobile-stars::after,
+  html.dark .mobile-stars-2::before,
+  html.dark .mobile-stars-2::after {
     content: "";
     position: fixed;
     width: 2px;
@@ -68,47 +98,36 @@ body {
     box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
   }
 
-  /* Light Mode Shooting Stars - Subtly dark and less glowing */
-  html.light body::before,
-  html.light body::after,
-  html.light .mobile-stars::before,
-  html.light .mobile-stars::after,
-  html.light .mobile-stars-2::before,
-  html.light .mobile-stars-2::after {
-    background: rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-  }
-
   /* Create additional pseudo-elements using a container */
-  body {
+  html.dark body {
     position: relative;
   }
 
   /* Left to Right - Top */
-  body::before {
+  html.dark body::before {
     animation: shootingStarLR1 12s linear infinite;
   }
 
   /* Right to Left - Bottom */
-  body::after {
+  html.dark body::after {
     animation: shootingStarRL1 16s linear infinite 4s;
   }
 
   /* Add more stars using a helper element */
-  .mobile-stars::before {
+  html.dark .mobile-stars::before {
     animation: shootingStarLR2 20s linear infinite 8s;
   }
 
-  .mobile-stars::after {
+  html.dark .mobile-stars::after {
     animation: shootingStarRL2 14s linear infinite 12s;
   }
 
   /* Add two more stars using a new helper element */
-  .mobile-stars-2::before {
+  html.dark .mobile-stars-2::before {
     animation: shootingStarLR3 18s linear infinite 2s;
   }
 
-  .mobile-stars-2::after {
+  html.dark .mobile-stars-2::after {
     animation: shootingStarRL3 15s linear infinite 6s;
   }
 
@@ -279,18 +298,25 @@ iframe {
 
 /* Links - subtle underline affordance */
 a {
-  @apply underline-offset-4 decoration-transparent transition;
+  color: var(--link-color);
+  text-underline-offset: 4px;
+  text-decoration-color: transparent;
+  transition: all 0.2s ease;
 }
 a:hover {
-  @apply decoration-current;
+  text-decoration-color: currentColor;
+  color: var(--link-hover);
 }
-/* Light Mode Links */
-html.light a {
-  color: #6c7a89;
+
+/* Button styles */
+.btn-primary {
+  background-color: var(--button-bg);
+  color: var(--color-foreground);
+  transition: background-color 0.2s ease;
 }
-/* Dark Mode Links */
-html.dark a {
-  color: #fff;
+
+.btn-primary:hover {
+  background-color: var(--button-hover);
 }
 
 /* Focus-visible for keyboard users */
@@ -308,52 +334,27 @@ html.dark a {
   }
 }
 
-.spotlight {
+/* Spotlight - Dark Mode Only */
+html.dark .spotlight {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
   mix-blend-mode: screen;
-  opacity: var(--spot-opacity);
-  transition: opacity 220ms ease;
-
-  /* compensate blur growth by using a slightly smaller radius (480px instead of 520px) */
-  filter: blur(var(--spot-blur));
-  background: radial-gradient(
-    480px 480px at var(--mx, 50%) var(--my, 30%),
-    rgba(255, 255, 255, 0.2),
-    rgba(255, 255, 255, 0) 60%
-  );
-  background-repeat: no-repeat;
-}
-
-/* Light Mode Spotlight */
-html.light .spotlight {
-  opacity: calc(var(--spot-opacity) * 0.4);
-  filter: blur(var(--spot-blur));
-  background: radial-gradient(
-    480px 480px at var(--mx, 50%) var(--my, 30%),
-    rgba(0, 0, 0, 0.1),
-    rgba(0, 0, 0, 0) 60%
-  );
-  background-repeat: no-repeat;
-}
-
-/* Dark Mode Spotlight */
-html.dark .spotlight {
   opacity: calc(var(--spot-opacity) * 0.6);
-  filter: blur(var(--spot-blur));
+  transition: opacity 220ms ease;
+  filter: blur(20px);
   background: radial-gradient(
     480px 480px at var(--mx, 50%) var(--my, 30%),
-    rgba(255, 255, 255, 0.14),
-    rgba(255, 255, 255, 0) 60%
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0) 50%
   );
   background-repeat: no-repeat;
 }
 
 /* reduced-motion: static and lower opacity */
 @media (prefers-reduced-motion: reduce) {
-  .spotlight {
+  html.dark .spotlight {
     transition: none;
     opacity: 0.25;
   }
@@ -373,7 +374,7 @@ html.dark .spotlight {
   outline: none;
 }
 .link-underline:focus-visible {
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+  box-shadow: 0 0 0 3px var(--focus-ring);
   border-radius: 2px;
 }
 .link-underline-sm {
