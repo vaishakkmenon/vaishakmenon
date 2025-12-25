@@ -1,8 +1,7 @@
-// Source citations component with relevance scores
+// Source citations component with sleek card design
 
 "use client";
 
-import { useState } from 'react';
 import { Source } from '@/lib/types/chat';
 
 interface ChatSourcesProps {
@@ -15,65 +14,47 @@ export function ChatSources({ sources }: ChatSourcesProps) {
   }
 
   return (
-    <details className="mt-3 text-sm">
-      <summary className="cursor-pointer opacity-70 hover:opacity-100 transition-opacity">
-        📚 View {sources.length} source{sources.length > 1 ? 's' : ''}
-      </summary>
-      <div className="mt-2 space-y-2">
-        {sources.map((source, index) => (
-          <SourceItem key={source.id || index} source={source} />
-        ))}
-      </div>
-    </details>
+    <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+      {sources.map((source, index) => (
+        <SourceCard key={source.id || index} source={source} index={index} />
+      ))}
+    </div>
   );
 }
 
-function SourceItem({ source }: { source: Source }) {
-  const [expanded, setExpanded] = useState(false);
-
+function SourceCard({ source, index }: { source: Source; index: number }) {
   // Convert cosine distance (0-2) to relevance percentage
-  // 0 = perfect match (100%), 2 = worst match (0%)
   const relevance = Math.max(0, (1 - source.distance / 2) * 100);
 
   // Determine color based on relevance
   const relevanceColor =
     relevance >= 80
-      ? 'text-green-500'
+      ? 'bg-green-500/20 text-green-400 border-green-500/30'
       : relevance >= 60
-      ? 'text-yellow-500'
-      : 'text-orange-500';
-
-  // Truncate text if too long
-  const MAX_PREVIEW_LENGTH = 150;
-  const needsTruncation = source.text.length > MAX_PREVIEW_LENGTH;
-  const displayText = expanded || !needsTruncation
-    ? source.text
-    : source.text.slice(0, MAX_PREVIEW_LENGTH) + '...';
+        ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+        : 'bg-orange-500/20 text-orange-400 border-orange-500/30';
 
   return (
-    <div className="border border-white/10 dark:border-white/10 rounded p-3 bg-white/5 dark:bg-white/5">
-      {/* Source file and relevance */}
-      <div className="flex items-center justify-between mb-2 text-xs">
-        <span className="font-mono opacity-70">{source.source}</span>
-        <span className={`font-medium ${relevanceColor}`}>
-          {relevance.toFixed(0)}% relevant
+    <div className="group relative bg-white/5 border border-white/10 rounded-lg p-2.5 transition-all hover:bg-white/10 hover:border-white/20">
+      <div className="flex items-center justify-between mb-1.5">
+        <span className="text-xs font-mono text-blue-400 font-medium truncate pr-2" title={source.source}>
+          [{index + 1}] {source.source.split('/').pop() || source.source}
+        </span>
+        <span className={`text-[10px] px-1.5 py-0.5 rounded-full border ${relevanceColor} flex-shrink-0`}>
+          {relevance.toFixed(0)}%
         </span>
       </div>
 
-      {/* Source text */}
-      <p className="text-sm opacity-90 leading-relaxed">
-        {displayText}
+      <p className="text-xs text-zinc-400 line-clamp-2">
+        {source.text}
       </p>
 
-      {/* Show more/less toggle */}
-      {needsTruncation && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="mt-2 text-xs underline opacity-70 hover:opacity-100 transition-opacity"
-        >
-          {expanded ? 'Show less' : 'Show more'}
-        </button>
-      )}
+      {/* Hover tooltip for full text */}
+      <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity z-10 bottom-full left-0 mb-2 w-64 bg-zinc-900 border border-white/10 rounded-lg p-3 shadow-xl pointer-events-none">
+        <div className="text-xs text-zinc-300 leading-relaxed max-h-48 overflow-y-auto">
+          {source.text}
+        </div>
+      </div>
     </div>
   );
 }

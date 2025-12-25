@@ -1,13 +1,13 @@
 // Main chat page
 
-"use client";
+'use client';
 
 import { useChatSession } from '@/hooks/useChatSession';
 import { useChatMessages } from '@/hooks/useChatMessages';
 import { ChatContainer } from '@/components/chat/ChatContainer';
 
 export default function ChatPage() {
-  const { sessionId, resetSession } = useChatSession();
+  const { sessionId, resetSession, apiStatus, recheckHealth } = useChatSession();
   const { messages, loading, error, sendMessage, clearMessages, retryLastMessage } = useChatMessages(
     sessionId,
     resetSession
@@ -27,6 +27,8 @@ export default function ChatPage() {
         onSend={sendMessage}
         onRetry={retryLastMessage}
         onClear={handleClear}
+        apiStatus={apiStatus}
+        onRecheckHealth={recheckHealth}
       />
     </main>
   );

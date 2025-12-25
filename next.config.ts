@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   images: {
     unoptimized: true,
+    qualities: [85, 90, 100],
   },
   async headers() {
     return [
@@ -42,7 +43,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https:",
+              "connect-src 'self' https: http://localhost:8000 ws://localhost:8000 https://localhost wss://localhost",
             ].join('; '),
           },
         ],

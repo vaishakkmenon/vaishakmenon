@@ -35,9 +35,9 @@ export interface RewriteMetadata {
   rewritten_query: string;
   pattern_name: string;
   pattern_type: string;
-  matched_entities: Record<string, any>;
+  matched_entities: Record<string, unknown>;
   rewrite_hint?: string;
-  metadata_filter_addition?: Record<string, any>;
+  metadata_filter_addition?: Record<string, unknown>;
   latency_ms: number;
   confidence: number;            // 0.0-1.0
 }
@@ -51,3 +51,21 @@ export interface ChatResponse {
   ambiguity?: AmbiguityMetadata;
   rewrite_metadata?: RewriteMetadata;
 }
+
+// Partial update during streaming
+export interface StreamUpdate {
+  answer?: string;
+  sources?: Source[];
+  grounded?: boolean;
+  session_id?: string;
+  ambiguity?: AmbiguityMetadata;
+}
+
+// API health check status
+export interface HealthStatus {
+  healthy: boolean;
+  error?: string;
+}
+
+// API status for UI
+export type ApiStatus = 'checking' | 'healthy' | 'unhealthy';

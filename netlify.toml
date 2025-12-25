@@ -8,7 +8,17 @@
 [dev]
   framework = "next"
   command   = "npm run dev"
-  port      = 3000
+  targetPort = 3000
+  port = 8888
+
+# Edge Functions for API proxy
+[[edge_functions]]
+  path = "/api/chat"
+  function = "chat"
+
+[[edge_functions]]
+  path = "/api/health"
+  function = "health"
 
 [[headers]]
   for = "/*"

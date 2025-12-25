@@ -1,16 +1,19 @@
 // Individual message bubble component
 
-"use client";
+'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
 import { Message } from '@/lib/types/chat';
 import { ChatSources } from './ChatSources';
+import ReactMarkdown from 'react-markdown';
+
 
 interface ChatMessageProps {
   message: Message;
+  isStreaming?: boolean;
 }
 
-export function ChatMessage({ message }: ChatMessageProps) {
+export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) {
   const prefersReducedMotion = useReducedMotion();
 
   const variants = prefersReducedMotion
@@ -19,6 +22,21 @@ export function ChatMessage({ message }: ChatMessageProps) {
 
   const isUser = message.role === 'user';
   const isAssistant = message.role === 'assistant';
+
+  // Filter sources to only show those that are explicitly cited in the content
+  // e.g. "some text [1]" -> shows source index 0 (if valid)
+  const usedIndices = new Set<number>();
+  if (message.content) {
+    const matches = message.content.matchAll(/\[(\d+)\]/g);
+    for (const match of matches) {
+      const index = parseInt(match[1], 10) - 1;
+      if (!isNaN(index) && index >= 0) {
+        usedIndices.add(index);
+      }
+    }
+  }
+
+  const filteredSources = message.sources?.filter((_, index) => usedIndices.has(index)) || [];
 
   return (
     <motion.article
@@ -31,15 +49,45 @@ export function ChatMessage({ message }: ChatMessageProps) {
       aria-label={`${message.role} message`}
     >
       <div
-        className={`rounded-lg p-4 shadow-sm ${
-          isUser
+        className={`rounded-lg px-4 py-3 shadow-sm inline-block ${isUser
             ? 'ml-auto max-w-[80%] md:max-w-[65%] bg-white/10 dark:bg-white/10'
-            : 'mr-auto max-w-[85%] md:max-w-[70%] bg-white/5 dark:bg-white/5'
-        }`}
+            : 'max-w-[85%] md:max-w-[70%] bg-white/5 dark:bg-white/5'
+          }`}
       >
-        <p className="text-base md:text-lg leading-relaxed whitespace-pre-wrap break-words">
-          {message.content}
-        </p>
+        <div className={`text-base md:text-lg leading-relaxed break-words ${isAssistant ? '' : 'whitespace-pre-wrap'}`}>
+          {isAssistant ? (
+            <ReactMarkdown
+              components={{
+                a: ({ href, children }: any) => (
+                  <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
+                    {children}
+                  </a>
+                ),
+                ul: ({ children }: any) => <ul className="list-disc ml-6 my-1">{children}</ul>,
+                ol: ({ children }: any) => <ol className="list-decimal ml-6 my-1">{children}</ol>,
+                li: ({ children }: any) => <li className="mb-0.5">{children}</li>,
+                p: ({ children }: any) => <p className="mb-2 last:mb-0">{children}</p>,
+                code: ({ children, className }: any) => {
+                  // Handle both inline code and block code
+                  const isInline = !className;
+                  return isInline ? (
+                    <code className="bg-black/20 rounded px-1 py-0.5 text-sm font-mono">{children}</code>
+                  ) : (
+                    <code className="block bg-black/20 rounded p-2 text-sm font-mono overflow-x-auto my-2">{children}</code>
+                  );
+                },
+                strong: ({ children }: any) => <strong className="font-semibold text-white/90">{children}</strong>,
+              }}
+            >
+              {message.content.replace(/(\[\d+\] .*?(\n|$))+$/, '').trim()}
+            </ReactMarkdown>
+          ) : (
+            message.content
+          )}
+          {isStreaming && isAssistant && (
+            <span className="inline-block w-[2px] h-[1em] ml-0.5 bg-current animate-pulse align-middle" />
+          )}
+        </div>
 
         {/* Grounded warning for assistant messages */}
         {isAssistant && message.grounded === false && (
@@ -86,9 +134,9 @@ export function ChatMessage({ message }: ChatMessageProps) {
           </div>
         )}
 
-        {/* Source citations */}
-        {isAssistant && message.sources && message.sources.length > 0 && (
-          <ChatSources sources={message.sources} />
+        {/* Source citations - filtered by usage */}
+        {isAssistant && filteredSources.length > 0 && (
+          <ChatSources sources={filteredSources} />
         )}
       </div>
     </motion.article>

@@ -1,9 +1,9 @@
 // Main chat container with auto-scroll and layout
 
-"use client";
+'use client';
 
 import { useEffect, useRef } from 'react';
-import { Message } from '@/lib/types/chat';
+import { Message, ApiStatus } from '@/lib/types/chat';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
 import { ChatError } from './ChatError';
@@ -16,6 +16,8 @@ interface ChatContainerProps {
   onSend: (message: string) => void;
   onRetry: () => void;
   onClear?: () => void;
+  apiStatus?: ApiStatus;
+  onRecheckHealth?: () => void;
 }
 
 export function ChatContainer({
@@ -25,6 +27,8 @@ export function ChatContainer({
   onSend,
   onRetry,
   onClear,
+  apiStatus = 'healthy',
+  onRecheckHealth,
 }: ChatContainerProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -33,8 +37,29 @@ export function ChatContainer({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const isApiDown = apiStatus === 'unhealthy';
+
   return (
     <div className="min-h-screen flex flex-col max-w-3xl mx-auto px-4 py-24">
+      {/* API Status Warning */}
+      {isApiDown && (
+        <div className="mb-4 p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
+          <div className="flex items-center justify-between">
+            <p className="text-yellow-800 dark:text-yellow-200 text-sm">
+              Chat service is currently unavailable. Please try again later.
+            </p>
+            {onRecheckHealth && (
+              <button
+                onClick={onRecheckHealth}
+                className="text-yellow-700 dark:text-yellow-300 text-sm underline hover:no-underline ml-4"
+              >
+                Retry
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Header with optional clear button */}
       {messages.length > 0 && onClear && (
         <div className="flex justify-between items-center mb-6">
@@ -54,9 +79,18 @@ export function ChatContainer({
           <ChatWelcome onExampleClick={onSend} />
         )}
 
-        {messages.map((message) => (
-          <ChatMessage key={message.id} message={message} />
-        ))}
+        {messages.map((message, index) => {
+          // Last assistant message while loading = currently streaming
+          const isLastMessage = index === messages.length - 1;
+          const isStreaming = loading && isLastMessage && message.role === 'assistant';
+          return (
+            <ChatMessage
+              key={message.id}
+              message={message}
+              isStreaming={isStreaming}
+            />
+          );
+        })}
 
         {/* Scroll anchor */}
         <div ref={messagesEndRef} />
@@ -66,7 +100,7 @@ export function ChatContainer({
       {error && <ChatError error={error} onRetry={onRetry} />}
 
       {/* Input */}
-      <ChatInput onSend={onSend} disabled={loading} />
+      <ChatInput onSend={onSend} disabled={loading || isApiDown} />
     </div>
   );
 }

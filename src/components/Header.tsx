@@ -2,29 +2,18 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { ThemeIcon, ThemeToggle } from '@/components';
 import { SOCIAL_LINKS, LAYOUT } from '@/lib/constants';
 
-/**
- * Sticky header with scroll-sensitive fade effect
- *
- * Features:
- * - Opacity fades from 1 to 0 as user scrolls past viewport height
- * - Sticky positioning with backdrop blur
- * - Contains navigation, social links, and theme toggle
- * - Optimized with requestAnimationFrame for smooth scrolling
- *
- * @returns Header component with navigation
- *
- * @example
- * ```tsx
- * <Header />
- * ```
- */
+// ... (JSDoc omitted for brevity) ...
+
 export function Header(): React.ReactElement {
     const [opacity, setOpacity] = useState<number>(1);
+    const pathname = usePathname();
 
     useEffect(() => {
+        // ... (existing scroll logic) ...
         if (typeof window === 'undefined') return;
 
         const fadeStart = window.innerHeight + LAYOUT.header.fadeStart;
@@ -64,6 +53,8 @@ export function Header(): React.ReactElement {
         };
     }, []);
 
+    const isActive = (path: string) => pathname === path;
+
     return (
         <header
             style={{
@@ -71,7 +62,7 @@ export function Header(): React.ReactElement {
                 transition: LAYOUT.header.fadeTransition,
                 backgroundColor: 'var(--header-bg)'
             }}
-            className="sticky top-0 z-20 backdrop-blur"
+            className="sticky top-0 z-50 backdrop-blur"
         >
             <div className="mx-auto max-w-5xl flex items-center justify-between px-4 py-3">
                 <Link
@@ -82,6 +73,13 @@ export function Header(): React.ReactElement {
                     Vaishak Menon
                 </Link>
                 <nav className="flex items-center gap-3">
+                    <Link
+                        href="/chat"
+                        className={`text-sm font-medium transition-opacity ${isActive('/chat') ? 'opacity-100 underline decoration-2 underline-offset-4' : 'opacity-70 hover:opacity-100'}`}
+                        style={{ color: 'var(--header-text)' }}
+                    >
+                        Chat
+                    </Link>
                     <Link href={SOCIAL_LINKS.linkedin} target="_blank" aria-label="LinkedIn">
                         <ThemeIcon lightSvg="/images/linkedin-white.png" darkSvg="/images/linkedin.png" width={24} height={24} alt="LinkedIn" />
                     </Link>
