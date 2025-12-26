@@ -18,7 +18,9 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
   // Typing animation refs
   const fullTextRef = useRef<string>('');
   const displayedLengthRef = useRef<number>(0);
+  const abortControllerRef = useRef<AbortController | null>(null);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const stoppedRef = useRef<boolean>(false);
 
   const sendMessage = useCallback(
     async (question: string, retryCount = 0): Promise<void> => {
@@ -39,6 +41,7 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
       // Reset typing animation state
       fullTextRef.current = '';
       displayedLengthRef.current = 0;
+      stoppedRef.current = false;
 
       const assistantPlaceholder: Message = {
         id: assistantId,
@@ -94,21 +97,30 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
           }
         };
 
+        // Create abort controller for this request
+        abortControllerRef.current = new AbortController();
+
         // Stream the response
         const response = await streamChatMessage(
           { question, session_id: sessionId || undefined },
-          handleUpdate
+          handleUpdate,
+          abortControllerRef.current.signal
         );
 
-        // Wait for typing animation to complete
+        // Wait for typing animation to complete (unless stopped)
         await new Promise<void>((resolve) => {
           const checkComplete = setInterval(() => {
-            if (displayedLengthRef.current >= fullTextRef.current.length) {
+            if (stoppedRef.current || displayedLengthRef.current >= fullTextRef.current.length) {
               clearInterval(checkComplete);
               resolve();
             }
           }, 50);
         });
+
+        // If stopped, don't do final update
+        if (stoppedRef.current) {
+          return;
+        }
 
         // Clear typing interval
         if (typingIntervalRef.current) {
@@ -139,6 +151,12 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
         }
 
         const error = err as Error & { status?: number };
+
+        // If this was an intentional abort (user clicked Stop), don't treat as error
+        if (error.name === 'AbortError') {
+          // Keep the partial message visible, just stop loading
+          return;
+        }
 
         // Handle session expiry - auto-reset and retry
         if (error.status === 404 && sessionId && retryCount < MAX_RETRIES) {
@@ -178,6 +196,24 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
     }
   }, [messages, sendMessage]);
 
+  const stopGeneration = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+      typingIntervalRef.current = null;
+    }
+    // Set stopped flag to prevent final update
+    stoppedRef.current = true;
+    // Reset text refs to prevent stale content on next message
+    fullTextRef.current = '';
+    displayedLengthRef.current = 0;
+    setLoading(false);
+    streamingMessageIdRef.current = null;
+  }, []);
+
   return {
     messages,
     loading,
@@ -185,5 +221,6 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
     sendMessage,
     clearMessages,
     retryLastMessage,
+    stopGeneration,
   };
 }

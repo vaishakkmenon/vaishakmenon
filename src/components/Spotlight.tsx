@@ -11,47 +11,24 @@ import { useEffect } from 'react';
  * Performance optimized with requestAnimationFrame throttling.
  *
  * @returns Spotlight overlay element
- *
- * @example
- * ```tsx
- * <Spotlight />
- * ```
  */
 export default function Spotlight(): React.ReactElement {
     useEffect(() => {
         if (typeof window === 'undefined') return;
         if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
 
-        const root = document.documentElement;
-        if (!root) return;
-
-        try {
-            root.style.setProperty('--mx', root.style.getPropertyValue('--mx') || '50%');
-            root.style.setProperty('--my', root.style.getPropertyValue('--my') || '30%');
-        } catch (error) {
-            console.error('Failed to initialize spotlight:', error);
-            return;
-        }
-
-        if (process.env.NODE_ENV === 'development') {
-            console.debug('Spotlight mounted — writing --mx/--my on mousemove');
-        }
+        // Set initial position
+        document.documentElement.style.setProperty('--mx', '50%');
+        document.documentElement.style.setProperty('--my', '30%');
 
         let frameId: number | null = null;
 
         const onMove = (e: MouseEvent): void => {
-            // Throttle with requestAnimationFrame
             if (frameId) return;
 
             frameId = requestAnimationFrame(() => {
-                try {
-                    if (root) {
-                        root.style.setProperty('--mx', `${e.clientX}px`);
-                        root.style.setProperty('--my', `${e.clientY}px`);
-                    }
-                } catch (error) {
-                    console.error('Failed to update spotlight:', error);
-                }
+                document.documentElement.style.setProperty('--mx', `${e.clientX}px`);
+                document.documentElement.style.setProperty('--my', `${e.clientY}px`);
                 frameId = null;
             });
         };
@@ -60,9 +37,7 @@ export default function Spotlight(): React.ReactElement {
 
         return () => {
             window.removeEventListener('mousemove', onMove);
-            if (frameId) {
-                cancelAnimationFrame(frameId);
-            }
+            if (frameId) cancelAnimationFrame(frameId);
         };
     }, []);
 

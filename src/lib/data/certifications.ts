@@ -22,7 +22,7 @@ export const CERTIFICATIONS: Certification[] = [
   {
     id: 'aws-cap',
     name: 'AWS Certified AI Practitioner',
-    file: '/certs/AWS_AI-Cert.pdf',
+    file: '/certs/AWS-CAP-Cert.pdf',
     image: '/images/aws-cap.webp',
     earned: 'Jun 2025',
     verifyUrl: 'https://www.credly.com/badges/9c907d66-ce15-4892-b2b5-3141d9339349/public_url',

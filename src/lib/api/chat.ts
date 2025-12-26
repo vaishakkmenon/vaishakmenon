@@ -17,9 +17,19 @@ const INITIAL_DELAY_MS = 1000;
 
 /**
  * Generate a UUID v4 for session management
+ * Uses crypto.randomUUID if available, falls back to manual generation
  */
 export function generateSessionId(): string {
-  return crypto.randomUUID();
+  // crypto.randomUUID requires HTTPS or localhost, fallback for HTTP
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  // Fallback UUID v4 generator
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 }
 
 /**
@@ -189,11 +199,17 @@ export async function sendChatMessage(params: ChatRequest): Promise<ChatResponse
  */
 export async function streamChatMessage(
   params: ChatRequest,
-  onUpdate: (update: StreamUpdate) => void
+  onUpdate: (update: StreamUpdate) => void,
+  externalSignal?: AbortSignal
 ): Promise<ChatResponse> {
   return withRetry(async () => {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), STREAM_TIMEOUT_MS);
+
+    // If external signal aborts, abort our controller too
+    if (externalSignal) {
+      externalSignal.addEventListener('abort', () => controller.abort());
+    }
 
     try {
       // Edge function proxy at /api/chat forwards to backend /chat/stream

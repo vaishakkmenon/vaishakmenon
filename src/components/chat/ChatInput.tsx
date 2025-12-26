@@ -10,10 +10,12 @@ const CHAR_WARNING_THRESHOLD = 1800;
 
 interface ChatInputProps {
   onSend: (message: string) => void;
+  onStop?: () => void;
   disabled: boolean;
+  isStreaming?: boolean;
 }
 
-export function ChatInput({ onSend, disabled }: ChatInputProps) {
+export function ChatInput({ onSend, onStop, disabled, isStreaming = false }: ChatInputProps) {
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -59,24 +61,33 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
           disabled={disabled}
           placeholder="Ask me about my background..."
           aria-label="Type your question"
-          className="flex-1 rounded-lg border border-white/20 dark:border-white/20 bg-transparent px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 rounded-lg border border-zinc-400 dark:border-white/20 bg-transparent px-4 py-3 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:focus:ring-white/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         />
-        <button
-          onClick={handleSend}
-          disabled={!canSend}
-          aria-label="Send message"
-          className="px-6 py-3 rounded-lg bg-white/10 hover:bg-white/20 dark:bg-white/10 dark:hover:bg-white/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-        >
-          Send
-        </button>
+        {isStreaming && onStop ? (
+          <button
+            onClick={onStop}
+            aria-label="Stop generation"
+            className="px-6 py-3 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-400 transition-colors font-medium"
+          >
+            Stop
+          </button>
+        ) : (
+          <button
+            onClick={handleSend}
+            disabled={!canSend}
+            aria-label="Send message"
+            className="px-6 py-3 rounded-lg bg-white/10 hover:bg-white/20 dark:bg-white/10 dark:hover:bg-white/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+          >
+            Send
+          </button>
+        )}
       </div>
 
       {/* Character count warning */}
       {showCharCount && (
         <div
-          className={`text-xs mt-2 ${
-            isTooLong ? 'text-red-400' : 'text-gray-400'
-          }`}
+          className={`text-xs mt-2 ${isTooLong ? 'text-red-400' : 'text-gray-400'
+            }`}
         >
           {input.length}/{MAX_QUESTION_LENGTH} characters
           {isTooLong && ' - Question is too long'}

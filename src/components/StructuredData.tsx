@@ -30,6 +30,11 @@ export function StructuredData(): React.ReactElement {
         name: 'AWS Certified Cloud Practitioner',
         credentialCategory: 'Professional Certification',
       },
+      {
+        '@type': 'EducationalOccupationalCredential',
+        name: 'AWS Certified AI Practitioner',
+        credentialCategory: 'Professional Certification',
+      },
     ],
   };
 

@@ -16,6 +16,7 @@ interface ChatContainerProps {
   onSend: (message: string) => void;
   onRetry: () => void;
   onClear?: () => void;
+  onStop?: () => void;
   apiStatus?: ApiStatus;
   onRecheckHealth?: () => void;
 }
@@ -27,6 +28,7 @@ export function ChatContainer({
   onSend,
   onRetry,
   onClear,
+  onStop,
   apiStatus = 'healthy',
   onRecheckHealth,
 }: ChatContainerProps) {
@@ -100,7 +102,7 @@ export function ChatContainer({
       {error && <ChatError error={error} onRetry={onRetry} />}
 
       {/* Input */}
-      <ChatInput onSend={onSend} disabled={loading || isApiDown} />
+      <ChatInput onSend={onSend} onStop={onStop} disabled={loading || isApiDown} isStreaming={loading} />
     </div>
   );
 }

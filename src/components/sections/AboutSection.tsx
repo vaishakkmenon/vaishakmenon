@@ -9,7 +9,9 @@ import { SECTION_IDS } from '@/lib/constants';
  */
 export function AboutSection(): React.ReactElement {
   return (
-    <AnimatedSection id={SECTION_IDS.about} className="py-24 md:py-32">
+    <AnimatedSection id={SECTION_IDS.about} className="py-24 md:py-32 relative overflow-hidden">
+      {/* Background decoration - temporarily disabled */}
+      {/* <div className="absolute top-1/2 right-0 -translate-y-1/2 w-96 h-96 bg-violet-500/5 rounded-full blur-3xl -z-10" /> */}
       <SectionHeading id="about" max="3xl">
         About Me
       </SectionHeading>

@@ -11,12 +11,16 @@
 @source "../../src";
 @source "../../app";
 
+/* Configure dark mode manually for v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ---------- Base resets ---------- */
 html,
 body {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  overflow-x: hidden;
   overflow-y: auto;
   /* allow natural scrolling */
   -webkit-font-smoothing: antialiased;
@@ -78,207 +82,10 @@ body {
   color: var(--color-foreground);
 }
 
-/* Mobile-specific override - Dark Mode Only */
+/* Mobile-specific override */
 @media (max-width: 768px) {
-  /* Dark Mode Shooting Stars - Only visible in dark mode */
-  html.dark body::before,
-  html.dark body::after,
-  html.dark .mobile-stars::before,
-  html.dark .mobile-stars::after,
-  html.dark .mobile-stars-2::before,
-  html.dark .mobile-stars-2::after {
-    content: "";
-    position: fixed;
-    width: 2px;
-    height: 2px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: -1;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
-  }
 
-  /* Create additional pseudo-elements using a container */
-  html.dark body {
-    position: relative;
-  }
-
-  /* Left to Right - Top */
-  html.dark body::before {
-    animation: shootingStarLR1 12s linear infinite;
-  }
-
-  /* Right to Left - Bottom */
-  html.dark body::after {
-    animation: shootingStarRL1 16s linear infinite 4s;
-  }
-
-  /* Add more stars using a helper element */
-  html.dark .mobile-stars::before {
-    animation: shootingStarLR2 20s linear infinite 8s;
-  }
-
-  html.dark .mobile-stars::after {
-    animation: shootingStarRL2 14s linear infinite 12s;
-  }
-
-  /* Add two more stars using a new helper element */
-  html.dark .mobile-stars-2::before {
-    animation: shootingStarLR3 18s linear infinite 2s;
-  }
-
-  html.dark .mobile-stars-2::after {
-    animation: shootingStarRL3 15s linear infinite 6s;
-  }
-
-  @keyframes shootingStarLR1 {
-    0%,
-    100% {
-      top: 15%;
-      left: -5%;
-      opacity: 0;
-    }
-    5% {
-      opacity: 1;
-      box-shadow: -40px -8px 20px rgba(255, 255, 255, 0.3), 0 0 8px white;
-    }
-    20% {
-      top: 35%;
-      left: 50%;
-      opacity: 1;
-      box-shadow: -80px -16px 30px rgba(255, 255, 255, 0.2), 0 0 8px white;
-    }
-    30% {
-      top: 55%;
-      left: 105%;
-      opacity: 0;
-    }
-  }
-
-  @keyframes shootingStarRL1 {
-    0%,
-    100% {
-      top: 65%;
-      left: 105%;
-      opacity: 0;
-    }
-    8% {
-      opacity: 1;
-      box-shadow: 50px 10px 22px rgba(255, 255, 255, 0.3), 0 0 8px white;
-    }
-    25% {
-      top: 40%;
-      left: 50%;
-      opacity: 1;
-      box-shadow: 90px 18px 32px rgba(255, 255, 255, 0.2), 0 0 8px white;
-    }
-    35% {
-      top: 15%;
-      left: -5%;
-      opacity: 0;
-    }
-  }
-
-  @keyframes shootingStarLR2 {
-    0%,
-    100% {
-      top: 80%;
-      left: -5%;
-      opacity: 0;
-    }
-    6% {
-      opacity: 0.8;
-      box-shadow: -35px -6px 18px rgba(255, 255, 255, 0.25),
-        0 0 6px rgba(255, 255, 255, 0.9);
-    }
-    22% {
-      top: 55%;
-      left: 50%;
-      opacity: 0.8;
-      box-shadow: -70px -12px 25px rgba(255, 255, 255, 0.15),
-        0 0 6px rgba(255, 255, 255, 0.9);
-    }
-    32% {
-      top: 30%;
-      left: 105%;
-      opacity: 0;
-    }
-  }
-
-  @keyframes shootingStarRL2 {
-    0%,
-    100% {
-      top: 25%;
-      left: 105%;
-      opacity: 0;
-    }
-    7% {
-      opacity: 0.7;
-      box-shadow: 45px 8px 20px rgba(255, 255, 255, 0.25),
-        0 0 6px rgba(255, 255, 255, 0.8);
-    }
-    24% {
-      top: 50%;
-      left: 50%;
-      opacity: 0.7;
-      box-shadow: 80px 15px 28px rgba(255, 255, 255, 0.15),
-        0 0 6px rgba(255, 255, 255, 0.8);
-    }
-    34% {
-      top: 75%;
-      left: -5%;
-      opacity: 0;
-    }
-  }
-
-  @keyframes shootingStarLR3 {
-    0%,
-    100% {
-      top: 5%;
-      left: -5%;
-      opacity: 0;
-    }
-    10% {
-      opacity: 0.9;
-      box-shadow: -38px -7px 19px rgba(255, 255, 255, 0.28), 0 0 7px white;
-    }
-    28% {
-      top: 25%;
-      left: 60%;
-      opacity: 0.9;
-      box-shadow: -75px -14px 28px rgba(255, 255, 255, 0.18), 0 0 7px white;
-    }
-    38% {
-      top: 45%;
-      left: 105%;
-      opacity: 0;
-    }
-  }
-
-  @keyframes shootingStarRL3 {
-    0%,
-    100% {
-      top: 90%;
-      left: 105%;
-      opacity: 0;
-    }
-    9% {
-      opacity: 0.85;
-      box-shadow: 48px 9px 21px rgba(255, 255, 255, 0.28), 0 0 7px white;
-    }
-    27% {
-      top: 70%;
-      left: 45%;
-      opacity: 0.85;
-      box-shadow: 85px 16px 30px rgba(255, 255, 255, 0.18), 0 0 7px white;
-    }
-    37% {
-      top: 50%;
-      left: -5%;
-      opacity: 0;
-    }
-  }
-
+  /* Clean background - no effects on mobile for battery and simplicity */
   .spotlight {
     display: none;
   }
@@ -303,6 +110,7 @@ a {
   text-decoration-color: transparent;
   transition: all 0.2s ease;
 }
+
 a:hover {
   text-decoration-color: currentColor;
   color: var(--link-hover);
@@ -344,11 +152,9 @@ html.dark .spotlight {
   opacity: calc(var(--spot-opacity) * 0.6);
   transition: opacity 220ms ease;
   filter: blur(20px);
-  background: radial-gradient(
-    480px 480px at var(--mx, 50%) var(--my, 30%),
-    rgba(255, 255, 255, 0.18),
-    rgba(255, 255, 255, 0) 50%
-  );
+  background: radial-gradient(480px 480px at var(--mx, 50%) var(--my, 30%),
+      rgba(255, 255, 255, 0.18),
+      rgba(255, 255, 255, 0) 50%);
   background-repeat: no-repeat;
 }
 
@@ -362,27 +168,30 @@ html.dark .spotlight {
 
 /* Animated underline utility (no reflow) */
 .link-underline {
-  background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px
-    no-repeat;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
   transition: background-size 0.26s cubic-bezier(0.2, 0.9, 0.2, 1),
     color 0.18s ease;
   text-decoration: none;
 }
+
 .link-underline:hover,
 .link-underline:focus {
   background-size: 100% 2px;
   outline: none;
 }
+
 .link-underline:focus-visible {
   box-shadow: 0 0 0 3px var(--focus-ring);
   border-radius: 2px;
 }
+
 .link-underline-sm {
-  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px
-    no-repeat;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat;
   transition: background-size 0.22s ease;
 }
+
 @media (prefers-reduced-motion: reduce) {
+
   .link-underline,
   .link-underline-sm {
     transition: none;
