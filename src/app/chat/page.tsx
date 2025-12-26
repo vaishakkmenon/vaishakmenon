@@ -34,6 +34,7 @@ export default function ChatPage() {
           messages={messages}
           loading={loading}
           error={error}
+          sessionId={sessionId}
           onSend={sendMessage}
           onRetry={retryLastMessage}
           onClear={handleClear}

@@ -2,19 +2,29 @@
 
 'use client';
 
+import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Message } from '@/lib/types/chat';
 import { ChatSources } from './ChatSources';
+import { submitFeedback } from '@/lib/api/chat';
+import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 
 interface ChatMessageProps {
   message: Message;
   isStreaming?: boolean;
+  sessionId?: string;
 }
 
-export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) {
+export function ChatMessage({ message, isStreaming = false, sessionId }: ChatMessageProps) {
   const prefersReducedMotion = useReducedMotion();
+  // Track selection (can change until submitted) vs submitted (locked)
+  const [selectedFeedback, setSelectedFeedback] = useState<'up' | 'down' | null>(message.feedbackSubmitted || null);
+  const [isSubmitted, setIsSubmitted] = useState(!!message.feedbackSubmitted);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showComment, setShowComment] = useState(false);
+  const [comment, setComment] = useState('');
 
   const variants = prefersReducedMotion
     ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
@@ -37,6 +47,34 @@ export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) 
   }
 
   const filteredSources = message.sources?.filter((_, index) => usedIndices.has(index)) || [];
+
+  const handleSelectFeedback = (thumbsUp: boolean) => {
+    if (isSubmitted) return;
+    const newState = thumbsUp ? 'up' : 'down';
+    // Toggle: clicking same button deselects
+    setSelectedFeedback(selectedFeedback === newState ? null : newState);
+  };
+
+  const handleSubmitFeedback = async () => {
+    if (!sessionId || isSubmitting || !selectedFeedback || isSubmitted) return;
+
+    setIsSubmitting(true);
+    try {
+      await submitFeedback({
+        session_id: sessionId,
+        message_id: message.id,
+        thumbs_up: selectedFeedback === 'up',
+        comment: comment.trim() || null,
+      });
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Failed to submit feedback:', error);
+      // Still mark as submitted on error - feedback is best-effort
+      setIsSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <motion.article
@@ -143,7 +181,75 @@ export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) 
         {isAssistant && filteredSources.length > 0 && (
           <ChatSources sources={filteredSources} />
         )}
+
+        {/* Feedback - only for completed assistant messages */}
+        {isAssistant && !isStreaming && message.content && sessionId && (
+          <div className="flex items-center gap-1 mt-2 pt-1.5 border-t border-white/5">
+            <button
+              onClick={() => handleSelectFeedback(true)}
+              disabled={isSubmitted}
+              className={`p-1 rounded transition-colors ${selectedFeedback === 'up'
+                ? 'bg-green-500/20 text-green-400'
+                : isSubmitted
+                  ? 'opacity-30 cursor-not-allowed text-zinc-500'
+                  : 'text-zinc-500 hover:text-green-400'
+                }`}
+              aria-label="Thumbs up"
+            >
+              <ThumbsUp className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={() => handleSelectFeedback(false)}
+              disabled={isSubmitted}
+              className={`p-1 rounded transition-colors ${selectedFeedback === 'down'
+                ? 'bg-red-500/20 text-red-400'
+                : isSubmitted
+                  ? 'opacity-30 cursor-not-allowed text-zinc-500'
+                  : 'text-zinc-500 hover:text-red-400'
+                }`}
+              aria-label="Thumbs down"
+            >
+              <ThumbsDown className="w-3.5 h-3.5" />
+            </button>
+
+            {/* Expand when feedback selected */}
+            {selectedFeedback && !isSubmitted && (
+              <>
+                <button
+                  onClick={() => setShowComment(!showComment)}
+                  className="text-xs text-zinc-500 hover:text-zinc-300 ml-2"
+                >
+                  {showComment ? '−' : '+'}
+                </button>
+                <button
+                  onClick={handleSubmitFeedback}
+                  disabled={isSubmitting}
+                  className="ml-auto px-2 py-0.5 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors disabled:opacity-50"
+                >
+                  {isSubmitting ? '...' : 'Send'}
+                </button>
+              </>
+            )}
+
+            {isSubmitted && (
+              <span className="text-xs text-zinc-500 ml-2">Thanks!</span>
+            )}
+          </div>
+        )}
+
+        {/* Comment field - outside main row for cleaner layout */}
+        {isAssistant && showComment && !isSubmitted && sessionId && (
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Add a comment..."
+            className="mt-1.5 w-full p-2 text-sm bg-white/5 border border-white/10 rounded resize-none focus:outline-none focus:border-blue-500/50"
+            rows={2}
+            maxLength={500}
+          />
+        )}
       </div>
     </motion.article>
   );
 }
+

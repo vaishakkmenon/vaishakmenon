@@ -7,6 +7,7 @@ import { ThemeProvider } from 'next-themes';
 import Script from 'next/script';
 import { Header, Spotlight } from '@/components';
 import { StructuredData } from '@/components/StructuredData';
+import { HashNavigationProvider } from '@/components/HashNavigationProvider';
 import { THEME } from '@/lib/constants';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -75,8 +76,10 @@ export default function Root({ children }: { children: React.ReactNode }): React
         <div aria-hidden className="mobile-stars" />
         <div aria-hidden className="mobile-stars-2" />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey={THEME.STORAGE_KEY}>
-          <Header />
-          <main>{children}</main>
+          <HashNavigationProvider>
+            <Header />
+            <main>{children}</main>
+          </HashNavigationProvider>
         </ThemeProvider>
       </body>
     </html>

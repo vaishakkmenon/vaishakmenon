@@ -14,7 +14,7 @@ export function ChatSources({ sources }: ChatSourcesProps) {
   }
 
   return (
-    <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+    <div className="mt-2 flex flex-col gap-1.5">
       {sources.map((source, index) => (
         <SourceCard key={source.id || index} source={source} index={index} />
       ))}

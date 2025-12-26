@@ -13,6 +13,7 @@ interface ChatContainerProps {
   messages: Message[];
   loading: boolean;
   error: string | null;
+  sessionId?: string;
   onSend: (message: string) => void;
   onRetry: () => void;
   onClear?: () => void;
@@ -25,6 +26,7 @@ export function ChatContainer({
   messages,
   loading,
   error,
+  sessionId,
   onSend,
   onRetry,
   onClear,
@@ -90,6 +92,7 @@ export function ChatContainer({
               key={message.id}
               message={message}
               isStreaming={isStreaming}
+              sessionId={sessionId}
             />
           );
         })}

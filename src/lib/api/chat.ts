@@ -1,7 +1,7 @@
 // API service layer for RAG chatbot
 // Uses Netlify Edge Functions as proxy to protect API key
 
-import { ChatRequest, ChatResponse, StreamUpdate, HealthStatus } from '@/lib/types/chat';
+import { ChatRequest, ChatResponse, StreamUpdate, HealthStatus, FeedbackRequest, FeedbackResponse } from '@/lib/types/chat';
 
 // API endpoints - use edge function proxy by default
 // For local dev without Netlify CLI, set NEXT_PUBLIC_RAG_API_BASE_URL to backend URL
@@ -374,4 +374,34 @@ export async function streamChatMessage(
       throw error;
     }
   });
+}
+
+/**
+ * Submit feedback for a chat response (thumbs up/down)
+ * Uses /api/feedback edge function proxy
+ */
+export async function submitFeedback(params: FeedbackRequest): Promise<FeedbackResponse> {
+  const endpoint = `${API_BASE_URL}/feedback`;
+
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: buildHeaders(),
+      body: JSON.stringify(params),
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Feedback submission failed:', errorText);
+      throw new Error('Failed to submit feedback');
+    }
+
+    return await response.json();
+  } catch (error: unknown) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('Feedback request timed out');
+    }
+    throw error;
+  }
 }

@@ -20,6 +20,10 @@
   path = "/api/health"
   function = "health"
 
+[[edge_functions]]
+  path = "/api/feedback"
+  function = "feedback"
+
 [[headers]]
   for = "/*"
   [headers.values]

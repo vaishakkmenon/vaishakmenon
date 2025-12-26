@@ -10,6 +10,7 @@ export interface Message {
   timestamp: Date;
   rewrite_metadata?: RewriteMetadata;
   ambiguity?: AmbiguityMetadata;
+  feedbackSubmitted?: 'up' | 'down' | null;  // Track user feedback
 }
 
 export interface ChatRequest {
@@ -61,6 +62,19 @@ export interface StreamUpdate {
   ambiguity?: AmbiguityMetadata;
 }
 
+// Feedback types
+export interface FeedbackRequest {
+  session_id: string;
+  message_id: string;
+  thumbs_up: boolean;
+  comment?: string | null;
+}
+
+export interface FeedbackResponse {
+  id: string;                    // UUID of the feedback record
+  status: string;                // "received"
+}
+
 // API health check status
 export interface HealthStatus {
   healthy: boolean;
@@ -69,3 +83,4 @@ export interface HealthStatus {
 
 // API status for UI
 export type ApiStatus = 'checking' | 'healthy' | 'unhealthy';
+

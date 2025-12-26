@@ -12,9 +12,11 @@
     "packageJson": {
       "dependencies": [
         "npm:@eslint/eslintrc@3",
+        "npm:@netlify/edge-functions@^3.0.3",
         "npm:@tailwindcss/postcss@^4.1.6",
         "npm:@testing-library/jest-dom@^6.6.3",
         "npm:@testing-library/react@^16.1.0",
+        "npm:@types/deno@^2.5.0",
         "npm:@types/estree@^1.0.7",
         "npm:@types/jest@^29.5.14",
         "npm:@types/json-schema@^7.0.15",
