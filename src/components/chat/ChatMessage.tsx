@@ -8,7 +8,6 @@ import { Message } from '@/lib/types/chat';
 import { ChatSources } from './ChatSources';
 import { submitFeedback } from '@/lib/api/chat';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
 
 
 interface ChatMessageProps {
@@ -47,6 +46,9 @@ export function ChatMessage({ message, isStreaming = false, sessionId }: ChatMes
   }
 
   const filteredSources = message.sources?.filter((_, index) => usedIndices.has(index)) || [];
+
+  // Clean the message content - strip trailing source references
+  const cleanedContent = message.content.replace(/(\[\d+\] .*?(\n|$))+$/, '').trim();
 
   const handleSelectFeedback = (thumbsUp: boolean) => {
     if (isSubmitted) return;
@@ -92,43 +94,11 @@ export function ChatMessage({ message, isStreaming = false, sessionId }: ChatMes
           : 'max-w-[85%] md:max-w-[70%] bg-white/5 dark:bg-white/5'
           }`}
       >
-        <div className={`text-base md:text-lg leading-relaxed break-words ${isAssistant && !isStreaming ? '' : 'whitespace-pre-wrap'}`}>
-          {isAssistant ? (
-            isStreaming ? (
-              // During streaming: plain text with inline cursor
-              <>
-                {message.content.replace(/(\[\d+\] .*?(\n|$))+$/, '').trim()}
-                <span className="inline-block w-[2px] h-[1.1em] ml-0.5 bg-current animate-pulse" style={{ verticalAlign: 'text-bottom' }} />
-              </>
-            ) : (
-              // After streaming completes: render as markdown
-              <ReactMarkdown
-                components={{
-                  a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
-                    <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
-                      {children}
-                    </a>
-                  ),
-                  ul: ({ children }: { children?: React.ReactNode }) => <ul className="list-disc ml-6 my-1">{children}</ul>,
-                  ol: ({ children }: { children?: React.ReactNode }) => <ol className="list-decimal ml-6 my-1">{children}</ol>,
-                  li: ({ children }: { children?: React.ReactNode }) => <li className="mb-0.5">{children}</li>,
-                  p: ({ children }: { children?: React.ReactNode }) => <p className="mb-2 last:mb-0">{children}</p>,
-                  code: ({ children, className }: { children?: React.ReactNode; className?: string }) => {
-                    const isInline = !className;
-                    return isInline ? (
-                      <code className="bg-black/20 rounded px-1 py-0.5 text-sm font-mono">{children}</code>
-                    ) : (
-                      <code className="block bg-black/20 rounded p-2 text-sm font-mono overflow-x-auto my-2">{children}</code>
-                    );
-                  },
-                  strong: ({ children }: { children?: React.ReactNode }) => <strong className="font-semibold text-white/90">{children}</strong>,
-                }}
-              >
-                {message.content.replace(/(\[\d+\] .*?(\n|$))+$/, '').trim()}
-              </ReactMarkdown>
-            )
-          ) : (
-            message.content
+        <div className="text-base md:text-lg leading-relaxed break-words whitespace-pre-wrap">
+          {cleanedContent}
+          {/* Streaming cursor */}
+          {isStreaming && (
+            <span className="inline-block w-[2px] h-[1.1em] ml-0.5 bg-current animate-pulse align-text-bottom" />
           )}
         </div>
 
@@ -219,7 +189,7 @@ export function ChatMessage({ message, isStreaming = false, sessionId }: ChatMes
                   onClick={() => setShowComment(!showComment)}
                   className="text-xs text-zinc-500 hover:text-zinc-300 ml-2"
                 >
-                  {showComment ? '−' : '+'}
+                  {showComment ? 'Hide comment' : 'Add comment'}
                 </button>
                 <button
                   onClick={handleSubmitFeedback}

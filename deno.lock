@@ -35,7 +35,6 @@
         "npm:next@15.5.9",
         "npm:postcss@^8.5.3",
         "npm:react-dom@19",
-        "npm:react-markdown@^10.1.0",
         "npm:react@19",
         "npm:tailwindcss@^4.1.6",
         "npm:ts-node@^10.9.2",
