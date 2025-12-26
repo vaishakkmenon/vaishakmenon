@@ -74,7 +74,7 @@ export function ProjectsSection(): React.ReactElement {
                                 <div className="pt-2">
                                     <Link
                                         href="/chat"
-                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors shadow-lg shadow-blue-500/20"
+                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors shadow-lg shadow-blue-600/30 dark:shadow-blue-500/20"
                                     >
                                         Try the Demo
                                         <ArrowRight className="w-4 h-4" />
