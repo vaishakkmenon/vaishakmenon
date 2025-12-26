@@ -1,12 +1,23 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { SECTION_IDS } from '@/lib/constants';
 import { Sparkles, ArrowRight, Database, Bot, Layout, Terminal } from 'lucide-react';
 import SectionHeading from '@/components/SectionHeading';
-// ...
+
 export function ProjectsSection(): React.ReactElement {
+    // Disable scroll animations on mobile to prevent jitter
+    const [shouldAnimate, setShouldAnimate] = useState(false);
+
+    useEffect(() => {
+        const checkDesktop = () => setShouldAnimate(window.innerWidth > 768);
+        checkDesktop();
+        window.addEventListener('resize', checkDesktop);
+        return () => window.removeEventListener('resize', checkDesktop);
+    }, []);
+
     return (
         <section id={SECTION_IDS.projects} className="py-24 md:py-32 relative overflow-hidden">
             {/* Background decoration - temporarily disabled */}
@@ -16,10 +27,10 @@ export function ProjectsSection(): React.ReactElement {
                 <SectionHeading id="projects">Featured Projects</SectionHeading>
 
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={shouldAnimate ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
+                    transition={shouldAnimate ? { duration: 0.5 } : { duration: 0 }}
                     className="mb-12 text-center"
                 >
                     <p className="text-lg opacity-70 max-w-2xl mx-auto">
@@ -30,10 +41,10 @@ export function ProjectsSection(): React.ReactElement {
                 <div className="grid grid-cols-1 gap-8">
                     {/* AI Assistant Project Card */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={shouldAnimate ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.1 }}
+                        transition={shouldAnimate ? { duration: 0.5, delay: 0.1 } : { duration: 0 }}
                         className="group relative rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/5 overflow-hidden hover:shadow-lg dark:hover:bg-white/10 transition-all"
                     >
                         <div className="grid md:grid-cols-2 gap-8 p-8 items-center">
