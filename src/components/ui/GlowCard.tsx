@@ -10,8 +10,8 @@ interface GlowCardProps {
 }
 
 export function GlowCard({ children, className = '', delay = 0 }: GlowCardProps) {
-    // Always render with animation initially (matches SSR), then disable on mobile after mount
-    const [shouldAnimate, setShouldAnimate] = useState(true);
+    // Start with no animation (safe for SSR), enable on desktop after hydration
+    const [shouldAnimate, setShouldAnimate] = useState(false);
 
     useEffect(() => {
         // After hydration, check if mobile and disable animations
@@ -23,10 +23,10 @@ export function GlowCard({ children, className = '', delay = 0 }: GlowCardProps)
 
     return (
         <motion.div
-            initial={shouldAnimate ? { opacity: 0, y: 20 } : false}
-            whileInView={shouldAnimate ? { opacity: 1, y: 0 } : {}}
+            initial={shouldAnimate ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={shouldAnimate ? { duration: 0.5, delay } : {}}
+            transition={shouldAnimate ? { duration: 0.5, delay } : { duration: 0 }}
             className={`group relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/5 p-6 shadow-sm dark:shadow-none hover:shadow-md dark:hover:bg-white/10 dark:hover:border-white/20 transition-all duration-300 ${className}`}
         >
             {/* White Light Orb - Top Left */}

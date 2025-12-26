@@ -22,9 +22,11 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@netlify/edge-functions": "^3.0.3",
     "@tailwindcss/postcss": "^4.1.6",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
+    "@types/deno": "^2.5.0",
     "@types/estree": "^1.0.7",
     "@types/jest": "^29.5.14",
     "@types/json-schema": "^7.0.15",
