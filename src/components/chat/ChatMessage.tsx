@@ -66,16 +66,16 @@ export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) 
               // After streaming completes: render as markdown
               <ReactMarkdown
                 components={{
-                  a: ({ href, children }: any) => (
+                  a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
                     <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
                       {children}
                     </a>
                   ),
-                  ul: ({ children }: any) => <ul className="list-disc ml-6 my-1">{children}</ul>,
-                  ol: ({ children }: any) => <ol className="list-decimal ml-6 my-1">{children}</ol>,
-                  li: ({ children }: any) => <li className="mb-0.5">{children}</li>,
-                  p: ({ children }: any) => <p className="mb-2 last:mb-0">{children}</p>,
-                  code: ({ children, className }: any) => {
+                  ul: ({ children }: { children?: React.ReactNode }) => <ul className="list-disc ml-6 my-1">{children}</ul>,
+                  ol: ({ children }: { children?: React.ReactNode }) => <ol className="list-decimal ml-6 my-1">{children}</ol>,
+                  li: ({ children }: { children?: React.ReactNode }) => <li className="mb-0.5">{children}</li>,
+                  p: ({ children }: { children?: React.ReactNode }) => <p className="mb-2 last:mb-0">{children}</p>,
+                  code: ({ children, className }: { children?: React.ReactNode; className?: string }) => {
                     const isInline = !className;
                     return isInline ? (
                       <code className="bg-black/20 rounded px-1 py-0.5 text-sm font-mono">{children}</code>
@@ -83,7 +83,7 @@ export function ChatMessage({ message, isStreaming = false }: ChatMessageProps) 
                       <code className="block bg-black/20 rounded p-2 text-sm font-mono overflow-x-auto my-2">{children}</code>
                     );
                   },
-                  strong: ({ children }: any) => <strong className="font-semibold text-white/90">{children}</strong>,
+                  strong: ({ children }: { children?: React.ReactNode }) => <strong className="font-semibold text-white/90">{children}</strong>,
                 }}
               >
                 {message.content.replace(/(\[\d+\] .*?(\n|$))+$/, '').trim()}

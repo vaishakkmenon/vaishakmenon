@@ -1,6 +1,6 @@
 // Chat input component with character limit validation
 
-"use client";
+'use client';
 
 import { useState, useEffect, useRef, KeyboardEvent } from 'react';
 import { ChatLoading } from './ChatLoading';

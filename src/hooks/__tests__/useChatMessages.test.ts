@@ -1,10 +1,12 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import { useChatMessages } from '../useChatMessages';
 
-// Mock the chat API
+// Mock the chat API module
+const mockStreamChatMessage = jest.fn();
+
 jest.mock('@/lib/api/chat', () => ({
     generateSessionId: () => 'test-session-id-' + Math.random().toString(36).substring(7),
-    streamChatMessage: jest.fn(),
+    streamChatMessage: (...args: unknown[]) => mockStreamChatMessage(...args),
 }));
 
 describe('useChatMessages', () => {
@@ -45,8 +47,7 @@ describe('useChatMessages', () => {
 
     describe('sendMessage', () => {
         it('should add user message optimistically', async () => {
-            const { streamChatMessage } = require('@/lib/api/chat');
-            streamChatMessage.mockResolvedValue({
+            mockStreamChatMessage.mockResolvedValue({
                 answer: 'Test response',
                 sources: [],
                 grounded: true,

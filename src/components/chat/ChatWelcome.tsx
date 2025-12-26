@@ -1,6 +1,6 @@
 // Welcome state with example questions
 
-"use client";
+'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
 
@@ -9,10 +9,10 @@ interface ChatWelcomeProps {
 }
 
 const EXAMPLE_QUESTIONS = [
-  "What certifications have you earned?",
-  "What was your graduate GPA?",
-  "Tell me about your education",
-  "What projects have you worked on?",
+  'What certifications have you earned?',
+  'What was your graduate GPA?',
+  'Tell me about your education',
+  'What projects have you worked on?',
 ];
 
 export function ChatWelcome({ onExampleClick }: ChatWelcomeProps) {
@@ -21,20 +21,20 @@ export function ChatWelcome({ onExampleClick }: ChatWelcomeProps) {
   const containerVariants = prefersReducedMotion
     ? { hidden: { opacity: 1 }, visible: { opacity: 1 } }
     : {
-        hidden: { opacity: 0, y: 16 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-        },
-      };
+      hidden: { opacity: 0, y: 16 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+      },
+    };
 
   const itemVariants = prefersReducedMotion
     ? { hidden: { opacity: 1 }, visible: { opacity: 1 } }
     : {
-        hidden: { opacity: 0, y: 8 },
-        visible: { opacity: 1, y: 0 },
-      };
+      hidden: { opacity: 0, y: 8 },
+      visible: { opacity: 1, y: 0 },
+    };
 
   return (
     <motion.div

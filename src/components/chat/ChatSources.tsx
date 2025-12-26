@@ -1,6 +1,6 @@
 // Source citations component with sleek card design
 
-"use client";
+'use client';
 
 import { Source } from '@/lib/types/chat';
 

@@ -15,7 +15,7 @@ import { ExternalLink, Calendar, CheckCircle } from 'lucide-react';
  * Certifications section displaying professional certifications with badges and verification links.
  */
 export function CertificationsSection(): React.ReactElement {
-  const { list, item } = usePageAnimations();
+  const { list, item: _item } = usePageAnimations();
 
   return (
     <AnimatedSection id={SECTION_IDS.certs} className="py-24 md:py-32 relative overflow-hidden">

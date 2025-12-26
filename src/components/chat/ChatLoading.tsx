@@ -1,6 +1,6 @@
 // Loading indicator with pulsing dots animation
 
-"use client";
+'use client';
 
 import { motion } from 'framer-motion';
 

@@ -6,7 +6,7 @@ import SectionHeading from '@/components/SectionHeading';
 import { handleImageError } from '@/lib/imageUtils';
 import { ROUTES, SECTION_IDS } from '@/lib/constants';
 import { GlowCard } from '@/components/ui/GlowCard';
-import { Download, Eye } from 'lucide-react';
+import { Download } from 'lucide-react';
 
 /**
  * Resume section with preview and download link.

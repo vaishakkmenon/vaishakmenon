@@ -1,6 +1,6 @@
 // Error display component with retry functionality
 
-"use client";
+'use client';
 
 interface ChatErrorProps {
   error: string;

@@ -96,7 +96,7 @@ export function ProjectsSection(): React.ReactElement {
                                             <span className="text-blue-600 dark:text-blue-400 text-xs">AI</span>
                                         </div>
                                         <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-transparent rounded-lg rounded-tl-none p-3 max-w-[85%] text-zinc-600 dark:text-zinc-300 shadow-sm dark:shadow-none">
-                                            <p>Hello! I can answer questions about Vaishak's experience with Python, Kubernetes, and Cloud platforms. What would you like to know?</p>
+                                            <p>Hello! I can answer questions about Vaishak&apos;s experience with Python, Kubernetes, and Cloud platforms. What would you like to know?</p>
                                         </div>
                                     </div>
 

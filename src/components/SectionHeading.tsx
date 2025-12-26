@@ -22,7 +22,7 @@ export default function SectionHeading({
     id,
     children,
     className = '',
-    bleed = false,          // edge-to-edge divider when true
+    bleed: _bleed = false,          // edge-to-edge divider when true
     max = '5xl',            // choose container width without conflicting classes
 }: {
     id?: string;

@@ -4,7 +4,7 @@ import { AnimatedSection } from '@/components/AnimatedSection';
 import SectionHeading from '@/components/SectionHeading';
 import { SECTION_IDS } from '@/lib/constants';
 import { GlowCard } from '@/components/ui/GlowCard';
-import { GraduationCap, BookOpen, Clock, MapPin } from 'lucide-react';
+import { GraduationCap, BookOpen, MapPin } from 'lucide-react';
 
 /**
  * Education section displaying degrees and relevant coursework.
