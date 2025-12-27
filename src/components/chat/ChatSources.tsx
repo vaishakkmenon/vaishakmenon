@@ -26,13 +26,13 @@ function SourceCard({ source, index }: { source: Source; index: number }) {
   // Convert cosine distance (0-2) to relevance percentage
   const relevance = Math.max(0, (1 - source.distance / 2) * 100);
 
-  // Determine color based on relevance
+  // Determine color based on relevance (black & white theme)
   const relevanceColor =
     relevance >= 80
-      ? 'bg-green-500/20 text-green-400 border-green-500/30'
+      ? 'bg-white/20 text-white border-white/30'
       : relevance >= 60
-        ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
-        : 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+        ? 'bg-white/10 text-zinc-300 border-white/20'
+        : 'bg-white/5 text-zinc-400 border-white/10';
 
   return (
     <div className="group relative bg-white/5 border border-white/10 rounded-lg p-2.5 transition-all hover:bg-white/10 hover:border-white/20">
