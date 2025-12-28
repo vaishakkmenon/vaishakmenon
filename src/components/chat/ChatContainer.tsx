@@ -3,7 +3,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Message, ApiStatus } from '@/lib/types/chat';
+import { Message, ApiStatus, ChatOptions } from '@/lib/types/chat';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
 import { ChatError } from './ChatError';
@@ -20,6 +20,8 @@ interface ChatContainerProps {
   onStop?: () => void;
   apiStatus?: ApiStatus;
   onRecheckHealth?: () => void;
+  chatOptions?: ChatOptions;
+  onOptionsChange?: (options: ChatOptions) => void;
 }
 
 export function ChatContainer({
@@ -33,6 +35,8 @@ export function ChatContainer({
   onStop,
   apiStatus = 'healthy',
   onRecheckHealth,
+  chatOptions,
+  onOptionsChange,
 }: ChatContainerProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -105,7 +109,14 @@ export function ChatContainer({
       {error && <ChatError error={error} onRetry={onRetry} />}
 
       {/* Input */}
-      <ChatInput onSend={onSend} onStop={onStop} disabled={loading || isApiDown} isStreaming={loading} />
+      <ChatInput
+        onSend={onSend}
+        onStop={onStop}
+        disabled={loading || isApiDown}
+        isStreaming={loading}
+        chatOptions={chatOptions}
+        onOptionsChange={onOptionsChange}
+      />
     </div>
   );
 }

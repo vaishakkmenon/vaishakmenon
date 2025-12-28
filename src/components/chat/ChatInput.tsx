@@ -1,9 +1,10 @@
-// Chat input component with character limit validation
+// Chat input component with character limit validation and chat options
 
 'use client';
 
 import { useState, useEffect, useRef, KeyboardEvent } from 'react';
 import { ChatLoading } from './ChatLoading';
+import { ChatOptions } from '@/lib/types/chat';
 
 const MAX_QUESTION_LENGTH = 2000;
 const CHAR_WARNING_THRESHOLD = 1800;
@@ -13,9 +14,23 @@ interface ChatInputProps {
   onStop?: () => void;
   disabled: boolean;
   isStreaming?: boolean;
+  chatOptions?: ChatOptions;
+  onOptionsChange?: (options: ChatOptions) => void;
 }
 
-export function ChatInput({ onSend, onStop, disabled, isStreaming = false }: ChatInputProps) {
+const defaultOptions: ChatOptions = {
+  model: null,
+  showThinking: false,
+};
+
+export function ChatInput({
+  onSend,
+  onStop,
+  disabled,
+  isStreaming = false,
+  chatOptions = defaultOptions,
+  onOptionsChange,
+}: ChatInputProps) {
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -49,8 +64,52 @@ export function ChatInput({ onSend, onStop, disabled, isStreaming = false }: Cha
   const showCharCount = input.length > CHAR_WARNING_THRESHOLD;
   const canSend = input.trim().length > 0 && !isTooLong && !disabled;
 
+  const handleModelChange = (model: 'groq' | 'qwen' | null) => {
+    onOptionsChange?.({ ...chatOptions, model });
+  };
+
+  const handleThinkingToggle = () => {
+    onOptionsChange?.({ ...chatOptions, showThinking: !chatOptions.showThinking });
+  };
+
   return (
     <div className="sticky bottom-0 pb-6 pt-4">
+      {/* Chat options controls */}
+      {onOptionsChange && (
+        <div className="flex items-center gap-4 mb-3 text-sm">
+          {/* Model selector */}
+          <div className="flex items-center gap-2">
+            <label htmlFor="model-select" className="text-zinc-500 dark:text-zinc-400">
+              Model:
+            </label>
+            <select
+              id="model-select"
+              value={chatOptions.model ?? 'groq'}
+              onChange={(e) => handleModelChange(e.target.value === 'groq' ? null : e.target.value as 'qwen')}
+              disabled={isStreaming}
+              className="rounded-md border border-zinc-400 dark:border-white/20 bg-transparent px-2 py-1 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:focus:ring-white/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              aria-label="Select AI model"
+            >
+              <option value="groq">Llama 3.1 8B (Fast)</option>
+              <option value="qwen">Qwen 3 32B (Smart)</option>
+            </select>
+          </div>
+
+          {/* Thinking toggle */}
+          <label className="flex items-center gap-2 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={chatOptions.showThinking}
+              onChange={handleThinkingToggle}
+              disabled={isStreaming}
+              className="rounded border-zinc-400 dark:border-white/20 bg-transparent focus:ring-zinc-400 dark:focus:ring-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="Show AI reasoning"
+            />
+            <span className="text-zinc-500 dark:text-zinc-400">Show AI reasoning</span>
+          </label>
+        </div>
+      )}
+
       <div className="flex items-center gap-2">
         <input
           ref={inputRef}

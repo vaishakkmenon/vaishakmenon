@@ -237,6 +237,7 @@ export async function streamChatMessage(
 
       // Accumulated response
       let answer = '';
+      let thinking = '';
       let sources: ChatResponse['sources'] = [];
       let grounded = false;
       let sessionId = params.session_id || '';
@@ -334,6 +335,25 @@ export async function streamChatMessage(
                 break;
               }
 
+              case 'thinking': {
+                // Thinking process chunk
+                try {
+                  const thinkingData = JSON.parse(data);
+                  thinking += thinkingData.content || '';
+                } catch {
+                  // Handle raw string format
+                  thinking += data;
+                }
+                onUpdate({ thinking, isThinking: true });
+                break;
+              }
+
+              case 'thinking_done': {
+                // End of thinking phase
+                onUpdate({ isThinking: false });
+                break;
+              }
+
               default: {
                 // Unknown event type - ignore
                 break;
@@ -352,6 +372,7 @@ export async function streamChatMessage(
         confidence,
         ambiguity,
         rewrite_metadata: rewriteMetadata,
+        thinking: thinking || undefined,
       };
 
       if (!finalResponse.answer || !finalResponse.session_id) {

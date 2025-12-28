@@ -11,11 +11,15 @@ export interface Message {
   rewrite_metadata?: RewriteMetadata;
   ambiguity?: AmbiguityMetadata;
   feedbackSubmitted?: 'up' | 'down' | null;  // Track user feedback
+  thinking?: string;             // Accumulated thinking content
+  isThinking?: boolean;          // True while streaming thinking
 }
 
 export interface ChatRequest {
   question: string;              // 1-2000 characters (backend validation)
   session_id?: string;           // UUID v4
+  model?: 'groq' | 'llama' | 'qwen' | 'qwen3' | 'deepinfra' | string | null;  // Model selection
+  show_thinking?: boolean;       // Enable thinking process streaming
 }
 
 export interface Source {
@@ -51,6 +55,7 @@ export interface ChatResponse {
   session_id: string;            // Always returned
   ambiguity?: AmbiguityMetadata;
   rewrite_metadata?: RewriteMetadata;
+  thinking?: string;             // Thinking content (when show_thinking=true)
 }
 
 // Partial update during streaming
@@ -60,6 +65,14 @@ export interface StreamUpdate {
   grounded?: boolean;
   session_id?: string;
   ambiguity?: AmbiguityMetadata;
+  thinking?: string;             // Thinking content being streamed
+  isThinking?: boolean;          // True while in thinking phase
+}
+
+// Chat options for model selection and thinking display
+export interface ChatOptions {
+  model: 'groq' | 'qwen' | null;  // null = default (groq)
+  showThinking: boolean;
 }
 
 // Feedback types

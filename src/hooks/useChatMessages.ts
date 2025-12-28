@@ -1,7 +1,7 @@
 // Custom hook for managing chat messages and API interactions
 
 import { useState, useCallback, useRef } from 'react';
-import { Message, StreamUpdate } from '@/lib/types/chat';
+import { Message, StreamUpdate, ChatOptions } from '@/lib/types/chat';
 import { streamChatMessage, generateSessionId } from '@/lib/api/chat';
 
 const MAX_RETRIES = 1;
@@ -22,8 +22,11 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const stoppedRef = useRef<boolean>(false);
 
+  // Thinking content ref (no typing animation for thinking)
+  const thinkingRef = useRef<string>('');
+
   const sendMessage = useCallback(
-    async (question: string, retryCount = 0): Promise<void> => {
+    async (question: string, options?: ChatOptions, retryCount = 0): Promise<void> => {
       setError(null);
 
       // Add user message immediately (optimistic update)
@@ -38,10 +41,11 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
       const assistantId = generateSessionId();
       streamingMessageIdRef.current = assistantId;
 
-      // Reset typing animation state
+      // Reset typing animation and thinking state
       fullTextRef.current = '';
       displayedLengthRef.current = 0;
       stoppedRef.current = false;
+      thinkingRef.current = '';
 
       const assistantPlaceholder: Message = {
         id: assistantId,
@@ -81,8 +85,14 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
             fullTextRef.current = update.answer;
           }
 
-          // Update metadata immediately (not animated)
-          if (update.sources || update.grounded !== undefined || update.ambiguity) {
+          // Handle thinking content updates
+          if (update.thinking !== undefined) {
+            thinkingRef.current = update.thinking;
+          }
+
+          // Update metadata and thinking immediately (not animated)
+          if (update.sources || update.grounded !== undefined || update.ambiguity ||
+              update.thinking !== undefined || update.isThinking !== undefined) {
             setMessages((prev) =>
               prev.map((msg) => {
                 if (msg.id !== assistantId) return msg;
@@ -91,6 +101,8 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
                   sources: update.sources ?? msg.sources,
                   grounded: update.grounded ?? msg.grounded,
                   ambiguity: update.ambiguity ?? msg.ambiguity,
+                  thinking: update.thinking ?? msg.thinking,
+                  isThinking: update.isThinking ?? msg.isThinking,
                 };
               })
             );
@@ -102,7 +114,12 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
 
         // Stream the response
         const response = await streamChatMessage(
-          { question, session_id: sessionId || undefined },
+          {
+            question,
+            session_id: sessionId || undefined,
+            model: options?.model ?? undefined,
+            show_thinking: options?.showThinking ?? undefined,
+          },
           handleUpdate,
           abortControllerRef.current.signal
         );
@@ -140,6 +157,8 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
               grounded: response.grounded,
               rewrite_metadata: response.rewrite_metadata,
               ambiguity: response.ambiguity,
+              thinking: response.thinking,
+              isThinking: false,
             };
           })
         );
@@ -163,7 +182,7 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
           // Remove the placeholder messages before retry
           setMessages((prev) => prev.filter((msg) => msg.id !== assistantId));
           resetSession();
-          return sendMessage(question, retryCount + 1);
+          return sendMessage(question, options, retryCount + 1);
         }
 
         // Remove placeholder assistant message on error
@@ -210,6 +229,7 @@ export function useChatMessages(sessionId: string, resetSession: () => void) {
     // Reset text refs to prevent stale content on next message
     fullTextRef.current = '';
     displayedLengthRef.current = 0;
+    thinkingRef.current = '';
     setLoading(false);
     streamingMessageIdRef.current = null;
   }, []);

@@ -2,11 +2,13 @@
 
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { useChatSession } from '@/hooks/useChatSession';
 import { useChatMessages } from '@/hooks/useChatMessages';
 import { ChatContainer } from '@/components/chat/ChatContainer';
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
+import { ChatOptions } from '@/lib/types/chat';
 
 export default function ChatPage() {
   const { sessionId, resetSession, apiStatus, recheckHealth } = useChatSession();
@@ -15,9 +17,19 @@ export default function ChatPage() {
     resetSession
   );
 
+  // Chat options state (session only, not persisted)
+  const [chatOptions, setChatOptions] = useState<ChatOptions>({
+    model: null,  // null = default (groq)
+    showThinking: false,
+  });
+
   const handleClear = () => {
     clearMessages();
     resetSession();
+  };
+
+  const handleSend = (message: string) => {
+    sendMessage(message, chatOptions);
   };
 
   return (
@@ -35,12 +47,14 @@ export default function ChatPage() {
           loading={loading}
           error={error}
           sessionId={sessionId}
-          onSend={sendMessage}
+          onSend={handleSend}
           onRetry={retryLastMessage}
           onClear={handleClear}
           onStop={stopGeneration}
           apiStatus={apiStatus}
           onRecheckHealth={recheckHealth}
+          chatOptions={chatOptions}
+          onOptionsChange={setChatOptions}
         />
       </ErrorBoundary>
     </main>

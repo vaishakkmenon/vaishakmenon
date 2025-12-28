@@ -7,7 +7,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Message } from '@/lib/types/chat';
 import { ChatSources } from './ChatSources';
 import { submitFeedback } from '@/lib/api/chat';
-import { ThumbsUp, ThumbsDown } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, ChevronDown, ChevronRight } from 'lucide-react';
 
 
 interface ChatMessageProps {
@@ -24,6 +24,8 @@ export function ChatMessage({ message, isStreaming = false, sessionId }: ChatMes
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showComment, setShowComment] = useState(false);
   const [comment, setComment] = useState('');
+  // Thinking section collapsed by default after completion
+  const [thinkingExpanded, setThinkingExpanded] = useState(false);
 
   const variants = prefersReducedMotion
     ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
@@ -94,6 +96,44 @@ export function ChatMessage({ message, isStreaming = false, sessionId }: ChatMes
           : 'max-w-[85%] md:max-w-[70%] bg-white/5 dark:bg-white/5'
           }`}
       >
+        {/* Thinking section - progressive during stream, collapsible after */}
+        {isAssistant && message.thinking && (
+          isStreaming || message.isThinking ? (
+            // Progressive display during streaming
+            <div className="mb-3 pb-3 border-b border-white/10">
+              <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 mb-2">
+                <span className="inline-block w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+                <span>Thinking...</span>
+              </div>
+              <div className="text-sm italic opacity-70 pl-3 border-l-2 border-blue-400/30 whitespace-pre-wrap">
+                {message.thinking}
+              </div>
+            </div>
+          ) : (
+            // Collapsible section after completion
+            <div className="mb-3">
+              <button
+                onClick={() => setThinkingExpanded(!thinkingExpanded)}
+                className="flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-300 transition-colors"
+                aria-expanded={thinkingExpanded}
+                aria-label={thinkingExpanded ? 'Hide reasoning' : 'Show reasoning'}
+              >
+                {thinkingExpanded ? (
+                  <ChevronDown className="w-3.5 h-3.5" />
+                ) : (
+                  <ChevronRight className="w-3.5 h-3.5" />
+                )}
+                <span>{thinkingExpanded ? 'Hide reasoning' : 'Show reasoning'}</span>
+              </button>
+              {thinkingExpanded && (
+                <div className="mt-2 text-sm italic opacity-70 pl-3 border-l-2 border-zinc-500/30 max-h-48 overflow-y-auto whitespace-pre-wrap">
+                  {message.thinking}
+                </div>
+              )}
+            </div>
+          )
+        )}
+
         <div className="text-base md:text-lg leading-relaxed break-words whitespace-pre-wrap">
           {cleanedContent}
           {/* Streaming cursor */}
