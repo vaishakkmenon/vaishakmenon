@@ -150,6 +150,14 @@ export function ChatMessage({ message, isStreaming = false, sessionId }: ChatMes
           </div>
         )}
 
+        {/* Fallback model notification */}
+        {isAssistant && message.fallback && (
+          <div className="text-zinc-400 text-xs mt-2 flex items-center gap-1.5 bg-zinc-800/50 px-2 py-1 rounded">
+            <span>⚡</span>
+            <span>Responded using backup model ({message.fallback.provider}) due to high demand</span>
+          </div>
+        )}
+
         {/* Confidence indicator (Phase 3 - optional) */}
         {isAssistant && message.confidence !== undefined && message.confidence < 0.7 && (
           <div className="text-xs mt-2 opacity-70">

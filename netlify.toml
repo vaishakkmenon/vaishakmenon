@@ -21,6 +21,10 @@
   function = "health"
 
 [[edge_functions]]
+  path = "/api/health/llm"
+  function = "health-llm"
+
+[[edge_functions]]
   path = "/api/feedback"
   function = "feedback"
 

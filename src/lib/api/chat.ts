@@ -1,7 +1,7 @@
 // API service layer for RAG chatbot
 // Uses Netlify Edge Functions as proxy to protect API key
 
-import { ChatRequest, ChatResponse, StreamUpdate, HealthStatus, FeedbackRequest, FeedbackResponse } from '@/lib/types/chat';
+import { ChatRequest, ChatResponse, StreamUpdate, HealthStatus, FeedbackRequest, FeedbackResponse, LLMHealthStatus, FallbackInfo } from '@/lib/types/chat';
 
 // API endpoints - use edge function proxy by default
 // For local dev without Netlify CLI, set NEXT_PUBLIC_RAG_API_BASE_URL to backend URL
@@ -244,6 +244,7 @@ export async function streamChatMessage(
       let ambiguity: ChatResponse['ambiguity'] | undefined;
       let rewriteMetadata: ChatResponse['rewrite_metadata'] | undefined;
       let confidence: number | undefined;
+      let fallback: FallbackInfo | undefined;
 
       // SSE parsing state
       let currentEvent = '';
@@ -336,12 +337,12 @@ export async function streamChatMessage(
               }
 
               case 'thinking': {
-                // Thinking process chunk
+                // Thinking process chunk - data is a JSON-encoded string
                 try {
-                  const thinkingData = JSON.parse(data);
-                  thinking += thinkingData.content || '';
+                  const thinkingText = JSON.parse(data);
+                  thinking += thinkingText;
                 } catch {
-                  // Handle raw string format
+                  // Handle raw string format (fallback)
                   thinking += data;
                 }
                 onUpdate({ thinking, isThinking: true });
@@ -351,6 +352,36 @@ export async function streamChatMessage(
               case 'thinking_done': {
                 // End of thinking phase
                 onUpdate({ isThinking: false });
+                break;
+              }
+
+              case 'sources_reorder': {
+                // Sources reordered to match citation order
+                // Citations are already correct in streamed text, just update sources
+                try {
+                  const reorderData = JSON.parse(data);
+                  const reorderedSources: ChatResponse['sources'] = reorderData.reordered_sources || [];
+                  sources = reorderedSources;
+                  onUpdate({ sources: reorderedSources });
+                } catch {
+                  // Ignore parse errors
+                }
+                break;
+              }
+
+              case 'fallback': {
+                // Switched to fallback model due to primary unavailable
+                try {
+                  const fallbackData = JSON.parse(data);
+                  fallback = {
+                    provider: fallbackData.provider,
+                    model: fallbackData.model,
+                    reason: fallbackData.reason,
+                  };
+                  onUpdate({ fallback });
+                } catch {
+                  // Ignore parse errors
+                }
                 break;
               }
 
@@ -364,6 +395,7 @@ export async function streamChatMessage(
       }
 
       // Build final response
+      // Note: thinking content is streamed via SSE events, not included in final response
       const finalResponse: ChatResponse = {
         answer,
         sources,
@@ -372,7 +404,6 @@ export async function streamChatMessage(
         confidence,
         ambiguity,
         rewrite_metadata: rewriteMetadata,
-        thinking: thinking || undefined,
       };
 
       if (!finalResponse.answer || !finalResponse.session_id) {
@@ -424,5 +455,44 @@ export async function submitFeedback(params: FeedbackRequest): Promise<FeedbackR
       throw new Error('Feedback request timed out');
     }
     throw error;
+  }
+}
+
+/**
+ * Check LLM model availability and status
+ * Uses /health/llm endpoint (public, no API key required)
+ */
+export async function checkLLMHealth(): Promise<LLMHealthStatus> {
+  try {
+    const endpoint = `${API_BASE_URL}/health/llm`;
+    const response = await fetch(endpoint, {
+      method: 'GET',
+      signal: AbortSignal.timeout(10000), // 10 second timeout for health check
+    });
+
+    if (!response.ok) {
+      return {
+        status: 'error',
+        provider: 'unknown',
+        model: 'unknown',
+        response_time_ms: 0,
+        is_hot: false,
+        fallback_available: false,
+        error: `Health check failed: ${response.status}`,
+      };
+    }
+
+    return await response.json();
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return {
+      status: 'error',
+      provider: 'unknown',
+      model: 'unknown',
+      response_time_ms: 0,
+      is_hot: false,
+      fallback_available: false,
+      error: message,
+    };
   }
 }

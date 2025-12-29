@@ -116,6 +116,7 @@ export function ChatContainer({
         isStreaming={loading}
         chatOptions={chatOptions}
         onOptionsChange={onOptionsChange}
+        error={error}
       />
     </div>
   );

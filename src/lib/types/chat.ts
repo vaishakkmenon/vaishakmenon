@@ -13,13 +13,14 @@ export interface Message {
   feedbackSubmitted?: 'up' | 'down' | null;  // Track user feedback
   thinking?: string;             // Accumulated thinking content
   isThinking?: boolean;          // True while streaming thinking
+  fallback?: FallbackInfo;       // Present if response used fallback model
 }
 
 export interface ChatRequest {
   question: string;              // 1-2000 characters (backend validation)
   session_id?: string;           // UUID v4
   model?: 'groq' | 'llama' | 'qwen' | 'qwen3' | 'deepinfra' | string | null;  // Model selection
-  show_thinking?: boolean;       // Enable thinking process streaming
+  reasoning_effort?: 'none' | 'low' | 'medium' | 'high';  // Reasoning level (default: none)
 }
 
 export interface Source {
@@ -55,18 +56,19 @@ export interface ChatResponse {
   session_id: string;            // Always returned
   ambiguity?: AmbiguityMetadata;
   rewrite_metadata?: RewriteMetadata;
-  thinking?: string;             // Thinking content (when show_thinking=true)
+  // Note: thinking content is only available via SSE streaming, not in response JSON
 }
 
 // Partial update during streaming
 export interface StreamUpdate {
   answer?: string;
-  sources?: Source[];
+  sources?: Source[];            // Updated by metadata or sources_reorder event
   grounded?: boolean;
   session_id?: string;
   ambiguity?: AmbiguityMetadata;
   thinking?: string;             // Thinking content being streamed
   isThinking?: boolean;          // True while in thinking phase
+  fallback?: FallbackInfo;       // Present if switching to fallback model
 }
 
 // Chat options for model selection and thinking display
@@ -92,6 +94,25 @@ export interface FeedbackResponse {
 export interface HealthStatus {
   healthy: boolean;
   error?: string;
+}
+
+// LLM health check response
+export interface LLMHealthStatus {
+  status: 'available' | 'busy' | 'error';
+  provider: string;
+  model: string;
+  response_time_ms: number;
+  is_hot: boolean;
+  fallback_available: boolean;
+  fallback_provider?: string;
+  error?: string;
+}
+
+// Fallback event data
+export interface FallbackInfo {
+  provider: string;
+  model: string;
+  reason: string;
 }
 
 // API status for UI
