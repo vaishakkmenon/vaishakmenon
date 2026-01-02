@@ -197,3 +197,108 @@ html.dark .spotlight {
     transition: none;
   }
 }
+
+/* Animation keyframes for UI components */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slideInFromTop {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes slideInFromBottom {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes slideOutToRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+}
+
+/* Animation utility classes */
+.animate-in {
+  animation-duration: 200ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+.animate-out {
+  animation-duration: 150ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+.fade-in-0 {
+  animation-name: fadeIn;
+}
+
+.fade-out-0, .fade-out-80 {
+  animation-name: fadeOut;
+}
+
+.slide-in-from-top-full {
+  animation-name: slideInFromTop;
+}
+
+.slide-in-from-bottom-full {
+  animation-name: slideInFromBottom;
+}
+
+.slide-out-to-right-full {
+  animation-name: slideOutToRight;
+}
+
+.zoom-in-95 {
+  animation-name: zoomIn;
+}
+
+.zoom-out-95 {
+  animation-name: zoomOut;
+}
+
+.slide-in-from-left-1\/2 {
+  animation-name: zoomIn;
+}
+
+.slide-in-from-top-\[48\%\] {
+  animation-name: zoomIn;
+}
+
+.slide-out-to-left-1\/2 {
+  animation-name: zoomOut;
+}
+
+.slide-out-to-top-\[48\%\] {
+  animation-name: zoomOut;
+}

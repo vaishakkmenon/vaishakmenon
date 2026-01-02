@@ -3,19 +3,20 @@
 import Link from 'next/link';
 import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { Home } from 'lucide-react';
+import { Home, Settings } from 'lucide-react';
 import { ThemeIcon, ThemeToggle } from '@/components';
 import { SOCIAL_LINKS, LAYOUT } from '@/lib/constants';
 
-export function Header(): React.ReactElement {
+export function Header(): React.ReactElement | null {
     const [opacity, setOpacity] = useState<number>(1);
     const [isVisible, setIsVisible] = useState(false); // Hidden initially on mobile
     const [isMobile, setIsMobile] = useState(false);
     const lastScrollY = useRef(0);
     const pathname = usePathname();
+    const isAdminPage = pathname.startsWith('/admin');
 
     useEffect(() => {
-        if (typeof window === 'undefined') return;
+        if (typeof window === 'undefined' || isAdminPage) return;
 
         // Check if mobile
         const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -67,9 +68,14 @@ export function Header(): React.ReactElement {
             window.removeEventListener('resize', checkMobile);
             if (animationId) cancelAnimationFrame(animationId);
         };
-    }, []);
+    }, [isAdminPage]);
 
     const isActive = (path: string) => pathname === path;
+
+    // Don't render the main header on admin pages (they have their own sidebar)
+    if (isAdminPage) {
+        return null;
+    }
 
     return (
         <header
@@ -105,6 +111,14 @@ export function Header(): React.ReactElement {
                         <ThemeIcon lightSvg="/images/github-white.svg" darkSvg="/images/github.svg" width={24} height={24} alt="GitHub" />
                     </Link>
                     <ThemeToggle />
+                    <Link
+                        href="/admin"
+                        className="p-2 rounded-lg hover:bg-white/10 transition-colors opacity-50 hover:opacity-100"
+                        style={{ color: 'var(--header-text)' }}
+                        aria-label="Admin"
+                    >
+                        <Settings className="w-5 h-5" />
+                    </Link>
                 </nav>
             </div>
         </header>
