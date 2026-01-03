@@ -15,6 +15,8 @@ const TOTAL_TILES = GRID_COLS * GRID_ROWS;
 // Timing
 const LINE_DRAW_DURATION = 800;  // Time to draw/undraw lines
 const REVEAL_DURATION = 2500;    // Time for tiles to disintegrate
+const CIRCULAR_REVEAL_DURATION = 500; // Time for circular reveal fallback
+const FADE_DURATION = 300; // Time for fade fallback (each direction)
 
 // Line Colors Logic
 const LINE_COLORS = {
@@ -29,6 +31,11 @@ const LINE_COLORS = {
 } as const;
 
 type Theme = 'dark' | 'light';
+
+interface ClickPosition {
+    x: number;
+    y: number;
+}
 
 function supportsViewTransitions(): boolean {
     return typeof document !== 'undefined' &&
@@ -180,10 +187,6 @@ function generateViewTransitionCSS(): string {
     `;
 }
 
-// Minimum viewport dimensions for animation (below this, skip to instant switch)
-const MIN_VIEWPORT_WIDTH = 320;
-const MIN_VIEWPORT_HEIGHT = 480;
-
 // Maximum time before forcing cleanup (animation duration + buffer)
 const SAFETY_TIMEOUT = LINE_DRAW_DURATION + REVEAL_DURATION + LINE_DRAW_DURATION + 2000;
 
@@ -194,19 +197,11 @@ class ThemeTransitionManager {
     private abortController: AbortController | null = null;
     private safetyTimeoutId: ReturnType<typeof setTimeout> | null = null;
     private themeChanged = false;
+    private clickPosition: ClickPosition | null = null;
 
     private prefersReducedMotion(): boolean {
         if (typeof window === 'undefined') return false;
         return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    }
-
-    /**
-     * Check if viewport is large enough for the animation to look good
-     */
-    private isViewportTooSmall(): boolean {
-        if (typeof window === 'undefined') return true;
-        return window.innerWidth < MIN_VIEWPORT_WIDTH ||
-               window.innerHeight < MIN_VIEWPORT_HEIGHT;
     }
 
     private createGridOverlay(colors: { start: string, end: string }): {
@@ -314,13 +309,30 @@ class ThemeTransitionManager {
         }
     }
 
-    async transition(fromTheme: Theme, toTheme: Theme, onThemeChange: () => void): Promise<void> {
+    async transition(
+        fromTheme: Theme,
+        toTheme: Theme,
+        onThemeChange: () => void,
+        clickPosition?: ClickPosition
+    ): Promise<void> {
         // Prevent concurrent animations
         if (this.isAnimating) return;
 
-        // Skip animation for reduced motion preference or small viewports
-        if (this.prefersReducedMotion() || this.isViewportTooSmall()) {
-            onThemeChange();
+        // Store click position for circular reveal fallback
+        this.clickPosition = clickPosition || {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2
+        };
+
+        // Reduced motion preference - use gentle fade (no movement, just opacity)
+        if (this.prefersReducedMotion()) {
+            await this.runFadeTransition(onThemeChange);
+            return;
+        }
+
+        // No View Transitions support - use fade transition
+        if (!supportsViewTransitions()) {
+            await this.runFadeTransition(onThemeChange);
             return;
         }
 
@@ -334,14 +346,27 @@ class ThemeTransitionManager {
         try {
             await this.runAnimation(fromTheme, onThemeChange);
         } catch (error) {
-            // If anything fails, ensure theme is still changed
-            console.warn('[ThemeTransition] Animation failed, applying theme directly:', error);
+            // Tile-flip failed - try circular reveal as fallback
+            console.warn('[ThemeTransition] Tile animation failed, trying circular reveal:', error);
             if (!this.themeChanged) {
                 try {
-                    onThemeChange();
-                    this.themeChanged = true;
-                } catch {
-                    // Theme change also failed - nothing more we can do
+                    this.cleanup(); // Clean up tile animation artifacts first
+                    await this.runCircularReveal(onThemeChange);
+                } catch (circularError) {
+                    // Circular reveal also failed - try fade transition
+                    console.warn('[ThemeTransition] Circular reveal failed, trying fade:', circularError);
+                    if (!this.themeChanged) {
+                        try {
+                            await this.runFadeTransition(onThemeChange);
+                        } catch (fadeError) {
+                            // Everything failed - last resort instant change
+                            console.warn('[ThemeTransition] All transitions failed:', fadeError);
+                            if (!this.themeChanged) {
+                                onThemeChange();
+                                this.themeChanged = true;
+                            }
+                        }
+                    }
                 }
             }
         } finally {
@@ -464,6 +489,125 @@ class ThemeTransitionManager {
         });
 
         await this.wait(LINE_DRAW_DURATION);
+    }
+
+    /**
+     * Generate CSS for circular reveal animation.
+     * Injected dynamically to avoid conflicts with tile animation.
+     */
+    private generateCircularRevealCSS(x: number, y: number, maxRadius: number): string {
+        return `
+            @keyframes theme-circular-reveal {
+                from {
+                    clip-path: circle(0px at ${x}px ${y}px);
+                }
+                to {
+                    clip-path: circle(${maxRadius}px at ${x}px ${y}px);
+                }
+            }
+
+            ::view-transition-old(root) {
+                animation: none !important;
+                z-index: 1;
+            }
+
+            ::view-transition-new(root) {
+                animation: theme-circular-reveal ${CIRCULAR_REVEAL_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+                z-index: 9999;
+            }
+
+            ::view-transition-group(root) {
+                animation-duration: 0s !important;
+            }
+        `;
+    }
+
+    /**
+     * Circular reveal animation - simpler fallback for small screens.
+     * Uses clip-path circle animation expanding from click position.
+     */
+    private async runCircularReveal(onThemeChange: () => void): Promise<void> {
+        const { x, y } = this.clickPosition || {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2
+        };
+
+        // Calculate max radius to cover entire viewport from click position
+        const maxRadius = Math.hypot(
+            Math.max(x, window.innerWidth - x),
+            Math.max(y, window.innerHeight - y)
+        );
+
+        // Inject CSS for the circular reveal animation
+        this.styleEl = document.createElement('style');
+        this.styleEl.textContent = this.generateCircularRevealCSS(x, y, maxRadius);
+        document.head.appendChild(this.styleEl);
+
+        try {
+            const transition = document.startViewTransition!(() => {
+                onThemeChange();
+            });
+
+            await transition.finished;
+        } catch (error) {
+            // If transition fails, ensure theme is still changed
+            console.warn('[ThemeTransition] Circular reveal failed:', error);
+            onThemeChange();
+        } finally {
+            // Clean up injected CSS
+            if (this.styleEl) {
+                this.styleEl.remove();
+                this.styleEl = null;
+            }
+        }
+    }
+
+    /**
+     * Fade transition - universal fallback that works everywhere.
+     * Uses a simple overlay that fades in, theme changes, then fades out.
+     * Gentle enough for reduced motion users (no movement, just opacity).
+     */
+    private async runFadeTransition(onThemeChange: () => void): Promise<void> {
+        // Create overlay matching current theme background
+        const overlay = document.createElement('div');
+        const isDark = document.documentElement.classList.contains('dark');
+
+        overlay.style.cssText = `
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            pointer-events: none;
+            background-color: ${isDark ? '#0a0a0a' : '#ffffff'};
+            opacity: 0;
+            transition: opacity ${FADE_DURATION}ms ease-in-out;
+        `;
+
+        document.body.appendChild(overlay);
+
+        // Force reflow to ensure transition works
+        void overlay.offsetHeight;
+
+        // Fade in
+        overlay.style.opacity = '1';
+        await this.wait(FADE_DURATION);
+
+        // Change theme while overlay is opaque
+        onThemeChange();
+        this.themeChanged = true;
+
+        // Update overlay color to new theme background
+        const isNowDark = document.documentElement.classList.contains('dark');
+        overlay.style.backgroundColor = isNowDark ? '#0a0a0a' : '#ffffff';
+
+        // Small delay to ensure theme has applied
+        await this.wait(50);
+
+        // Fade out
+        overlay.style.opacity = '0';
+        await this.wait(FADE_DURATION);
+
+        // Cleanup
+        overlay.remove();
     }
 
     private wait(ms: number): Promise<void> {

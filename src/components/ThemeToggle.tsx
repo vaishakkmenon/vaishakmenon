@@ -11,8 +11,9 @@ import { themeTransitionManager } from '@/lib/themeTransition';
  * Theme toggle button for switching between dark and light modes
  *
  * Uses next-themes for theme management and a custom tile-flip
- * transition animation. Falls back to instant switch when
- * prefers-reduced-motion is set.
+ * transition animation on large screens, with a circular reveal
+ * fallback on mobile. Falls back to instant switch when
+ * prefers-reduced-motion is set or View Transitions API is unavailable.
  *
  * @returns Theme toggle button with sun/moon icons
  *
@@ -28,15 +29,22 @@ export function ThemeToggle(): React.ReactElement {
     const { theme, setTheme, systemTheme } = useTheme();
     const current = theme === 'system' ? systemTheme : theme;
 
-    const toggleTheme = useCallback(() => {
+    const toggleTheme = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         const fromTheme = current === 'dark' ? 'dark' : 'light';
         const toTheme = current === 'dark' ? 'light' : 'dark';
 
-        // Trigger the tile-flip transition
+        // Get click position for circular reveal animation
+        const clickPosition = {
+            x: event.clientX,
+            y: event.clientY
+        };
+
+        // Trigger the theme transition (tile-flip on desktop, circular reveal on mobile)
         themeTransitionManager.transition(
             fromTheme,
             toTheme,
-            () => setTheme(toTheme)
+            () => setTheme(toTheme),
+            clickPosition
         );
     }, [current, setTheme]);
 

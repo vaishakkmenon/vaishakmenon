@@ -302,3 +302,14 @@ html.dark .spotlight {
 .slide-out-to-top-\[48\%\] {
   animation-name: zoomOut;
 }
+
+/* ============================================
+   THEME TRANSITION - CSS Custom Properties
+   Used by circular reveal fallback animation
+   ============================================ */
+
+:root {
+  --theme-toggle-x: 50vw;
+  --theme-toggle-y: 50vh;
+  --theme-toggle-radius: 100vmax;
+}
