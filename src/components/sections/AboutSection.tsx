@@ -10,8 +10,8 @@ import { GraduationCap, MapPin, Gamepad2, Crown, CupSoda } from 'lucide-react';
 // Split into two rows for explicit layout control
 const FACTS_ROW_1 = [
   { icon: GraduationCap, label: 'UAB \'25' },
-  { icon: MapPin, label: 'Birmingham, AL' },
-  { icon: Gamepad2, label: 'Avid Gamer' },
+  { icon: MapPin, label: 'Charlotte, NC' },
+  { icon: Gamepad2, label: 'Occasional Gamer' },
 ];
 
 const FACTS_ROW_2 = [
