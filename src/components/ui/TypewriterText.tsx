@@ -22,6 +22,7 @@ export function TypewriterText({
     const [isDeleting, setIsDeleting] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [hasStarted, setHasStarted] = useState(initialDelay === 0);
+    const [isTransitionPaused, setIsTransitionPaused] = useState(false);
 
     // Handle initial delay
     useEffect(() => {
@@ -31,8 +32,23 @@ export function TypewriterText({
         }
     }, [initialDelay]);
 
+    // Listen for theme transition events to pause/resume
     useEffect(() => {
-        if (!hasStarted) return;
+        const handleTransitionStart = () => setIsTransitionPaused(true);
+        const handleTransitionEnd = () => setIsTransitionPaused(false);
+
+        window.addEventListener('theme-transition-start', handleTransitionStart);
+        window.addEventListener('theme-transition-end', handleTransitionEnd);
+
+        return () => {
+            window.removeEventListener('theme-transition-start', handleTransitionStart);
+            window.removeEventListener('theme-transition-end', handleTransitionEnd);
+        };
+    }, []);
+
+    useEffect(() => {
+        // Don't animate if paused for theme transition
+        if (!hasStarted || isTransitionPaused) return;
 
         const currentText = texts[textIndex];
 
@@ -66,7 +82,7 @@ export function TypewriterText({
         }, isDeleting ? deletingSpeed : typingSpeed);
 
         return () => clearTimeout(timer);
-    }, [displayText, textIndex, isDeleting, isPaused, hasStarted, texts, typingSpeed, deletingSpeed, pauseDuration]);
+    }, [displayText, textIndex, isDeleting, isPaused, hasStarted, isTransitionPaused, texts, typingSpeed, deletingSpeed, pauseDuration]);
 
     return (
         <span className="inline-flex items-center">

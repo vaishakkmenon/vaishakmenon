@@ -42,6 +42,22 @@ function supportsViewTransitions(): boolean {
         typeof document.startViewTransition === 'function';
 }
 
+// Custom events to pause/resume other animations during theme transition
+const THEME_TRANSITION_START_EVENT = 'theme-transition-start';
+const THEME_TRANSITION_END_EVENT = 'theme-transition-end';
+
+function dispatchTransitionStart(): void {
+    if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent(THEME_TRANSITION_START_EVENT));
+    }
+}
+
+function dispatchTransitionEnd(): void {
+    if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent(THEME_TRANSITION_END_EVENT));
+    }
+}
+
 /**
  * Generate reveal order - COMPLETELY RANDOM
  */
@@ -324,54 +340,62 @@ class ThemeTransitionManager {
             y: window.innerHeight / 2
         };
 
-        // Reduced motion preference - use gentle fade (no movement, just opacity)
-        if (this.prefersReducedMotion()) {
-            await this.runFadeTransition(onThemeChange);
-            return;
-        }
-
-        // No View Transitions support - use fade transition
-        if (!supportsViewTransitions()) {
-            await this.runFadeTransition(onThemeChange);
-            return;
-        }
-
-        this.isAnimating = true;
-        this.themeChanged = false;
-
-        // Setup abort handlers and safety timeout
-        this.setupAbortListeners();
-        this.startSafetyTimeout(onThemeChange);
+        // Notify other components that transition is starting
+        dispatchTransitionStart();
 
         try {
-            await this.runAnimation(fromTheme, onThemeChange);
-        } catch (error) {
-            // Tile-flip failed - try circular reveal as fallback
-            console.warn('[ThemeTransition] Tile animation failed, trying circular reveal:', error);
-            if (!this.themeChanged) {
-                try {
-                    this.cleanup(); // Clean up tile animation artifacts first
-                    await this.runCircularReveal(onThemeChange);
-                } catch (circularError) {
-                    // Circular reveal also failed - try fade transition
-                    console.warn('[ThemeTransition] Circular reveal failed, trying fade:', circularError);
-                    if (!this.themeChanged) {
-                        try {
-                            await this.runFadeTransition(onThemeChange);
-                        } catch (fadeError) {
-                            // Everything failed - last resort instant change
-                            console.warn('[ThemeTransition] All transitions failed:', fadeError);
-                            if (!this.themeChanged) {
-                                onThemeChange();
-                                this.themeChanged = true;
+            // Reduced motion preference - use gentle fade (no movement, just opacity)
+            if (this.prefersReducedMotion()) {
+                await this.runFadeTransition(onThemeChange);
+                return;
+            }
+
+            // No View Transitions support - use fade transition
+            if (!supportsViewTransitions()) {
+                await this.runFadeTransition(onThemeChange);
+                return;
+            }
+
+            this.isAnimating = true;
+            this.themeChanged = false;
+
+            // Setup abort handlers and safety timeout
+            this.setupAbortListeners();
+            this.startSafetyTimeout(onThemeChange);
+
+            try {
+                await this.runAnimation(fromTheme, onThemeChange);
+            } catch (error) {
+                // Tile-flip failed - try circular reveal as fallback
+                console.warn('[ThemeTransition] Tile animation failed, trying circular reveal:', error);
+                if (!this.themeChanged) {
+                    try {
+                        this.cleanup(); // Clean up tile animation artifacts first
+                        await this.runCircularReveal(onThemeChange);
+                    } catch (circularError) {
+                        // Circular reveal also failed - try fade transition
+                        console.warn('[ThemeTransition] Circular reveal failed, trying fade:', circularError);
+                        if (!this.themeChanged) {
+                            try {
+                                await this.runFadeTransition(onThemeChange);
+                            } catch (fadeError) {
+                                // Everything failed - last resort instant change
+                                console.warn('[ThemeTransition] All transitions failed:', fadeError);
+                                if (!this.themeChanged) {
+                                    onThemeChange();
+                                    this.themeChanged = true;
+                                }
                             }
                         }
                     }
                 }
+            } finally {
+                // Always cleanup, no matter what happened
+                this.cleanup();
             }
         } finally {
-            // Always cleanup, no matter what happened
-            this.cleanup();
+            // Always notify that transition has ended
+            dispatchTransitionEnd();
         }
     }
 
