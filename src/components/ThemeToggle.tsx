@@ -1,4 +1,4 @@
-// components/themeToggle.tsx
+// components/ThemeToggle.tsx
 'use client';
 
 import { useTheme } from 'next-themes';
@@ -6,58 +6,63 @@ import { Sun, Moon } from 'lucide-react';
 import { useClientOnly } from '@/hooks/useClientOnly';
 import { useCallback } from 'react';
 import { themeTransitionManager } from '@/lib/themeTransition';
+import { useKeybind } from '@/hooks/useKeybind';
 
 /**
  * Theme toggle button for switching between dark and light modes
- *
- * Uses next-themes for theme management and a custom tile-flip
- * transition animation on large screens, with a circular reveal
- * fallback on mobile. Falls back to instant switch when
- * prefers-reduced-motion is set or View Transitions API is unavailable.
- *
- * @returns Theme toggle button with sun/moon icons
- *
- * @example
- * ```tsx
- * <ThemeToggle />
- * ```
  */
 export function ThemeToggle(): React.ReactElement {
-    // Prevent hydration mismatch
     const mounted = useClientOnly();
-
     const { theme, setTheme, systemTheme } = useTheme();
     const current = theme === 'system' ? systemTheme : theme;
 
-    const toggleTheme = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    /**
+     * Unified Toggle Logic
+     * Accepts optional coordinates (x, y). If not provided, defaults to center screen.
+     */
+    const triggerThemeSwitch = useCallback((x?: number, y?: number) => {
         const fromTheme = current === 'dark' ? 'dark' : 'light';
         const toTheme = current === 'dark' ? 'light' : 'dark';
 
-        // Get click position for circular reveal animation
-        const clickPosition = {
-            x: event.clientX,
-            y: event.clientY
-        };
+        // Use provided coordinates OR default to center of viewport
+        // (Center is used for Keybinds)
+        const transitionX = x ?? (typeof window !== 'undefined' ? window.innerWidth / 2 : 0);
+        const transitionY = y ?? (typeof window !== 'undefined' ? window.innerHeight / 2 : 0);
 
-        // Trigger the theme transition (tile-flip on desktop, circular reveal on mobile)
         themeTransitionManager.transition(
             fromTheme,
             toTheme,
             () => setTheme(toTheme),
-            clickPosition
+            { x: transitionX, y: transitionY }
         );
     }, [current, setTheme]);
 
+    // 1. Handle Mouse Click (Uses Mouse Position)
+    const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+        triggerThemeSwitch(event.clientX, event.clientY);
+    }, [triggerThemeSwitch]);
+
+    // 2. Handle Keybind: Ctrl + Alt + L (Uses Center Position)
+    useKeybind(
+        {
+            key: 'l',
+            ctrlKey: true,
+            altKey: true
+        },
+        () => triggerThemeSwitch(), // No args = defaults to center
+        { enabled: mounted }
+    );
+
     if (!mounted) {
-        // Return a placeholder with same dimensions to avoid layout shift
         return <div className="w-6 h-6 p-2"></div>;
     }
 
     return (
         <button
             aria-label="Toggle theme"
-            onClick={toggleTheme}
+            onClick={handleClick}
             className="p-2 rounded transition-colors"
+            title="Toggle Theme (Ctrl + Alt + L)"
         >
             {current === 'dark' ? (
                 <Sun className="w-5 h-5" />

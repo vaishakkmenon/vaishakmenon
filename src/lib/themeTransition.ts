@@ -1,20 +1,20 @@
 /**
  * ThemeTransitionManager - View Transitions with Mask Tile Reveal
  *
- * Uses pixel-precise runtime calculations to eliminate sub-pixel bleeding.
- * Implements a staggered overlap animation where tiles shrink slowly but
- * concurrently to keep the total duration short.
+ * Current Effect: SPIRAL IMPLOSION
+ * Logic: Tiles start disappearing from the edges and 'implode' towards the center.
+ * Timing: Staggered overlap ensures responsiveness.
  */
 
 // Configuration
-const GRID_COLS = 5;
-const GRID_ROWS = 5;
+const GRID_COLS = 6; // Suggestion: 6x6 looks great with spiral!
+const GRID_ROWS = 6;
 const TOTAL_TILES = GRID_COLS * GRID_ROWS;
 
 // Timing
 const LINE_DRAW_DURATION = 800;
-const REVEAL_DURATION = 2000;      // Total duration of the grid reveal (snappy)
-const TILE_DURATION = 1000;        // Duration for ONE tile to shrink (slow & smooth)
+const REVEAL_DURATION = 2000;      // Total duration
+const TILE_DURATION = 1000;        // Individual tile duration
 const CIRCULAR_REVEAL_DURATION = 500;
 const FADE_DURATION = 300;
 
@@ -66,19 +66,39 @@ function dispatchTransitionEnd(): void {
     }
 }
 
+/**
+ * Generate reveal order - SPIRAL IMPLOSION
+ * Sorts tiles based on distance from the center of the grid.
+ * Furthest tiles (corners) go first. Center tiles go last.
+ */
 function generateRevealOrder(): number[] {
     const indices = Array.from({ length: TOTAL_TILES }, (_, i) => i);
-    for (let i = indices.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [indices[i], indices[j]] = [indices[j], indices[i]];
-    }
+
+    // Calculate precise center index (even for even-numbered grids)
+    const centerCol = (GRID_COLS - 1) / 2;
+    const centerRow = (GRID_ROWS - 1) / 2;
+
+    indices.sort((a, b) => {
+        const rowA = Math.floor(a / GRID_COLS);
+        const colA = a % GRID_COLS;
+        const rowB = Math.floor(b / GRID_COLS);
+        const colB = b % GRID_COLS;
+
+        // Calculate squared distance from center
+        const distA = Math.pow(colA - centerCol, 2) + Math.pow(rowA - centerRow, 2);
+        const distB = Math.pow(colB - centerCol, 2) + Math.pow(rowB - centerRow, 2);
+
+        // Descending sort: Larger distance (Edges) -> Smaller distance (Center)
+        return distB - distA;
+    });
+
     return indices;
 }
 
 /**
  * Calculate pixel-precise tile geometry.
  * Returns both Top-Left (x,y) for initial placement and Center (cx,cy) for vanishing point.
- * NOW DYNAMIC: Works with any GRID_COLS / GRID_ROWS configuration.
+ * DYNAMIC: Works with any GRID_COLS / GRID_ROWS configuration.
  */
 function calculateTileGeometry(): TileGeometry[] {
     const vw = window.innerWidth;
@@ -158,21 +178,15 @@ function lerp(start: number, end: number, progress: number): number {
 
 /**
  * Generate CSS with Overlapping Keyframes
- * * Instead of sequential steps, this calculates critical time points (start/end of each tile)
- * and generates keyframes for those exact moments, interpolating the state of all
- * concurrent tiles.
+ * Uses SPIRAL order + SHRINK TO CENTER animation
  */
 function generateViewTransitionCSS(): string {
     const revealOrder = generateRevealOrder();
     const tiles = calculateTileGeometry();
 
-    // Calculate start times for each tile index to create the stagger
-    // maxDelay ensures the last tile finishes exactly at REVEAL_DURATION
     const maxDelay = REVEAL_DURATION - TILE_DURATION;
     const delayPerTile = maxDelay / (TOTAL_TILES - 1);
 
-    // 1. Identify all critical time points (keyframes)
-    // We need a keyframe whenever ANY tile starts or stops
     const timePoints = new Set<number>();
     timePoints.add(0);
     timePoints.add(REVEAL_DURATION);
@@ -190,14 +204,11 @@ function generateViewTransitionCSS(): string {
         timePoints.add(endTime);
     }
 
-    // Sort unique time points
     const sortedTimes = Array.from(timePoints).sort((a, b) => a - b);
 
-    // 2. Generate CSS Keyframes for each time point
     let keyframes = '';
 
     sortedTimes.forEach(time => {
-        // Round to avoid floating point bloat in CSS
         const percent = Math.round((time / REVEAL_DURATION) * 10000) / 100;
 
         const sizeValues: string[] = [];
@@ -209,20 +220,18 @@ function generateViewTransitionCSS(): string {
 
             let progress = 0;
             if (time <= timing.start) {
-                progress = 0; // Not started yet (Full size)
+                progress = 0;
             } else if (time >= timing.end) {
-                progress = 1; // Finished (Zero size)
+                progress = 1;
             } else {
-                // Currently shrinking
                 progress = (time - timing.start) / TILE_DURATION;
             }
 
-            // Interpolate Size (w -> 0)
+            // Shrink BOTH dimensions (Square Shrink)
             const currentW = lerp(t.w, 0, progress);
             const currentH = lerp(t.h, 0, progress);
 
-            // Interpolate Position (TopLeft -> Center)
-            // As it shrinks, the position moves towards center
+            // Move BOTH coordinates to center
             const currentX = lerp(t.x, t.cx, progress);
             const currentY = lerp(t.y, t.cy, progress);
 
@@ -238,7 +247,6 @@ function generateViewTransitionCSS(): string {
         `;
     });
 
-    // Constant mask image
     const allImages = Array(TOTAL_TILES).fill('linear-gradient(#000,#000)').join(',');
     const initialPositions = tiles.map(t => `${t.x}px ${t.y}px`).join(',');
 
