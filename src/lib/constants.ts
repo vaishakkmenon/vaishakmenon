@@ -14,7 +14,7 @@ export const SOCIAL_LINKS = {
 
 export const ROUTES = {
   resume: '/resume/Resume-Vaishak_Menon.pdf',
-  resumePreview: '/resume/resume_preview.png',
+  resumePreview: '/resume/resume_preview_4.png',
 } as const;
 
 export const LAYOUT = {
