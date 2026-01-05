@@ -19,7 +19,7 @@ export function ResumeSection(): React.ReactElement {
       <div className="mx-auto max-w-4xl px-4 text-center">
         <SectionHeading id="resume">My Resume</SectionHeading>
 
-        <GlowCard className="mt-8 inline-block max-w-2xl mx-auto !p-0 overflow-hidden">
+        <GlowCard className="mt-8 inline-block max-w-2xl mx-auto !p-0 overflow-hidden !border-none !bg-transparent !shadow-none">
           <div className="relative group cursor-pointer overflow-hidden rounded-xl">
             <a
               href={ROUTES.resume}
@@ -32,7 +32,7 @@ export function ResumeSection(): React.ReactElement {
                 alt="Preview of Vaishak Menon's one-page resume"
                 width={600}
                 height={800}
-                className="w-full h-auto rounded-xl shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"
+                className="w-full h-auto rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-black/50 transition-transform duration-500 group-hover:scale-[1.02]"
                 onError={handleImageError}
                 quality={85}
                 priority={false}
