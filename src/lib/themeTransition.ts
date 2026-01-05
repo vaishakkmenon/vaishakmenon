@@ -391,6 +391,11 @@ class ThemeTransitionManager {
 
         dispatchTransitionStart();
 
+        // Disable scrolling during transition to prevent snapshot offsets
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.documentElement.style.touchAction = 'none';
+
         try {
             if (this.prefersReducedMotion()) {
                 await this.runFadeTransition(onThemeChange);
@@ -603,6 +608,9 @@ class ThemeTransitionManager {
             this.styleEl = null;
         }
         this.isAnimating = false;
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        document.documentElement.style.touchAction = '';
     }
 }
 
