@@ -25,7 +25,7 @@ export function ChatWelcome({ onExampleClick }: ChatWelcomeProps) {
       visible: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
       },
     };
 
@@ -65,7 +65,7 @@ export function ChatWelcome({ onExampleClick }: ChatWelcomeProps) {
               transition={{
                 duration: 0.3,
                 delay: index * 0.1,
-                ease: [0.22, 1, 0.36, 1],
+                ease: [0.22, 1, 0.36, 1] as const,
               }}
               onClick={() => onExampleClick(question)}
               aria-label={`Ask: ${question}`}

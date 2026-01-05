@@ -60,11 +60,7 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
     const currentProject = projects[currentIndex];
     const Icon = currentProject.icon;
 
-    // Get visible stack cards (next 2 cards behind current)
-    const getStackOffset = (offset: number) => {
-        const index = (currentIndex + offset) % projects.length;
-        return projects[index];
-    };
+
 
     return (
         <div className="relative w-full max-w-5xl mx-auto">

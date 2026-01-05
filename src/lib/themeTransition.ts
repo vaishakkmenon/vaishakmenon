@@ -421,7 +421,7 @@ class ThemeTransitionManager {
                         if (!this.themeChanged) {
                             try {
                                 await this.runFadeTransition(onThemeChange);
-                            } catch (fadeError) {
+                            } catch {
                                 if (!this.themeChanged) {
                                     onThemeChange();
                                     this.themeChanged = true;
@@ -551,7 +551,7 @@ class ThemeTransitionManager {
                 this.themeChanged = true;
             });
             await transition.finished;
-        } catch (error) {
+        } catch {
             onThemeChange();
             this.themeChanged = true;
         }
