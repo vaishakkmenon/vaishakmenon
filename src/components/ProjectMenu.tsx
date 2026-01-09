@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { LayoutGrid, Bot, Settings } from 'lucide-react';
+import { LayoutGrid, Settings } from 'lucide-react';
 import { projects } from '@/lib/data/projects';
 import { SOCIAL_LINKS } from '@/lib/constants';
 import { ThemeIcon } from '@/components/ThemeIcon';

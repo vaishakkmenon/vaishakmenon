@@ -3,15 +3,12 @@
 import {
     Menu,
     Settings,
-    Play,
-    RotateCcw,
     Music,
     Youtube,
     CloudRain,
     ChevronLeft,
     X,
-    ChevronRight,
-    UserCircle
+    ChevronRight
 } from 'lucide-react';
 
 export function PomodoroPreview(): React.ReactElement {

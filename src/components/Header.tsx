@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { Home, Settings } from 'lucide-react';
+import { Home } from 'lucide-react';
 import { ThemeToggle } from '@/components';
 import { ProjectMenu } from '@/components/ProjectMenu';
 import { LAYOUT } from '@/lib/constants';
@@ -70,8 +70,6 @@ export function Header(): React.ReactElement | null {
             if (animationId) cancelAnimationFrame(animationId);
         };
     }, [isAdminPage]);
-
-    const isActive = (path: string) => pathname === path;
 
     // Don't render the main header on admin pages (they have their own sidebar)
     if (isAdminPage) {

@@ -8,7 +8,6 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
 // Configure worker
-// Configure worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface ResumePreviewProps {
@@ -18,13 +17,11 @@ interface ResumePreviewProps {
 }
 
 export function ResumePreview({ url, className, width = 600 }: ResumePreviewProps) {
-  const [numPages, setNumPages] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [containerWidth, setContainerWidth] = useState<number>(width);
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-    setNumPages(numPages);
+  function onDocumentLoadSuccess() {
     setLoading(false);
   }
 
@@ -59,7 +56,7 @@ export function ResumePreview({ url, className, width = 600 }: ResumePreviewProp
   return (
     <div
       id="resume-preview-container"
-      className={cn("relative min-h-[800px] bg-white dark:bg-zinc-900 rounded-xl overflow-hidden flex items-center justify-center", className)}
+      className={cn('relative min-h-[800px] bg-white dark:bg-zinc-900 rounded-xl overflow-hidden flex items-center justify-center', className)}
     >
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center z-10 bg-zinc-100/50 dark:bg-zinc-800/50 backdrop-blur-sm">
