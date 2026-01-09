@@ -11,7 +11,7 @@ import { ThemeIcon } from '@/components/ThemeIcon';
 export function ProjectMenu() {
     return (
         <div className="relative inline-flex">
-            <DropdownMenu.Root>
+            <DropdownMenu.Root modal={false}>
                 <DropdownMenu.Trigger asChild>
                     <button
                         className="flex items-center justify-center w-9 h-9 p-2 rounded-lg hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/50"
