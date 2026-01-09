@@ -35,7 +35,7 @@
         "npm:clsx@^2.1.1",
         "npm:eslint-config-next@15.5.7",
         "npm:eslint@9",
-        "npm:framer-motion@^12.11.0",
+        "npm:framer-motion@^12.23.26",
         "npm:jest-environment-jsdom@^29.7.0",
         "npm:jest@^29.7.0",
         "npm:lucide-react@0.510",

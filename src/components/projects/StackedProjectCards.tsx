@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Project } from '@/lib/data/projects';
 import { ChatPreview } from './previews/ChatPreview';
+import { PomodoroPreview } from './previews/PomodoroPreview';
 
 interface StackedProjectCardsProps {
     projects: Project[];
@@ -86,7 +87,7 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                         className="w-full cursor-grab active:cursor-grabbing"
                     >
                         <div className="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 p-6 shadow-xl dark:shadow-2xl shadow-black/5 dark:shadow-black/20">
-                            <div className={`${currentProject.previewType === 'chat' ? 'grid md:grid-cols-2 gap-8 items-center' : ''}`}>
+                            <div className={`${currentProject.previewType !== 'none' && currentProject.previewType ? 'grid md:grid-cols-2 gap-8 items-center' : ''}`}>
                                 <div className="space-y-6 flex flex-col justify-center">
                                     <div className="flex items-center gap-2">
                                         <div className="p-2 rounded-lg bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">
@@ -128,10 +129,11 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                                     </div>
                                 </div>
 
-                                {/* Chat Preview - side by side on desktop */}
-                                {currentProject.previewType === 'chat' && (
+                                {/* Preview Section - side by side on desktop */}
+                                {currentProject.previewType && currentProject.previewType !== 'none' && (
                                     <div className="hidden md:flex flex-col relative min-h-[280px] rounded-xl bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 overflow-hidden p-4 shadow-inner">
-                                        <ChatPreview />
+                                        {currentProject.previewType === 'chat' && <ChatPreview />}
+                                        {currentProject.previewType === 'pomodoro' && <PomodoroPreview />}
                                         <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-transparent dark:from-zinc-900 pointer-events-none" />
                                     </div>
                                 )}

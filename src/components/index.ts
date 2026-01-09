@@ -5,3 +5,4 @@ export { default as SectionHeading } from './SectionHeading';
 export { default as Spotlight } from './Spotlight';
 export { ThemeIcon } from './ThemeIcon';
 export { ThemeToggle } from './ThemeToggle';
+export { ProjectMenu } from './ProjectMenu';

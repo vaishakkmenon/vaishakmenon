@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import type { Project } from '@/lib/data/projects';
 import { ChatPreview } from './previews/ChatPreview';
+import { PomodoroPreview } from './previews/PomodoroPreview';
 
 interface FeaturedProjectCardProps {
     project: Project;
@@ -19,6 +20,8 @@ export function FeaturedProjectCard({ project, shouldAnimate, delay = 0 }: Featu
         switch (project.previewType) {
             case 'chat':
                 return <ChatPreview />;
+            case 'pomodoro':
+                return <PomodoroPreview />;
             case 'image':
             case 'code':
             case 'none':

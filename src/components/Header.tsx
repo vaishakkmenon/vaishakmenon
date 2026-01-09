@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { Home, Settings } from 'lucide-react';
-import { ThemeIcon, ThemeToggle } from '@/components';
-import { SOCIAL_LINKS, LAYOUT } from '@/lib/constants';
+import { ThemeToggle } from '@/components';
+import { ProjectMenu } from '@/components/ProjectMenu';
+import { LAYOUT } from '@/lib/constants';
 
 export function Header(): React.ReactElement | null {
     const [opacity, setOpacity] = useState<number>(1);
@@ -85,7 +86,7 @@ export function Header(): React.ReactElement | null {
                 transition: 'transform 0.3s ease, opacity 0.3s ease',
                 backgroundColor: 'var(--header-bg)'
             }}
-            className="sticky top-0 z-50 backdrop-blur"
+            className="sticky top-0 z-50 backdrop-blur overflow-visible"
         >
             <div className="mx-auto max-w-5xl flex items-center justify-between px-4 py-3">
                 <Link
@@ -96,29 +97,9 @@ export function Header(): React.ReactElement | null {
                 >
                     <Home className="w-5 h-5" />
                 </Link>
-                <nav className="flex items-center gap-3">
-                    <Link
-                        href="/chat"
-                        className={`text-sm font-medium transition-opacity ${isActive('/chat') ? 'opacity-100 underline decoration-2 underline-offset-4' : 'opacity-70 hover:opacity-100'}`}
-                        style={{ color: 'var(--header-text)' }}
-                    >
-                        Chat
-                    </Link>
-                    <Link href={SOCIAL_LINKS.linkedin} target="_blank" aria-label="LinkedIn">
-                        <ThemeIcon lightSvg="/images/linkedin-white.png" darkSvg="/images/linkedin.png" width={24} height={24} alt="LinkedIn" />
-                    </Link>
-                    <Link href={SOCIAL_LINKS.github} target="_blank" aria-label="GitHub">
-                        <ThemeIcon lightSvg="/images/github-white.svg" darkSvg="/images/github.svg" width={24} height={24} alt="GitHub" />
-                    </Link>
+                <nav className="flex items-center gap-2">
                     <ThemeToggle />
-                    <Link
-                        href="/admin"
-                        className="p-2 rounded-lg hover:bg-white/10 transition-colors opacity-50 hover:opacity-100"
-                        style={{ color: 'var(--header-text)' }}
-                        aria-label="Admin"
-                    >
-                        <Settings className="w-5 h-5" />
-                    </Link>
+                    <ProjectMenu />
                 </nav>
             </div>
         </header>
