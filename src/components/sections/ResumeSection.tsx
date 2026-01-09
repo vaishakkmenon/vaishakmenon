@@ -1,12 +1,15 @@
 'use client';
 
-import Image from 'next/image';
 import { AnimatedSection } from '@/components/AnimatedSection';
 import SectionHeading from '@/components/SectionHeading';
-import { handleImageError } from '@/lib/imageUtils';
 import { ROUTES, SECTION_IDS } from '@/lib/constants';
 import { GlowCard } from '@/components/ui/GlowCard';
 import { Download } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const ResumePreview = dynamic(() => import('@/components/ResumePreview').then(mod => mod.ResumePreview), {
+  ssr: false,
+});
 
 /**
  * Resume section with preview and download link.
@@ -27,19 +30,14 @@ export function ResumeSection(): React.ReactElement {
               rel="noopener noreferrer"
               className="block"
             >
-              <Image
-                src={ROUTES.resumePreview}
-                alt="Preview of Vaishak Menon's one-page resume"
+              <ResumePreview
+                url={ROUTES.resume}
                 width={600}
-                height={800}
-                className="w-full h-auto rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-black/50 transition-transform duration-500 group-hover:scale-[1.02]"
-                onError={handleImageError}
-                quality={85}
-                priority={false}
+                className="bg-white/95 dark:bg-zinc-900/95"
               />
 
               {/* Overlay on hover */}
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm z-20">
                 <div className="flex flex-col items-center gap-2 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                   <Download className="w-8 h-8 opacity-80" />
                   <span className="font-medium">Download PDF</span>

@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     qualities: [85, 90, 100],
   },
+  // Fix for react-pdf / pdfjs-dist ESBuild issues
+  transpilePackages: ['react-pdf', 'pdfjs-dist'],
   async headers() {
     return [
       {
@@ -39,11 +41,12 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' unpkg.com",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https: http://localhost:8000 ws://localhost:8000 https://localhost wss://localhost",
+              "connect-src 'self' https: http://localhost:8000 ws://localhost:8000 https://localhost wss://localhost unpkg.com",
+              "worker-src 'self' blob: unpkg.com",
             ].join('; '),
           },
         ],
@@ -52,7 +55,7 @@ const nextConfig: NextConfig = {
   },
   webpack: (
     config: Configuration,
-    options: {}
+    options: { dev: boolean }
   ) => {
     // Ensure config.resolve object exists
     config.resolve = config.resolve || {};
@@ -65,7 +68,15 @@ const nextConfig: NextConfig = {
         : {}),
       // Add your new alias
       '@': path.resolve(__dirname, 'src'),
+      // Fix for react-pdf/pdfjs-dist
+      canvas: false,
     };
+
+    // Fix for pdfjs-dist "Object.defineProperty called on non-object"
+    // This often happens with "eval-source-map" (Next.js default in dev)
+    if (options.dev) {
+      config.devtool = 'source-map';
+    }
 
     return config;
   },
