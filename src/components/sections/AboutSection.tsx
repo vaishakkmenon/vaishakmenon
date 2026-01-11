@@ -36,7 +36,7 @@ export function AboutSection(): React.ReactElement {
           Recent Computer Science graduate with a versatile foundation in Python
           development, machine learning, and DevOps practices. Certified Kubernetes
           Administrator with hands-on experience in GCP, Docker, and Linux. Eager to
-          contribute on an entry-level team—whether in Software Engineering, DevOps,
+          contribute on a team—whether in Software Engineering, DevOps,
           or IT operations—and grow into a well-rounded technology professional.
         </p>
 

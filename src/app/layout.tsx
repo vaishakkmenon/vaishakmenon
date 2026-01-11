@@ -15,10 +15,10 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.vaishakmenon.com'),
   title: 'Vaishak Menon - Software Engineer & Kubernetes Administrator',
-  description: 'Entry-level Software Engineer specializing in Python development and DevOps. Certified Kubernetes Administrator with experience in GCP, Docker, and Linux.',
+  description: 'Software Engineer specializing in Python development and DevOps. Certified Kubernetes Administrator with experience in GCP, Docker, and Linux.',
   openGraph: {
     title: 'Vaishak Menon - Software Engineer & Kubernetes Administrator',
-    description: 'Entry-level Software Engineer specializing in Python development and DevOps. Certified Kubernetes Administrator with experience in GCP, Docker, and Linux.',
+    description: 'Software Engineer specializing in Python development and DevOps. Certified Kubernetes Administrator with experience in GCP, Docker, and Linux.',
     url: 'https://www.vaishakmenon.com',
     siteName: 'Vaishak Menon Portfolio',
     images: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Vaishak Menon - Software Engineer & Kubernetes Administrator',
-    description: 'Entry-level Software Engineer specializing in Python development and DevOps.',
+    description: 'Software Engineer specializing in Python development and DevOps.',
     images: ['/og-image.png'],
   },
   icons: {

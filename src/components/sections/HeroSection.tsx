@@ -7,7 +7,7 @@ import { SECTION_IDS } from '@/lib/constants';
 import { TypewriterText } from '@/components/ui/TypewriterText';
 
 const ROLES = [
-  'Entry-Level Software Engineer',
+  'Software Engineer',
   'Python Developer',
   'Certified Kubernetes Administrator',
   'DevOps Enthusiast',
