@@ -56,7 +56,7 @@ export function ResumePreview({ url, className, width = 600 }: ResumePreviewProp
   return (
     <div
       id="resume-preview-container"
-      className={cn('relative min-h-[800px] bg-white dark:bg-zinc-900 rounded-xl overflow-hidden flex items-center justify-center', className)}
+      className={cn('relative min-h-[400px] md:min-h-[800px] bg-transparent rounded-xl overflow-hidden flex items-center justify-center', className)}
     >
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center z-10 bg-zinc-100/50 dark:bg-zinc-800/50 backdrop-blur-sm">

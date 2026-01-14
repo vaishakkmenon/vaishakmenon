@@ -33,7 +33,7 @@ export function ResumeSection(): React.ReactElement {
               <ResumePreview
                 url={ROUTES.resume}
                 width={600}
-                className="bg-white/95 dark:bg-zinc-900/95"
+                className=""
               />
 
               {/* Overlay on hover */}
