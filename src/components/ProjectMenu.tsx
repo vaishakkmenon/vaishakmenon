@@ -26,6 +26,7 @@ export function ProjectMenu() {
                 <DropdownMenu.Content
                     className="
                         z-[60] min-w-[320px] 
+                        max-h-[85vh] overflow-y-auto
                         bg-zinc-900/95 dark:bg-black/95 backdrop-blur-xl 
                         border border-white/10 rounded-2xl p-2 
                         animate-in fade-in zoom-in-95 duration-200
