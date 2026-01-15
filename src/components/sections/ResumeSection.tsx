@@ -28,6 +28,7 @@ export function ResumeSection(): React.ReactElement {
               href={ROUTES.resume}
               target="_blank"
               rel="noopener noreferrer"
+              download="Resume-Vaishak_Menon.pdf"
               className="block"
             >
               <ResumePreview
