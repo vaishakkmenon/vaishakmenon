@@ -82,18 +82,16 @@ export function Header(): React.ReactElement | null {
                 opacity: isMobile ? 1 : opacity,
                 transform: isMobile ? `translateY(${isVisible ? '0' : '-100%'})` : 'none',
                 transition: 'transform 0.3s ease, opacity 0.3s ease',
-                backgroundColor: 'var(--header-bg)'
             }}
-            className="sticky top-0 z-50 backdrop-blur overflow-visible"
+            className="fixed top-0 left-0 z-50 w-full overflow-visible transition-colors duration-300 bg-transparent border-none shadow-none"
         >
             <div className="mx-auto max-w-5xl flex items-center justify-between px-4 py-3">
                 <Link
                     href="/"
-                    className="p-2 rounded-lg hover:bg-white/10 transition-colors"
-                    style={{ color: 'var(--header-text)' }}
+                    className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-[var(--color-foreground)] opacity-100"
                     aria-label="Home"
                 >
-                    <Home className="w-5 h-5" />
+                    <Home className="w-5 h-5 stroke-2" />
                 </Link>
                 <nav className="flex items-center gap-2">
                     <ThemeToggle />

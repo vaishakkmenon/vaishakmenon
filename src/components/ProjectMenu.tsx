@@ -14,11 +14,10 @@ export function ProjectMenu() {
             <DropdownMenu.Root modal={false}>
                 <DropdownMenu.Trigger asChild>
                     <button
-                        className="flex items-center justify-center w-9 h-9 p-2 rounded-lg hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-                        style={{ color: 'var(--header-text)' }}
+                        className="flex items-center justify-center w-9 h-9 p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-[var(--color-foreground)] opacity-100"
                         aria-label="Menu"
                     >
-                        <LayoutGrid className="w-5 h-5" />
+                        <LayoutGrid className="w-5 h-5 stroke-2" />
                     </button>
                 </DropdownMenu.Trigger>
 
@@ -27,8 +26,8 @@ export function ProjectMenu() {
                     className="
                         z-[60] min-w-[320px] 
                         max-h-[85vh] overflow-y-auto
-                        bg-zinc-900/95 dark:bg-black/95 backdrop-blur-xl 
-                        border border-white/10 rounded-2xl p-2 
+                        bg-[var(--color-background)] backdrop-blur-xl 
+                        border border-[var(--color-border)] rounded-2xl p-2 
                         animate-in fade-in zoom-in-95 duration-200
                         
                         /* --- THE FINAL FIX --- */
@@ -51,7 +50,7 @@ export function ProjectMenu() {
 
                     {/* Projects Section */}
                     <div className="p-2">
-                        <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-600 px-2 mb-2 uppercase tracking-wider">
+                        <div className="text-xs font-semibold text-[var(--color-muted)] px-2 mb-2 uppercase tracking-wider">
                             Projects
                         </div>
                         <div className="grid grid-cols-1 gap-1">
@@ -59,16 +58,16 @@ export function ProjectMenu() {
                                 <DropdownMenu.Item key={project.id} asChild>
                                     <Link
                                         href={project.link}
-                                        className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 focus:bg-white/5 transition-colors group outline-none"
+                                        className="flex items-center gap-3 p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 focus:bg-black/5 dark:focus:bg-white/5 transition-colors group outline-none"
                                     >
                                         <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500 group-hover:bg-blue-500/20 transition-colors">
                                             <project.icon className="w-4 h-4" />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <div className="text-sm font-medium text-zinc-100 group-hover:text-white truncate">
+                                            <div className="text-sm font-medium text-[var(--color-foreground)] truncate">
                                                 {project.title}
                                             </div>
-                                            <div className="text-[10px] text-zinc-500 group-hover:text-zinc-400 truncate">
+                                            <div className="text-[10px] text-[var(--color-muted)] truncate">
                                                 {project.category}
                                             </div>
                                         </div>
@@ -86,7 +85,7 @@ export function ProjectMenu() {
                             <Link
                                 href={SOCIAL_LINKS.github}
                                 target="_blank"
-                                className="flex items-center justify-center p-2 rounded-lg hover:bg-white/5 hover:text-white transition-colors"
+                                className="flex items-center justify-center p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 hover:text-[var(--color-foreground)] transition-colors"
                             >
                                 <ThemeIcon lightSvg="/images/github-white.svg" darkSvg="/images/github.svg" width={20} height={20} alt="GitHub" />
                             </Link>
@@ -95,7 +94,7 @@ export function ProjectMenu() {
                             <Link
                                 href={SOCIAL_LINKS.linkedin}
                                 target="_blank"
-                                className="flex items-center justify-center p-2 rounded-lg hover:bg-white/5 hover:text-white transition-colors"
+                                className="flex items-center justify-center p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 hover:text-[var(--color-foreground)] transition-colors"
                             >
                                 <ThemeIcon lightSvg="/images/linkedin-white.png" darkSvg="/images/linkedin.png" width={20} height={20} alt="LinkedIn" />
                             </Link>
@@ -103,7 +102,7 @@ export function ProjectMenu() {
                         <DropdownMenu.Item asChild>
                             <Link
                                 href="/admin"
-                                className="flex items-center justify-center p-2 rounded-lg hover:bg-white/5 text-zinc-500 hover:text-white transition-colors"
+                                className="flex items-center justify-center p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-[var(--color-muted)] hover:text-[var(--color-foreground)] transition-colors"
                             >
                                 <Settings className="w-5 h-5" />
                             </Link>

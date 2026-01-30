@@ -61,13 +61,13 @@ export function ThemeToggle(): React.ReactElement {
         <button
             aria-label="Toggle theme"
             onClick={handleClick}
-            className="p-2 rounded transition-colors"
+            className="p-2 rounded transition-colors text-[var(--color-foreground)] hover:bg-black/5 dark:hover:bg-white/10 opacity-100"
             title="Toggle Theme (Ctrl + Alt + L)"
         >
             {current === 'dark' ? (
-                <Sun className="w-5 h-5" />
+                <Sun className="w-5 h-5 stroke-2" />
             ) : (
-                <Moon className="w-5 h-5 text-gray-700 hover:text-gray-900 transition-colors" />
+                <Moon className="w-5 h-5 transition-colors stroke-2" />
             )}
         </button>
     );
