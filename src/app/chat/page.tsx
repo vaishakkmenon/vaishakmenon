@@ -19,7 +19,7 @@ export default function ChatPage() {
 
   // Chat options state (session only, not persisted)
   const [chatOptions, setChatOptions] = useState<ChatOptions>({
-    model: null,  // null = default (groq)
+    model: 'groq',  // null = default (groq)
     showThinking: false,
   });
 

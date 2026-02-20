@@ -190,13 +190,12 @@ export function ChatInput({
           <div className="flex items-center gap-2">
             <div className="inline-flex rounded-lg border border-white/10 p-0.5 bg-white/5">
               <button
-                onClick={() => handleModelChange(null)}
+                onClick={() => handleModelChange('groq')}
                 disabled={isStreaming}
-                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all disabled:cursor-not-allowed ${
-                  !isQwen
+                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all disabled:cursor-not-allowed ${!isQwen
                     ? 'bg-white/15 text-white'
                     : 'text-zinc-400 hover:text-zinc-300'
-                }`}
+                  }`}
                 aria-pressed={!isQwen}
               >
                 Llama 3.1 8B
@@ -205,13 +204,12 @@ export function ChatInput({
               <button
                 onClick={() => handleModelChange('qwen')}
                 disabled={isStreaming || isQwenBusy}
-                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all disabled:cursor-not-allowed flex items-center gap-1.5 ${
-                  isQwenBusy
+                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all disabled:cursor-not-allowed flex items-center gap-1.5 ${isQwenBusy
                     ? 'opacity-40 text-zinc-500'
                     : isQwen
                       ? 'bg-white/15 text-white'
                       : 'text-zinc-400 hover:text-zinc-300'
-                }`}
+                  }`}
                 aria-pressed={isQwen}
                 title={isQwenBusy ? 'Model busy - will use backup' : undefined}
               >
@@ -233,13 +231,12 @@ export function ChatInput({
           <button
             onClick={handleThinkingToggle}
             disabled={isStreaming || !isQwen}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border transition-all disabled:cursor-not-allowed ${
-              !isQwen
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border transition-all disabled:cursor-not-allowed ${!isQwen
                 ? 'opacity-40 bg-white/5 border-white/10 text-zinc-500'
                 : chatOptions.showThinking
                   ? 'bg-blue-500/20 border-blue-500/40 text-blue-400'
                   : 'bg-white/5 border-white/10 text-zinc-400 hover:text-zinc-300 hover:border-white/20'
-            }`}
+              }`}
             aria-pressed={chatOptions.showThinking}
             aria-label="Toggle AI reasoning display"
             title={isQwen ? 'Show AI reasoning' : 'Reasoning only available with Qwen model'}
