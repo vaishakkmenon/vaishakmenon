@@ -6,6 +6,7 @@ import { ArrowRight } from 'lucide-react';
 import type { Project } from '@/lib/data/projects';
 import { ChatPreview } from './previews/ChatPreview';
 import { PomodoroPreview } from './previews/PomodoroPreview';
+import { TuiPreview } from './previews/TuiPreview';
 
 interface FeaturedProjectCardProps {
     project: Project;
@@ -22,6 +23,8 @@ export function FeaturedProjectCard({ project, shouldAnimate, delay = 0 }: Featu
                 return <ChatPreview />;
             case 'pomodoro':
                 return <PomodoroPreview />;
+            case 'tui':
+                return <TuiPreview />;
             case 'image':
             case 'code':
             case 'none':
@@ -70,13 +73,26 @@ export function FeaturedProjectCard({ project, shouldAnimate, delay = 0 }: Featu
                     </div>
 
                     <div className="pt-2">
-                        <Link
-                            href={project.link}
-                            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors shadow-lg shadow-blue-600/30 dark:shadow-blue-500/20"
-                        >
-                            {project.linkLabel}
-                            <ArrowRight className="w-4 h-4" />
-                        </Link>
+                        {project.link.startsWith('ssh://') ? (
+                            <div className="rounded-lg bg-zinc-900 dark:bg-black/60 border border-white/10 px-4 py-3 font-mono text-sm space-y-1.5">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-emerald-400 select-none">$</span>
+                                    <span className="text-white/90 select-all">{project.linkLabel}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-xs">
+                                    <span className="text-white/30 select-none">password:</span>
+                                    <span className="text-amber-300/80 select-all">guest</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <Link
+                                href={project.link}
+                                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors shadow-lg shadow-blue-600/30 dark:shadow-blue-500/20"
+                            >
+                                {project.linkLabel}
+                                <ArrowRight className="w-4 h-4" />
+                            </Link>
+                        )}
                     </div>
                 </div>
 

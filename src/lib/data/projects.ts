@@ -17,7 +17,7 @@ export interface Project {
     /** If true, this project will be displayed as a featured card with visual preview */
     featured?: boolean;
     /** Optional custom preview component key for featured projects */
-    previewType?: 'chat' | 'image' | 'code' | 'pomodoro' | 'none';
+    previewType?: 'chat' | 'image' | 'code' | 'pomodoro' | 'tui' | 'none';
 }
 
 export const projects: Project[] = [
@@ -61,6 +61,26 @@ export const projects: Project[] = [
         icon: Timer,
         featured: true,
         previewType: 'pomodoro',
+    },
+    {
+        id: 'portfolio-tui',
+        category: 'Systems / DevOps',
+        title: 'Portfolio TUI',
+        description:
+            'An SSH-accessible, terminal-based portfolio built in Go using Bubble Tea & Lip Gloss. ' +
+            'Features five TrueColor themes, a procedurally animated circuit board, IP-based rate limiting, ' +
+            'and a hardened Docker deployment secured with non-root user, read-only filesystem and dropped Linux capabilities.',
+        technologies: [
+            { icon: Terminal, label: 'Go / Bubble Tea' },
+            { icon: Sparkles, label: 'Wish (SSH)' },
+            { icon: Database, label: 'Docker' },
+            { icon: Zap, label: 'GitHub Actions' },
+        ],
+        link: 'ssh://guest@tui.vaishakmenon.com',
+        linkLabel: 'ssh guest@tui.vaishakmenon.com',
+        icon: Terminal,
+        featured: true,
+        previewType: 'tui',
     },
     // Add more projects here following the same structure
 ];

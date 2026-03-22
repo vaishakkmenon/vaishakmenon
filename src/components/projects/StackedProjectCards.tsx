@@ -7,6 +7,7 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Project } from '@/lib/data/projects';
 import { ChatPreview } from './previews/ChatPreview';
 import { PomodoroPreview } from './previews/PomodoroPreview';
+import { TuiPreview } from './previews/TuiPreview';
 
 interface StackedProjectCardsProps {
     projects: Project[];
@@ -119,13 +120,26 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                                     </div>
 
                                     <div className="pt-2">
-                                        <Link
-                                            href={currentProject.link}
-                                            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors shadow-lg shadow-blue-600/30 dark:shadow-blue-500/20"
-                                        >
-                                            {currentProject.linkLabel}
-                                            <ArrowRight className="w-4 h-4" />
-                                        </Link>
+                                        {currentProject.link.startsWith('ssh://') ? (
+                                            <div className="rounded-lg bg-zinc-900 dark:bg-black/60 border border-white/10 px-4 py-3 font-mono text-sm space-y-1.5">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-emerald-400 select-none">$</span>
+                                                    <span className="text-white/90 select-all">{currentProject.linkLabel}</span>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-xs">
+                                                    <span className="text-white/30 select-none">password:</span>
+                                                    <span className="text-amber-300/80 select-all">guest</span>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <Link
+                                                href={currentProject.link}
+                                                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors shadow-lg shadow-blue-600/30 dark:shadow-blue-500/20"
+                                            >
+                                                {currentProject.linkLabel}
+                                                <ArrowRight className="w-4 h-4" />
+                                            </Link>
+                                        )}
                                     </div>
                                 </div>
 
@@ -134,6 +148,7 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                                     <div className="hidden md:flex flex-col relative min-h-[280px] rounded-xl bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 overflow-hidden p-4 shadow-inner">
                                         {currentProject.previewType === 'chat' && <ChatPreview />}
                                         {currentProject.previewType === 'pomodoro' && <PomodoroPreview />}
+                                        {currentProject.previewType === 'tui' && <TuiPreview />}
                                         <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-transparent dark:from-zinc-900 pointer-events-none" />
                                     </div>
                                 )}
