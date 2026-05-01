@@ -5,25 +5,25 @@ import { useState, useEffect } from 'react';
 export function TuiPreview(): React.ReactElement {
     const [text, setText] = useState('');
     const [cursorVisible, setCursorVisible] = useState(true);
-    
+
     // The sequence we want to type out
     const lines = [
-        "ssh guest@tui.vaishakmenon.com",
-        "Loading Vaishak's Interactive Portfolio...",
-        "",
-        "Welcome to the Terminal User Interface (TUI).",
-        "> Built in Go with Bubble Tea",
-        "> Themeable TrueColor Interface",
-        "> Hardened Docker Deployment",
-        "",
-        "Press any key to enter..."
+        'ssh guest@tui.vaishakmenon.com',
+        'Loading Vaishak\'s Interactive Portfolio...',
+        '',
+        'Welcome to the Terminal User Interface (TUI).',
+        '> Built in Go with Bubble Tea',
+        '> Themeable TrueColor Interface',
+        '> Hardened Docker Deployment',
+        '',
+        'Press any key to enter...'
     ];
 
     const fullText = lines.join('\n');
 
     useEffect(() => {
         let currentIndex = 0;
-        
+
         // Typing effect
         const typingInterval = setInterval(() => {
             if (currentIndex < fullText.length) {
@@ -78,7 +78,7 @@ export function TuiPreview(): React.ReactElement {
                                     </div>
                                 );
                             }
-                            
+
                             // Style bullet points
                             if (line.startsWith('>')) {
                                 return (
@@ -104,7 +104,7 @@ export function TuiPreview(): React.ReactElement {
                     </div>
 
                     {/* Scanlines overlay on the screen content */}
-                    <div 
+                    <div
                         className="absolute inset-0 pointer-events-none z-20 opacity-[0.03]"
                         style={{ backgroundImage: 'repeating-linear-gradient(0deg, #fff 0px, #fff 1px, transparent 1px, transparent 4px)' }}
                     />
