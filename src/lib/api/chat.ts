@@ -36,11 +36,9 @@ export function generateSessionId(): string {
  * Check if the API is healthy
  * Uses /api/health (edge function) or direct backend /health
  */
-export async function checkHealth(): Promise<HealthStatus> {
+export async function checkHealth(url: string): Promise<HealthStatus> {
   try {
-    // Both proxy and direct use /health path (API_BASE_URL already has correct base)
-    const healthEndpoint = `${API_BASE_URL}/health`;
-    const response = await fetch(healthEndpoint, {
+    const response = await fetch(url, {
       method: 'GET',
       signal: AbortSignal.timeout(5000),
     });
