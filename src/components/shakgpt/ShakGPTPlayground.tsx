@@ -1,25 +1,24 @@
-import { useRef, useState, KeyboardEvent } from "react";
-import { ApiStatus } from "@/lib/types/chat"
+import { useRef, useState, KeyboardEvent } from 'react';
+import { ApiStatus } from '@/lib/types/chat';
 import SectionHeading from '@/components/SectionHeading';
 import { motion, useReducedMotion } from 'framer-motion';
-import { streamLLMCompletion } from "@/lib/api/shakgpt";
+import { streamLLMCompletion } from '@/lib/api/shakgpt';
 
 const MAX_QUESTION_LENGTH = 2000;
 const EXAMPLE_QUESTIONS = [
-    "The history of the Roman Empire",
-    "Once upon a time in a land far away",
-    "The theory of relativity states that",
-    "def fibonacci(n): ",
+    'The history of the Roman Empire',
+    'Once upon a time in a land far away',
+    'The theory of relativity states that',
+    'def fibonacci(n): ',
 ];
 
 interface ShakGPTPlaygroundProps {
     apiStatus: ApiStatus;
-    recheckHealth: () => void;
 }
 
-export function ShakGPTPlayground({ apiStatus, recheckHealth }: ShakGPTPlaygroundProps): React.ReactElement {
-    const [prompt, setPrompt] = useState("");
-    const [output, setOutput] = useState("");
+export function ShakGPTPlayground({ apiStatus }: ShakGPTPlaygroundProps): React.ReactElement {
+    const [prompt, setPrompt] = useState('');
+    const [output, setOutput] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const prefersReducedMotion = useReducedMotion();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -137,5 +136,5 @@ export function ShakGPTPlayground({ apiStatus, recheckHealth }: ShakGPTPlaygroun
                 )}
             </div>
         </section >
-    )
+    );
 };

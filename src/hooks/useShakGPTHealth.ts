@@ -7,14 +7,14 @@ export function useShakGPTHealth() {
 
     useEffect(() => {
         // Check API health on mount
-        checkHealth("https://llm.vaishakmenon.com/health").then((status) => {
+        checkHealth('https://llm.vaishakmenon.com/health').then((status) => {
             setApiStatus(status.healthy ? 'healthy' : 'unhealthy');
         });
     }, []);
 
     const recheckHealth = useCallback(async () => {
         setApiStatus('checking');
-        const status = await checkHealth("https://llm.vaishakmenon.com/health");
+        const status = await checkHealth('https://llm.vaishakmenon.com/health');
         setApiStatus(status.healthy ? 'healthy' : 'unhealthy');
     }, []);
 

@@ -14,7 +14,7 @@ export default function ShakGPTPage() {
         <main>
             <ShakGPTHero apiStatus={apiStatus} recheckHealth={recheckHealth} />
             <BabbleFeedCard />
-            <ShakGPTPlayground apiStatus={apiStatus} recheckHealth={recheckHealth} />
+            <ShakGPTPlayground apiStatus={apiStatus} />
         </main>
     );
 }

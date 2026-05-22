@@ -1,9 +1,9 @@
-import { ApiStatus } from "@/lib/types/chat"
+import { ApiStatus } from '@/lib/types/chat';
 
 const statusConfig = {
-    checking: { label: 'Checking...', className: 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500' },
-    healthy: { label: 'Live', className: 'bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400' },
-    unhealthy: { label: 'Offline', className: 'bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400' },
+    checking: { label: 'Checking...', ariaLabel: 'API status: Checking', className: 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500' },
+    healthy: { label: 'Live', ariaLabel: 'API status: Live', className: 'bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400' },
+    unhealthy: { label: 'Offline · Click to retry', ariaLabel: 'API status: Offline. Click to retry connection.', className: 'bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400 whitespace-nowrap' },
 };
 
 interface ShakGPTHeroProps {
@@ -12,7 +12,7 @@ interface ShakGPTHeroProps {
 }
 
 export function ShakGPTHero({ apiStatus, recheckHealth }: ShakGPTHeroProps): React.ReactElement {
-    const { label, className } = statusConfig[apiStatus];
+    const { label, className, ariaLabel } = statusConfig[apiStatus];
 
     return (
         <section className="min-h-[60vh] flex items-center">
@@ -44,13 +44,16 @@ export function ShakGPTHero({ apiStatus, recheckHealth }: ShakGPTHeroProps): Rea
                     >
                         Q4_K_M Quantization
                     </div>
-                    <div
+                    <button
                         className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-medium ${className}`}
+                        onClick={recheckHealth}
+                        disabled={apiStatus !== 'unhealthy'}
+                        aria-label={ariaLabel}
                     >
                         {label}
-                    </div>
+                    </button>
                 </div>
             </div>
-        </section>
-    )
+        </section >
+    );
 };

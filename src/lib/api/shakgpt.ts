@@ -43,10 +43,10 @@ export async function streamLLMCompletion(
     }
 
     try {
-        const endpoint = "https://llm.vaishakmenon.com/completion";
+        const endpoint = 'https://llm.vaishakmenon.com/completion';
         const response = await fetch(endpoint, {
             method: 'POST',
-            body: JSON.stringify({ prompt: " " + prompt, stream: true, n_predict: 200 }),
+            body: JSON.stringify({ prompt: ' ' + prompt, stream: true, n_predict: 200 }),
             headers: { 'Content-Type': 'application/json' },
             signal: controller.signal,
         });

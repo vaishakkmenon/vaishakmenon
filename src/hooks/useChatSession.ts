@@ -27,7 +27,7 @@ export function useChatSession() {
     }
 
     // Check API health on mount
-    checkHealth("/api/health").then((status) => {
+    checkHealth('/api/health').then((status) => {
       setApiStatus(status.healthy ? 'healthy' : 'unhealthy');
     });
   }, []);
@@ -40,7 +40,7 @@ export function useChatSession() {
 
   const recheckHealth = useCallback(async () => {
     setApiStatus('checking');
-    const status = await checkHealth("/api/health");
+    const status = await checkHealth('/api/health');
     setApiStatus(status.healthy ? 'healthy' : 'unhealthy');
   }, []);
 
