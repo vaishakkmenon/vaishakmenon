@@ -1,6 +1,6 @@
 'use client';
 
-import { PreviewWindow } from "./PreviewWindow";
+import { PreviewWindow } from './PreviewWindow';
 
 export function ChatPreview(): React.ReactElement {
     return (

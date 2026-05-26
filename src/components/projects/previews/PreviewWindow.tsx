@@ -1,4 +1,4 @@
-import { WindowTitleBar } from "./WindowTitleBar";
+import { WindowTitleBar } from './WindowTitleBar';
 
 interface PreviewWindowProps {
     label?: string;
