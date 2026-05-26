@@ -1,14 +1,10 @@
 'use client';
 
+import { PreviewWindow } from "./PreviewWindow";
+
 export function ChatPreview(): React.ReactElement {
     return (
-        <>
-            <div className="flex items-center gap-2 mb-4 opacity-50">
-                <div className="w-3 h-3 rounded-full bg-red-400" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                <div className="w-3 h-3 rounded-full bg-green-400" />
-            </div>
-
+        <PreviewWindow label="Resume Assistant.app">
             <div className="space-y-4 font-mono text-sm">
                 <div className="flex gap-3">
                     <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center shrink-0">
@@ -41,6 +37,6 @@ export function ChatPreview(): React.ReactElement {
                     </div>
                 </div>
             </div>
-        </>
+        </PreviewWindow>
     );
 }

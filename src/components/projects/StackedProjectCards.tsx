@@ -62,8 +62,6 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
     const currentProject = projects[currentIndex];
     const Icon = currentProject.icon;
 
-
-
     return (
         <div className="relative w-full max-w-5xl mx-auto">
             {/* Main Active Card - fixed height container prevents layout shift */}
@@ -88,7 +86,7 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                         className="w-full cursor-grab active:cursor-grabbing"
                     >
                         <div className="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 p-6 shadow-xl dark:shadow-2xl shadow-black/5 dark:shadow-black/20">
-                            <div className={`${currentProject.previewType !== 'none' && currentProject.previewType ? 'grid md:grid-cols-2 gap-8 items-center' : ''}`}>
+                            <div className={`${currentProject.previewType !== 'none' && currentProject.previewType ? 'grid md:grid-cols-2 gap-8 items-start' : ''}`}>
                                 <div className="space-y-6 flex flex-col justify-center">
                                     <div className="flex items-center gap-2">
                                         <div className="p-2 rounded-lg bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">
@@ -120,20 +118,11 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                                     </div>
 
                                     <div className="pt-2">
-                                        {currentProject.link.startsWith('ssh://') ? (
-                                            <div className="rounded-lg bg-zinc-900 dark:bg-black/60 border border-white/10 px-4 py-3 font-mono text-sm space-y-1.5">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-emerald-400 select-none">$</span>
-                                                    <span className="text-white/90 select-all">{currentProject.linkLabel}</span>
-                                                </div>
-                                                <div className="flex items-center gap-2 text-xs">
-                                                    <span className="text-white/30 select-none">password:</span>
-                                                    <span className="text-amber-300/80 select-all">guest</span>
-                                                </div>
-                                            </div>
-                                        ) : (
+                                        {!currentProject.link.startsWith('ssh://') && (
                                             <Link
                                                 href={currentProject.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors shadow-lg shadow-blue-600/30 dark:shadow-blue-500/20"
                                             >
                                                 {currentProject.linkLabel}
@@ -144,14 +133,30 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                                 </div>
 
                                 {/* Preview Section - side by side on desktop */}
-                                {currentProject.previewType && currentProject.previewType !== 'none' && (
-                                    <div className="hidden md:flex flex-col relative min-h-[280px] rounded-xl bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 overflow-hidden p-4 shadow-inner">
-                                        {currentProject.previewType === 'chat' && <ChatPreview />}
-                                        {currentProject.previewType === 'pomodoro' && <PomodoroPreview />}
-                                        {currentProject.previewType === 'tui' && <TuiPreview />}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-transparent dark:from-zinc-900 pointer-events-none" />
-                                    </div>
-                                )}
+                                <div className="flex flex-col gap-3">
+                                    {currentProject.previewType && currentProject.previewType !== 'none' && (
+                                        <div
+                                            style={currentProject.previewHeight ? { height: currentProject.previewHeight } : undefined}
+                                            className="hidden md:flex flex-col relative rounded-xl bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 overflow-hidden shadow-inner"
+                                        >
+                                            {currentProject.previewType === 'chat' && <ChatPreview />}
+                                            {currentProject.previewType === 'pomodoro' && <PomodoroPreview />}
+                                            {currentProject.previewType === 'tui' && <TuiPreview />}
+                                        </div>
+                                    )}
+                                    {currentProject.link.startsWith('ssh://') && (
+                                        <div className="rounded-lg bg-zinc-900 dark:bg-black/60 border border-white/10 px-4 py-3 font-mono text-sm space-y-1.5">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-emerald-400 select-none">$</span>
+                                                <span className="text-white/90 select-all">{currentProject.linkLabel}</span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs">
+                                                <span className="text-white/30 select-none">password:</span>
+                                                <span className="text-amber-300/80 select-all">guest</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </motion.div>

@@ -46,9 +46,9 @@ export function TuiPreview(): React.ReactElement {
     }, [fullText]);
 
     return (
-        <div className="w-full h-full min-h-[300px] flex items-center justify-center bg-[#0d0d0d] p-4 relative overflow-hidden rounded-xl select-none font-mono">
+        <div className="w-full h-full min-h-[280px] flex items-center justify-center bg-[#0d0d0d] p-2 relative overflow-hidden rounded-xl select-none font-mono">
             {/* Terminal window */}
-            <div className="relative z-10 w-full h-full max-w-sm flex flex-col rounded-lg border border-white/10 shadow-2xl shadow-black/80 overflow-hidden bg-[#121212]">
+            <div className="relative z-10 w-full max-w-md flex flex-col rounded-lg border border-white/10 shadow-2xl shadow-black/80 overflow-hidden bg-[#121212]">
                 {/* Title Bar */}
                 <div className="flex items-center gap-2 px-4 py-2 bg-[#1a1a1a] border-b border-white/5 shrink-0">
                     <div className="flex gap-1.5">
@@ -62,7 +62,7 @@ export function TuiPreview(): React.ReactElement {
                 </div>
 
                 {/* Terminal Body */}
-                <div className="flex-1 p-5 overflow-hidden text-[12px] leading-relaxed relative">
+                <div className="p-5 overflow-hidden text-[12px] leading-relaxed relative">
                     {/* Render the typed text */}
                     <div className="whitespace-pre-wrap flex flex-col relative z-10">
                         {text.split('\n').map((line, i) => {
@@ -70,7 +70,7 @@ export function TuiPreview(): React.ReactElement {
                             if (i === 0) {
                                 return (
                                     <div key={i} className="flex">
-                                        <span className="text-emerald-400 mr-2">❯</span>
+                                        <span className="text-emerald-400 mr-2"></span>
                                         <span className="text-white/90">{line}</span>
                                         {text.split('\n').length === 1 && (
                                             <span className={`inline-block w-2 h-4 bg-emerald-400/80 ml-1 translate-y-[2px] ${cursorVisible ? 'opacity-100' : 'opacity-0'}`} />

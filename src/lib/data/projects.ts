@@ -14,10 +14,9 @@ export interface Project {
     link: string;
     linkLabel: string;
     icon: LucideIcon;
-    /** If true, this project will be displayed as a featured card with visual preview */
     featured?: boolean;
-    /** Optional custom preview component key for featured projects */
-    previewType?: 'chat' | 'image' | 'code' | 'pomodoro' | 'tui' | 'none';
+    previewHeight?: string;
+    previewType?: 'chat' | 'image' | 'code' | 'pomodoro' | 'tui' | 'shakgpt' | 'none';
 }
 
 export const projects: Project[] = [
@@ -35,16 +34,17 @@ export const projects: Project[] = [
             { icon: Database, label: 'ChromaDB' },
             { icon: Terminal, label: 'RAG' },
         ],
-        link: '/chat',
-        linkLabel: 'Try the Demo',
+        link: 'https://github.com/vaishakkmenon/RAG_Personal',
+        linkLabel: 'View Code',
         icon: Sparkles,
         featured: true,
+        previewHeight: '400px',
         previewType: 'chat',
     },
     {
         id: 'pomodoro-focus',
         category: 'Productivity Application',
-        title: '🍅 Pomodoro Focus',
+        title: 'Pomodoro Focus',
         description:
             'A production-grade, immersive focus timer designed to help users maintain flow state. ' +
             'Features a customizable Pomodoro timer, integrated "Media Dock" for ambient soundscapes, ' +
@@ -60,6 +60,7 @@ export const projects: Project[] = [
         linkLabel: 'Live Demo',
         icon: Timer,
         featured: true,
+        previewHeight: '400px',
         previewType: 'pomodoro',
     },
     {
@@ -82,5 +83,25 @@ export const projects: Project[] = [
         featured: true,
         previewType: 'tui',
     },
-    // Add more projects here following the same structure
+    {
+        id: 'shakgpt-visualizer',
+        category: 'Machine Learning',
+        title: 'ShakGPT Attention Visualizer',
+        description:
+            'An interactive visualization of the attention patterns inside ShakGPT, ' +
+            'a 345M-parameter decoder-only transformer I built and trained from scratch. ' +
+            'Pick a prompt and explore layer by layer, head by head, how each token attends ' +
+            'to every other — rendered as a live heatmap from the model\'s own forward pass.',
+        technologies: [
+            { icon: Bot, label: 'PyTorch' },
+            { icon: Sparkles, label: 'Transformers' },
+            { icon: Layout, label: 'Next.js 15' },
+            { icon: Palette, label: 'D3 / Visualization' },
+        ],
+        link: '/shakgpt',
+        linkLabel: 'Explore the Visualizer',
+        icon: Sparkles,
+        featured: true,
+        previewType: 'shakgpt',
+    },
 ];
