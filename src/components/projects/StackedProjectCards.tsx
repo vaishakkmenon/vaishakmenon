@@ -8,6 +8,7 @@ import type { Project } from '@/lib/data/projects';
 import { ChatPreview } from './previews/ChatPreview';
 import { PomodoroPreview } from './previews/PomodoroPreview';
 import { TuiPreview } from './previews/TuiPreview';
+import { ShakGPTPreview } from './previews/ShakGPTPreview';
 
 interface StackedProjectCardsProps {
     projects: Project[];
@@ -142,6 +143,7 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                                             {currentProject.previewType === 'chat' && <ChatPreview />}
                                             {currentProject.previewType === 'pomodoro' && <PomodoroPreview />}
                                             {currentProject.previewType === 'tui' && <TuiPreview />}
+                                            {currentProject.previewType === 'shakgpt' && <ShakGPTPreview />}
                                         </div>
                                     )}
                                     {currentProject.link.startsWith('ssh://') && (

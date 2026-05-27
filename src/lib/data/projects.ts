@@ -84,24 +84,23 @@ export const projects: Project[] = [
         previewType: 'tui',
     },
     {
-        id: 'shakgpt-visualizer',
+        id: 'shakgpt',
         category: 'Machine Learning',
-        title: 'ShakGPT Attention Visualizer',
+        title: 'ShakGPT — Custom LLM',
         description:
-            'An interactive visualization of the attention patterns inside ShakGPT, ' +
-            'a 345M-parameter decoder-only transformer I built and trained from scratch. ' +
-            'Pick a prompt and explore layer by layer, head by head, how each token attends ' +
-            'to every other — rendered as a live heatmap from the model\'s own forward pass.',
+            'A decoder-only transformer I built and trained from scratch to learn how large language models work end to end ' +
+            '— 345M parameters, written in PyTorch. Not a wrapper around someone else\'s model: the architecture, training loop, ' +
+            'and tokenizer are all hand-built.',
         technologies: [
             { icon: Bot, label: 'PyTorch' },
             { icon: Sparkles, label: 'Transformers' },
             { icon: Layout, label: 'Next.js 15' },
-            { icon: Palette, label: 'D3 / Visualization' },
         ],
-        link: '/shakgpt',
-        linkLabel: 'Explore the Visualizer',
+        link: 'https://github.com/vaishakkmenon/ShakGPT',
+        linkLabel: 'View Code',
         icon: Sparkles,
         featured: true,
+        previewHeight: '400px',
         previewType: 'shakgpt',
     },
 ];
