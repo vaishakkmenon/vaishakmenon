@@ -4,11 +4,11 @@ import {
     Menu,
     Settings,
     Music,
-    Youtube,
     CloudRain,
     ChevronLeft,
     X,
-    ChevronRight
+    ChevronRight,
+    Video
 } from 'lucide-react';
 import { PreviewWindow } from './PreviewWindow';
 
@@ -30,7 +30,7 @@ export function PomodoroPreview(): React.ReactElement {
                             <Music className="w-4 h-4" />
                         </div>
                         <div className="p-2 text-white/40">
-                            <Youtube className="w-4 h-4" />
+                            <Video className="w-4 h-4" />
                         </div>
                         <div className="p-2 text-white/40">
                             <CloudRain className="w-4 h-4" />

@@ -10,6 +10,21 @@ import { PomodoroPreview } from './previews/PomodoroPreview';
 import { TuiPreview } from './previews/TuiPreview';
 import { ShakGPTPreview } from './previews/ShakGPTPreview';
 
+function SshCommandBox({ linkLabel, className = '' }: { linkLabel: string; className?: string; }) {
+    return (
+        <div className={`rounded-lg bg-zinc-900 dark:bg-black/60 border border-white/10 px-4 py-3 font-mono text-sm space-y-1.5 ${className}`}>
+            <div className="flex items-center gap-2">
+                <span className="text-emerald-400 select-none">$</span>
+                <span className="text-white/90 select-all">{linkLabel}</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs">
+                <span className="text-white/30 select-none">password:</span>
+                <span className="text-amber-300/80 select-all">guest</span>
+            </div>
+        </div>
+    );
+}
+
 interface StackedProjectCardsProps {
     projects: Project[];
 }
@@ -87,7 +102,7 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                         className="w-full cursor-grab active:cursor-grabbing"
                     >
                         <div className="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 p-6 shadow-xl dark:shadow-2xl shadow-black/5 dark:shadow-black/20">
-                            <div className={`${currentProject.previewType !== 'none' && currentProject.previewType ? 'grid md:grid-cols-2 gap-8 items-start' : ''}`}>
+                            <div className={`${currentProject.previewType !== 'none' && currentProject.previewType ? 'grid lg:grid-cols-2 gap-8 items-start' : ''}`}>
                                 <div className="space-y-6 flex flex-col justify-center">
                                     <div className="flex items-center gap-2">
                                         <div className="p-2 rounded-lg bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">
@@ -119,6 +134,9 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                                     </div>
 
                                     <div className="pt-2">
+                                        {currentProject.link.startsWith('ssh://') && (
+                                            <SshCommandBox linkLabel={currentProject.linkLabel} className="lg:hidden" />
+                                        )}
                                         {!currentProject.link.startsWith('ssh://') && (
                                             <Link
                                                 href={currentProject.link}
@@ -138,7 +156,7 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                                     {currentProject.previewType && currentProject.previewType !== 'none' && (
                                         <div
                                             style={currentProject.previewHeight ? { height: currentProject.previewHeight } : undefined}
-                                            className="hidden md:flex flex-col relative rounded-xl bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 overflow-hidden shadow-inner"
+                                            className="hidden lg:flex flex-col relative rounded-xl bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 overflow-hidden shadow-inner"
                                         >
                                             {currentProject.previewType === 'chat' && <ChatPreview />}
                                             {currentProject.previewType === 'pomodoro' && <PomodoroPreview />}
@@ -147,16 +165,7 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                                         </div>
                                     )}
                                     {currentProject.link.startsWith('ssh://') && (
-                                        <div className="rounded-lg bg-zinc-900 dark:bg-black/60 border border-white/10 px-4 py-3 font-mono text-sm space-y-1.5">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-emerald-400 select-none">$</span>
-                                                <span className="text-white/90 select-all">{currentProject.linkLabel}</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 text-xs">
-                                                <span className="text-white/30 select-none">password:</span>
-                                                <span className="text-amber-300/80 select-all">guest</span>
-                                            </div>
-                                        </div>
+                                        <SshCommandBox linkLabel={currentProject.linkLabel} className="hidden lg:block" />
                                     )}
                                 </div>
                             </div>
