@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { LayoutGrid, Settings } from 'lucide-react';
+import { LayoutGrid } from 'lucide-react';
 import { projects } from '@/lib/data/projects';
 import { SOCIAL_LINKS } from '@/lib/constants';
 import { ThemeIcon } from '@/components/ThemeIcon';
@@ -80,7 +80,7 @@ export function ProjectMenu() {
 
 
                     {/* Footer / Connect */}
-                    <div className="p-2 grid grid-cols-3 gap-1">
+                    <div className="p-2 grid grid-cols-2 gap-1">
                         <DropdownMenu.Item asChild>
                             <Link
                                 href={SOCIAL_LINKS.github}
@@ -97,14 +97,6 @@ export function ProjectMenu() {
                                 className="flex items-center justify-center p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 hover:text-[var(--color-foreground)] transition-colors"
                             >
                                 <ThemeIcon lightSvg="/images/linkedin-white.png" darkSvg="/images/linkedin.png" width={20} height={20} alt="LinkedIn" />
-                            </Link>
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Item asChild>
-                            <Link
-                                href="/admin"
-                                className="flex items-center justify-center p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-[var(--color-muted)] hover:text-[var(--color-foreground)] transition-colors"
-                            >
-                                <Settings className="w-5 h-5" />
                             </Link>
                         </DropdownMenu.Item>
                     </div>
