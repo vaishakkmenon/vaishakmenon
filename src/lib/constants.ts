@@ -19,7 +19,7 @@ export const ROUTES = {
 export const LAYOUT = {
   header: {
     fadeStart: -200, // Offset from viewport height where fade begins
-    fadeEnd: 0,      // Offset from viewport height where fade completes
+    fadeEnd: -50,      // Offset from viewport height where fade completes
     fadeTransition: 'opacity .3s ease',
   },
   spacing: {

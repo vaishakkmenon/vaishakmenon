@@ -7,6 +7,7 @@ export interface ProjectTech {
 
 export interface Project {
     id: string;
+    order: number;
     category: string;
     title: string;
     description: string;
@@ -14,6 +15,7 @@ export interface Project {
     link: string;
     linkLabel: string;
     icon: LucideIcon;
+    status: 'completed' | 'in-progress';
     featured?: boolean;
     previewHeight?: string;
     previewType?: 'chat' | 'image' | 'code' | 'pomodoro' | 'tui' | 'shakgpt' | 'none';
@@ -22,6 +24,7 @@ export interface Project {
 export const projects: Project[] = [
     {
         id: 'rag-assistant',
+        order: 40,
         category: 'Interactive RAG Agent',
         title: 'AI Personal Assistant',
         description:
@@ -37,12 +40,14 @@ export const projects: Project[] = [
         link: 'https://github.com/vaishakkmenon/RAG_Personal',
         linkLabel: 'View Code',
         icon: Sparkles,
-        featured: true,
+        status: 'completed',
+        featured: false,
         previewHeight: '400px',
         previewType: 'chat',
     },
     {
         id: 'pomodoro-focus',
+        order: 20,
         category: 'Productivity Application',
         title: 'Pomodoro Focus',
         description:
@@ -59,12 +64,14 @@ export const projects: Project[] = [
         link: 'https://pomodoro.vaishakmenon.com',
         linkLabel: 'Live Demo',
         icon: Timer,
+        status: 'completed',
         featured: true,
         previewHeight: '400px',
         previewType: 'pomodoro',
     },
     {
         id: 'portfolio-tui',
+        order: 30,
         category: 'Systems / DevOps',
         title: 'Portfolio TUI',
         description:
@@ -80,11 +87,13 @@ export const projects: Project[] = [
         link: 'ssh://guest@tui.vaishakmenon.com',
         linkLabel: 'ssh guest@tui.vaishakmenon.com',
         icon: Terminal,
+        status: 'completed',
         featured: true,
         previewType: 'tui',
     },
     {
         id: 'shakgpt',
+        order: 10,
         category: 'Machine Learning',
         title: 'ShakGPT — Custom LLM',
         description:
@@ -99,6 +108,7 @@ export const projects: Project[] = [
         link: 'https://github.com/vaishakkmenon/ShakGPT',
         linkLabel: 'View Code',
         icon: Sparkles,
+        status: 'completed',
         featured: true,
         previewHeight: '400px',
         previewType: 'shakgpt',

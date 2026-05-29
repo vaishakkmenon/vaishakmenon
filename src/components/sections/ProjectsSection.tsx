@@ -42,7 +42,7 @@ export function ProjectsSection(): React.ReactElement {
                     viewport={{ once: true }}
                     transition={shouldAnimate ? { duration: 0.6, delay: 0.2 } : { duration: 0 }}
                 >
-                    <StackedProjectCards projects={projects} />
+                    <StackedProjectCards projects={projects.filter(p => p.featured).sort((a, b) => a.order - b.order)} />
                 </motion.div>
             </div>
         </section>
