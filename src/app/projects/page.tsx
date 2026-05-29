@@ -1,7 +1,7 @@
 'use client';
 
-import { projects } from "@/lib/data/projects";
-import { ProjectCard } from "@/components/projects";
+import { projects } from '@/lib/data/projects';
+import { ProjectCard } from '@/components/projects';
 
 export default function ProjectsPage() {
     const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
@@ -17,7 +17,7 @@ export default function ProjectsPage() {
                         I build things from scratch, usually as a way to learn. Each of the projects below started as a
                         question: how do transformers actually work, what does production deployment look like, can a
                         portfolio fit in a terminal? Productivity apps, LLMs, systems work. Each one taught me something
-                        I wouldn't have learned by reading about it.
+                        I wouldn&apos;t have learned by reading about it.
                     </p>
                 </div>
             </section>

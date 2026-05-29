@@ -3,8 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { LayoutGrid } from 'lucide-react';
-import { projects } from '@/lib/data/projects';
+import { ArrowRight, LayoutGrid } from 'lucide-react';
 import { SOCIAL_LINKS } from '@/lib/constants';
 import { ThemeIcon } from '@/components/ThemeIcon';
 
@@ -46,38 +45,28 @@ export function ProjectMenu() {
                     avoidCollisions={false}
                     collisionPadding={0}
                 >
-
-
-                    {/* Projects Section */}
+                    {/* Internal Link Section */}
                     <div className="p-2">
-                        <div className="text-xs font-semibold text-[var(--color-muted)] px-2 mb-2 uppercase tracking-wider">
-                            Projects
+                        <div className='text-xs font-semibold text-[var(--color-muted)] px-2 mb-2 uppercase tracking-wider'>
+                            Browse
                         </div>
                         <div className="grid grid-cols-1 gap-1">
-                            {projects.map((project) => (
-                                <DropdownMenu.Item key={project.id} asChild>
-                                    <Link
-                                        href={project.link}
-                                        className="flex items-center gap-3 p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 focus:bg-black/5 dark:focus:bg-white/5 transition-colors group outline-none"
-                                    >
-                                        <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500 group-hover:bg-blue-500/20 transition-colors">
-                                            <project.icon className="w-4 h-4" />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <div className="text-sm font-medium text-[var(--color-foreground)] truncate">
-                                                {project.title}
-                                            </div>
-                                            <div className="text-[10px] text-[var(--color-muted)] truncate">
-                                                {project.category}
-                                            </div>
-                                        </div>
-                                    </Link>
-                                </DropdownMenu.Item>
-                            ))}
+                            <DropdownMenu.Item asChild>
+                                <Link
+                                    href="/projects"
+                                    className="flex items-center justify-between p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 focus:bg-black/5 dark:focus:bg-white/5 transition-colors group outline-none"
+                                >
+                                    <span className="text-sm font-medium text-[var(--color-foreground)]">
+                                        Projects
+                                    </span>
+                                    <ArrowRight className="w-4 h-4 text-[var(--color-muted)] group-hover:translate-x-0.5 transition-transform" />
+                                </Link>
+                            </DropdownMenu.Item>
                         </div>
                     </div>
 
-
+                    {/* Divider */}
+                    <div className="h-px bg-[var(--color-border)] mx-2 my-1" />
 
                     {/* Footer / Connect */}
                     <div className="p-2 grid grid-cols-2 gap-1">

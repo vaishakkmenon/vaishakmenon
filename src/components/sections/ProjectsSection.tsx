@@ -6,6 +6,8 @@ import { SECTION_IDS } from '@/lib/constants';
 import SectionHeading from '@/components/SectionHeading';
 import { projects } from '@/lib/data/projects';
 import { StackedProjectCards } from '@/components/projects';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 export function ProjectsSection(): React.ReactElement {
     // Disable scroll animations on mobile to prevent jitter
@@ -44,6 +46,16 @@ export function ProjectsSection(): React.ReactElement {
                 >
                     <StackedProjectCards projects={projects.filter(p => p.featured).sort((a, b) => a.order - b.order)} />
                 </motion.div>
+
+                <div className="mt-8 text-center">
+                    <Link
+                        href="/projects"
+                        className="inline-flex items-center gap-2 text-sm font-medium opacity-40 hover:opacity-100 transition-opacity"
+                    >
+                        See all projects
+                        <ArrowRight className="w-4 h-4" />
+                    </Link>
+                </div>
             </div>
         </section>
     );
