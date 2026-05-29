@@ -33,7 +33,7 @@ export function ProjectsSection(): React.ReactElement {
                     className="mb-12 text-center"
                 >
                     <p className="text-lg opacity-70 max-w-2xl mx-auto">
-                        Building intelligent applications that bridge the gap between data and user experience.
+                        End-to-end projects. Architecture, deployment, and the parts in between.
                     </p>
                 </motion.div>
 
