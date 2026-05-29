@@ -28,9 +28,8 @@ export const projects: Project[] = [
         category: 'Interactive RAG Agent',
         title: 'AI Personal Assistant',
         description:
-            'An intelligent chatbot that allows visitors to query my professional background. ' +
-            'It uses Retrieval-Augmented Generation (RAG) to provide grounded answers based on my resume, ' +
-            'portfolio, and certifications.',
+            'A retrieval-augmented chatbot I built to answer questions about my professional background. ' +
+            'Grounded in my resume, portfolio, and certifications using vector search and an LLM.',
         technologies: [
             { icon: Layout, label: 'Next.js 15' },
             { icon: Bot, label: 'Python / Groq' },
