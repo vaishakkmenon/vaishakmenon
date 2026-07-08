@@ -6,7 +6,7 @@ import { AnimatedSection } from '@/components/AnimatedSection';
 import SectionHeading from '@/components/SectionHeading';
 import { usePageAnimations } from '@/hooks/usePageAnimations';
 import { handleImageError } from '@/lib/imageUtils';
-import { CERTIFICATIONS } from '@/lib/data/certifications';
+import { CERTIFICATIONS, isCertExpired } from '@/lib/data/certifications';
 import { SECTION_IDS } from '@/lib/constants';
 import { GlowCard } from '@/components/ui/GlowCard';
 import { ExternalLink, Calendar, CheckCircle } from 'lucide-react';
@@ -16,6 +16,7 @@ import { ExternalLink, Calendar, CheckCircle } from 'lucide-react';
  */
 export function CertificationsSection(): React.ReactElement {
   const { list } = usePageAnimations();
+  const activeCerts = CERTIFICATIONS.filter((cert) => !isCertExpired(cert));
 
   return (
     <AnimatedSection id={SECTION_IDS.certs} className="py-24 md:py-32 relative overflow-hidden">
@@ -28,8 +29,8 @@ export function CertificationsSection(): React.ReactElement {
           className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
           variants={list}
         >
-          {CERTIFICATIONS && CERTIFICATIONS.length > 0 ? (
-            CERTIFICATIONS.map((cert, index) => {
+          {activeCerts.length > 0 ? (
+            activeCerts.map((cert, index) => {
               if (!cert?.id || !cert?.name || !cert?.image || !cert?.file) {
                 return null;
               }

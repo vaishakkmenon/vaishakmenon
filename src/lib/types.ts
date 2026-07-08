@@ -6,5 +6,6 @@ export interface Certification {
   file: string;
   image: string;
   earned: string;
+  expires?: string; // ISO date (YYYY-MM-DD); omit if cert doesn't expire
   verifyUrl: string;
 }
