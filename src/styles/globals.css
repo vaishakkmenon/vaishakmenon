@@ -104,17 +104,21 @@ iframe {
   height: auto;
 }
 
-/* Links - subtle underline affordance */
-a {
-  color: var(--link-color);
-  text-underline-offset: 4px;
-  text-decoration-color: transparent;
-  transition: all 0.2s ease;
-}
+/* Links - subtle underline affordance
+   @layer base keeps this below Tailwind's utility layer so classes like
+   text-white on individual links still win the cascade. */
+@layer base {
+  a {
+    color: var(--link-color);
+    text-underline-offset: 4px;
+    text-decoration-color: transparent;
+    transition: all 0.2s ease;
+  }
 
-a:hover {
-  text-decoration-color: currentColor;
-  color: var(--link-hover);
+  a:hover {
+    text-decoration-color: currentColor;
+    color: var(--link-hover);
+  }
 }
 
 /* Button styles */
