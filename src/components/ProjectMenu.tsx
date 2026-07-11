@@ -62,6 +62,19 @@ export function ProjectMenu() {
                                     <ArrowRight className="w-4 h-4 text-[var(--color-muted)] group-hover:translate-x-0.5 transition-transform" />
                                 </Link>
                             </DropdownMenu.Item>
+                            <DropdownMenu.Item asChild>
+                                <Link
+                                    href="https://chess.vaishakmenon.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center justify-between p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 focus:bg-black/5 dark:focus:bg-white/5 transition-colors group outline-none"
+                                >
+                                    <span className="text-sm font-medium text-[var(--color-foreground)]">
+                                        Vantage — Live Engine
+                                    </span>
+                                    <ArrowRight className="w-4 h-4 text-[var(--color-muted)] group-hover:translate-x-0.5 transition-transform" />
+                                </Link>
+                            </DropdownMenu.Item>
                         </div>
                     </div>
 

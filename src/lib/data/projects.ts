@@ -23,6 +23,29 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        id: 'vantage',
+        order: 5,
+        category: 'Systems / Game AI',
+        title: 'Vantage — Live Engine',
+        description:
+            'A UCI-compatible chess engine written from scratch in Rust — bitboards, magic-bitboard move generation, ' +
+            'alpha-beta search, and a tapered PeSTO-style evaluation, all hand-built rather than wrapping Stockfish. ' +
+            'Compiled to WebAssembly, playable in-browser at chess.vaishakmenon.com.',
+        technologies: [
+            { icon: Terminal, label: 'Rust' },
+            { icon: Zap, label: 'WebAssembly' },
+            { icon: Layout, label: 'Next.js' },
+            { icon: Database, label: '512MB TT' },
+        ],
+        link: 'https://github.com/vaishakkmenon/Vantage',
+        linkLabel: 'View Code',
+        icon: Terminal,
+        status: 'completed',
+        featured: true,
+        previewHeight: '400px',
+        previewType: 'code',
+    },
+    {
         id: 'rag-assistant',
         order: 40,
         category: 'Interactive RAG Agent',

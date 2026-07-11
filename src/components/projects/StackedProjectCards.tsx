@@ -9,6 +9,7 @@ import { ChatPreview } from './previews/ChatPreview';
 import { PomodoroPreview } from './previews/PomodoroPreview';
 import { TuiPreview } from './previews/TuiPreview';
 import { ShakGPTPreview } from './previews/ShakGPTPreview';
+import { GenericPreview } from './previews/GenericPreview';
 
 function SshCommandBox({ linkLabel, className = '' }: { linkLabel: string; className?: string; }) {
     return (
@@ -162,6 +163,7 @@ export function StackedProjectCards({ projects }: StackedProjectCardsProps): Rea
                                             {currentProject.previewType === 'pomodoro' && <PomodoroPreview />}
                                             {currentProject.previewType === 'tui' && <TuiPreview />}
                                             {currentProject.previewType === 'shakgpt' && <ShakGPTPreview />}
+                                            {currentProject.previewType === 'code' && <GenericPreview label={currentProject.title} />}
                                         </div>
                                     )}
                                     {currentProject.link.startsWith('ssh://') && (
